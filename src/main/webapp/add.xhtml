@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/META-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:param name="title" value="#{msg['add.album.title']}"/>
+    <ui:define name="content">
+        <h2>#{msg['add.album.title']}</h2>
+        <h:messages showDetail="true" showSummary="false"/>
+        <h:form id="form">
+            <h:panelGrid id="grid" columns="2">
+                <h:outputLabel for="titel" value="#{msg['album.name']}:"/>
+                <h:inputText id="titel" size="30" maxlength="30"
+                             value="#{selectedAlbum.album.title}"/>
+                <h:outputLabel for="interpret" value="#{msg['album.interpret']}:"/>
+                <h:inputText id="interpret" size="30" maxlength="30"
+                             value="#{selectedAlbum.album.interpret}"/>
+                <h:outputLabel for="release_year" value="#{msg['album.releaseYear']}:"/>
+                <h:inputText id="release_year" size="4" maxlength="4"
+                             value="#{selectedAlbum.album.releaseYear}"/>
+            </h:panelGrid>
+                <ui:repeat value="#{selectedAlbum.album.songs}" var="song">
+                    <div>
+                        #{msg['add.song']}:
+                        #{song.title} |
+                        #{song.duration} min
+                    </div>
+                </ui:repeat>
+
+            <div>
+                #{msg['add.song']}:
+                <h:outputLabel for="newSongTitle" value="#{msg['add.song.title']}"/>:
+                <h:inputText id="newSongTitle" value="#{selectedAlbum.newSongTitle}" />
+                <h:outputLabel for="newSongDuration" value="#{msg['add.song.duration']}"/>:
+                <h:inputText id="newSongDuration" value="#{selectedAlbum.newSongDuration}" />
+                <h:commandButton actionListener="#{selectedAlbum.doAddSong}" value="#{msg['add.addSong']}" />
+            </div>
+
+
+            <h:commandButton id="save" action="#{selectedAlbum.doSave}" value="#{msg['save']}"/>
+            <h:commandButton id="cancel" value="#{msg['cancel']}" action="/index.xhtml" immediate="true"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,7 +1,3 @@
-# MyMusic
-Verwaltung der eigenen Musikalben
+# music-albums-obermueller
 
-Realisierung in Java EE
-
-Projekt entsteht im Rahmen der Veranstaltung Implementierung von Informationssystemen
-an der Technischen Hochschule Ingolstadt
+Repository for my music-album-application project (Michael Obermüller)
