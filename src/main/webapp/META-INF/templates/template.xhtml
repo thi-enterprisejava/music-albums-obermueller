@@ -5,37 +5,55 @@
 <head>
     <meta charset="UTF-8"/>
     <title>#{title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="" />
+    <!-- Kickstart -->
+    <link rel="stylesheet" type="text/css" href="style/kickstart/kickstart.css"/>
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/kickstart.js"></script>
+    <!-- Project CSS -->
     <link rel="stylesheet" type="text/css" href="style/style.css"/>
 </head>
 <body>
-<div class="header">
-    <div class="navigation">
-        <div class="pure-menu pure-menu-horizontal">
-            <ul class="pure-menu-list">
-                <li class="pure-menu-item">
-                     <h:link action="/add.xhtml" styleClass="pure-menu-link">
-                        #{msg['navigation.add']}
-                     </h:link>
-                </li>
-                <li class="pure-menu-item">
-                    <h:link action="/add.xhtml" styleClass="pure-menu-link">
-                        #{msg['navigation.list']}
-                    </h:link>
+
+<!-- Grid Layout -->
+<div class="grid">
+
+    <!-- Header -->
+    <div class="col_12">
+        <!-- Navigation -->
+        <div class="col_12">
+            <ul class="menu">
+                <li><a href="search.xhtml"><i class="icon-search"></i> Music Search</a></li>
+                <li class="current"><a href="add.xhtml"><i class="icon-plus"></i> Add Album</a></li>
+                <li><a href=""><i class="icon-th-list"></i> List Albums</a></li>
+                <li><a href=""><i class="icon-user"></i> Create Account</a></li>
+                <li class="right">
+                    <div class="login">
+                        <form>
+                            <label>Login:</label>
+                            <input name="username" placeholder="Username" type="text"/>
+                            <input name="password" placeholder="Password" type="password"/>
+                            <button type="button" class="small blue">Login</button>
+                        </form>
+                    </div>
                 </li>
             </ul>
         </div>
+        <div class="clear"></div>
     </div>
-    <ui:insert name="header">
-        <h1>MyMusic</h1>
-    </ui:insert>
-</div>
-<div class="content">
-    <ui:insert name="content"/>
-</div>
-<div class="footer">
-    <ui:insert name="footer">
-        <h:outputText value="Copyright (c) 2015 | Michael Obermüller"/>
-    </ui:insert>
+
+    <!-- Content -->
+    <div class="col_12 content">
+        <ui:insert name="content"/>
+    </div>
+
+    <!-- Footer -->
+    <div class="clear"></div>
+    <div id="footer" class="col_12 column">
+        Copyright 2015 Michael Obermueller | MyMusic |  All Rights Reserved.
+    </div>
+
 </div>
 </body>
 </html>

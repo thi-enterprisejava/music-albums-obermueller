@@ -1,9 +1,9 @@
 package de.thi.mymusic.web.model;
 
-import de.thi.mymusic.web.domain.Album;
-import de.thi.mymusic.web.domain.Song;
+import de.thi.mymusic.domain.Album;
+import de.thi.mymusic.domain.Song;
 
-import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 
@@ -11,17 +11,19 @@ import java.io.Serializable;
  * Created by Michael on 23.10.2015.
  */
 @Named
-@SessionScoped
+@ViewScoped
 public class SelectedAlbum implements Serializable
 {
 
     private Album album;
     private String newSongTitle;
     private String newSongDuration;
+    private long newSongNumber;
 
     public SelectedAlbum()
     {
         album = new Album();
+        this.newSongNumber = 1;
     }
 
 
@@ -53,21 +55,35 @@ public class SelectedAlbum implements Serializable
         this.newSongDuration = newSongDuration;
     }
 
+    public long getNewSongNumber() {
+        return newSongNumber;
+    }
+
+    public void setNewSongNumber(long newSongNumber) {
+        this.newSongNumber = newSongNumber;
+    }
+
     //*******************************************************
     // Action Methods
     //*******************************************************
 
     public String doSave() {
+        System.out.println("Do Save Album");
+
         return null;
     }
 
     public String doAddSong() {
-        this.album.addSong(new Song(this.newSongTitle, this.newSongDuration));
+        System.out.println("Add Song");
+
+        this.album.addSong(new Song(this.newSongNumber, this.newSongTitle, this.newSongDuration));
         this.newSongTitle=null;
         this.newSongDuration=null;
+
+        // Inkrement SongNumber
+        this.newSongNumber++;
         return null;
     }
-
 
 
 }

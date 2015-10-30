@@ -1,10 +1,11 @@
-package de.thi.mymusic.web.domain;
+package de.thi.mymusic.domain;
 
 /**
  * Functional model of a song
  */
 public class Song {
 
+    private long songNumber;
     private String title;
     // String with Format mm:ss
     private String duration;
@@ -18,7 +19,8 @@ public class Song {
 
     }
 
-    public Song(String title, String duration) {
+    public Song(long songNumber, String title, String duration) {
+        this.songNumber = songNumber;
         this.title = title;
         this.duration = duration;
     }
@@ -27,6 +29,15 @@ public class Song {
     //**********************************************
     // Getter and Setter
     //**********************************************
+
+
+    public long getSongNumber() {
+        return songNumber;
+    }
+
+    public void setSongNumber(long songNumber) {
+        this.songNumber = songNumber;
+    }
 
     public String getTitle() {
         return title;

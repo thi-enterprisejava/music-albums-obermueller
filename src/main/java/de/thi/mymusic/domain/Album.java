@@ -1,4 +1,4 @@
-package de.thi.mymusic.web.domain;
+package de.thi.mymusic.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;

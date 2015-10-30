@@ -1,14 +1,145 @@
-@import url(http://yui.yahooapis.com/pure/0.6.0/pure-min.css);
-@import url(http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css);
+/*---------------------------------
+	IMPORTS
+-----------------------------------*/
+@import url(http://fonts.googleapis.com/css?family=Arimo:400,700);
 
-body {
+/*---------------------------------
+	OVERRIDES
+-----------------------------------*/
+h1,h2,h3,h4,h5,h6{
+    font-family: "Arimo", arial, verdana, sans-serif;
+    font-weight:normal;
+    text-shadow:  2px  2px 2px #fff,
+    2px -2px 2px #fff,
+    -2px  2px 2px #fff,
+    -2px -2px 2px #fff;
+    color: black;
+}
+
+thead th,
+tbody th{
+    font-family: "Arimo", arial, verdana, sans-serif;
+}
+
+button,
+a.btn,
+input[type="submit"],
+input[type="reset"],
+input[type="button"]{
+    font-family: "Arimo", arial, verdana, sans-serif;
+}
+
+.menu{
+    font-family: "Arimo", arial, verdana, sans-serif;
+    border:1px solid #ccc;
+}
+
+.menu li {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.menu li a:hover,
+.menu li.hover>a{
+    color: rgb(122,188,255);
+}
+
+.menu div {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+blockquote{
+    font-family: "Arimo", arial, verdana, sans-serif;
+}
+
+/*---------------------------------
+	LAYOUT
+-----------------------------------*/
+body{
+    margin:0;
+    padding:0 0 0 0;
+    color:#000;
     background-image: url(../images/background.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
+    font:normal 0.9em/150% 'Arimo', arial, verdana, sans-serif;
+    text-shadow: 0px 0px 1px transparent; /* google font pixelation fix */
 }
 
-.navigation {
-    background-color: beige;
-    height:20px;
+#footer{
+    text-align:center;
+    padding:20px;
+    margin:0;
+    border-top:5px solid rgb(122,188,255);
+    color:#999;
+    font-size:0.8em;
+    text-shadow:0px 1px 1px #fff;
+    position: fixed;
+    bottom:0;
+    left:0;
+    width: 100%;
+    background:#fff;
 }
+
+#link-top{
+    display:none;
+}
+
+/* Login Div */
+div.login {
+    padding: 8px;
+    border-left: 1px solid #ccc;
+}
+
+/* Content Div */
+div.content{
+    margin-bottom: 100px;
+
+}
+
+div.content_header {
+    border-bottom: 1px solid #DDD;
+}
+
+div.search {
+    margin-top: 100px;
+    text-align: center;
+}
+
+div.content_container{
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border: 3px solid rgb(122,188,255);
+    padding: 20px;
+    padding-top: 5px;
+}
+
+div.add_album{
+    text-align: center;
+    font-size: 16px;
+}
+
+
+/*---------------------------------
+	FORM STYLES
+-----------------------------------*/
+
+input.search{
+    font-size: 24px;
+}
+
+input.button_search{
+    margin-left: 5px;
+}
+
+input.button_add{
+    margin: 15px;
+}
+
+

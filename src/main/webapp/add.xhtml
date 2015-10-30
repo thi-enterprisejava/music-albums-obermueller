@@ -2,43 +2,66 @@
 <ui:composition template="/META-INF/templates/template.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <ui:param name="title" value="#{msg['add.album.title']}"/>
+
     <ui:define name="content">
-        <h2>#{msg['add.album.title']}</h2>
-        <h:messages showDetail="true" showSummary="false"/>
-        <h:form id="form">
-            <h:panelGrid id="grid" columns="2">
-                <h:outputLabel for="titel" value="#{msg['album.name']}:"/>
-                <h:inputText id="titel" size="30" maxlength="30"
-                             value="#{selectedAlbum.album.title}"/>
-                <h:outputLabel for="interpret" value="#{msg['album.interpret']}:"/>
-                <h:inputText id="interpret" size="30" maxlength="30"
-                             value="#{selectedAlbum.album.interpret}"/>
-                <h:outputLabel for="release_year" value="#{msg['album.releaseYear']}:"/>
-                <h:inputText id="release_year" size="4" maxlength="4"
-                             value="#{selectedAlbum.album.releaseYear}"/>
-            </h:panelGrid>
+        <div class="content_container">
+            <div class="content_header"><h4>#{msg['add.album.title']}</h4></div>
+            <h:messages showDetail="true" showSummary="false"/>
+            <h:form id="form">
+                <div class="col_5 add_album" align="center">
+                    <table cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td><h:outputLabel for="titel" value="#{msg['album.name']}:"/></td>
+                            <td><h:inputText id="titel" size="30" maxlength="30"
+                                               value="#{selectedAlbum.album.title}"/></td>
+                        </tr>
+                        <tr>
+                            <td><h:outputLabel for="interpret" value="#{msg['album.interpret']}:"/></td>
+                            <td><h:inputText id="interpret" size="30" maxlength="30"
+                                                value="#{selectedAlbum.album.interpret}"/></td>
+                        </tr>
+                        <tr>
+                            <td> <h:outputLabel for="release_year" value="#{msg['album.releaseYear']}:"/></td>
+                            <td> <h:inputText id="release_year" size="4" maxlength="4"
+                                              value="#{selectedAlbum.album.releaseYear}"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="clear"></div>
+                <h5>Album Songs:</h5>
+
+                <table cellspacing="0" cellpadding="0" >
+                <thead><tr>
+                    <th>#</th>
+                    <th>#{msg['add.song.title']}:</th>
+                    <th>#{msg['add.song.duration']} (mm:ss):</th>
+                    <th>Action:</th>
+                </tr></thead>
+                <tbody>
                 <ui:repeat value="#{selectedAlbum.album.songs}" var="song">
-                    <div>
-                        #{msg['add.song']}:
-                        #{song.title} |
-                        #{song.duration} min
-                    </div>
+                    <tr>
+                        <td>#{song.songNumber}</td>
+                        <td>#{song.title}</td>
+                        <td>#{song.duration}</td>
+                        <td>Action</td>
+                    </tr>
                 </ui:repeat>
+                <tr>
+                    <td>#{selectedAlbum.newSongNumber}</td>
+                    <td><h:inputText id="newSongTitle" value="#{selectedAlbum.newSongTitle}" p:placeholder="Song title"/></td>
+                    <td><h:inputText id="newSongDuration" value="#{selectedAlbum.newSongDuration}" p:placeholder="mm:ss" /></td>
+                    <td> <h:commandButton actionListener="#{selectedAlbum.doAddSong}" value="#{msg['add.addSong']}" /></td>
+                </tr><tr>
+                </tr></tbody>
+            </table>
 
-            <div>
-                #{msg['add.song']}:
-                <h:outputLabel for="newSongTitle" value="#{msg['add.song.title']}"/>:
-                <h:inputText id="newSongTitle" value="#{selectedAlbum.newSongTitle}" />
-                <h:outputLabel for="newSongDuration" value="#{msg['add.song.duration']}"/>:
-                <h:inputText id="newSongDuration" value="#{selectedAlbum.newSongDuration}" />
-                <h:commandButton actionListener="#{selectedAlbum.doAddSong}" value="#{msg['add.addSong']}" />
-            </div>
+                <h:commandButton id="save" styleClass="button_add" action="#{selectedAlbum.doSave}" value="#{msg['common.save']}"/>
+                <h:commandButton id="cancel" styleClass="button_add" value="#{msg['common.cancel']}" action="/index.xhtml" immediate="true"/>
 
-
-            <h:commandButton id="save" action="#{selectedAlbum.doSave}" value="#{msg['save']}"/>
-            <h:commandButton id="cancel" value="#{msg['cancel']}" action="/index.xhtml" immediate="true"/>
-        </h:form>
+            </h:form>
+        </div>
     </ui:define>
 </ui:composition>
