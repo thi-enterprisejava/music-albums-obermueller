@@ -1,6 +1,7 @@
 package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.domain.Song;
+import de.thi.mymusic.repository.AlbumRepositoryImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ public class SelectedAlbumTest {
 
     @Before
     public void setUp() throws Exception {
-        selectedAlbum = new SelectedAlbum();
+        selectedAlbum = new SelectedAlbum(new AlbumRepositoryImpl());
         selectedAlbum.setNewSongTitle("Test");
         selectedAlbum.setNewSongDuration("03:17");
     }

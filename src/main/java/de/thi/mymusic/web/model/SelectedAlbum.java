@@ -2,8 +2,10 @@ package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.domain.Song;
+import de.thi.mymusic.repository.Repository;
 
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
@@ -19,9 +21,11 @@ public class SelectedAlbum implements Serializable
     private String newSongTitle;
     private String newSongDuration;
     private long newSongNumber;
+    private Repository albumRepository;
 
-    public SelectedAlbum()
-    {
+    @Inject
+    public SelectedAlbum(Repository<Album> albumRepository){
+        this.albumRepository = albumRepository;
         album = new Album();
         this.newSongNumber = 1;
     }
@@ -69,6 +73,7 @@ public class SelectedAlbum implements Serializable
 
     public String doSave() {
         System.out.println("Do Save Album");
+        albumRepository.add(this.album);
 
         return null;
     }

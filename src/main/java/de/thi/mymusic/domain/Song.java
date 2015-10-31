@@ -1,7 +1,7 @@
 package de.thi.mymusic.domain;
 
 /**
- * Functional model of a song
+ * Functional data model of a song
  */
 public class Song {
 
