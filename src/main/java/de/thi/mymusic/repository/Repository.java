@@ -1,16 +1,17 @@
 package de.thi.mymusic.repository;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Michael on 30.10.2015.
  */
 
-public interface Repository<T> {
+public interface Repository<T> extends Serializable{
 
-    List<T> fetchAll();
+    List<T> findAll();
 
-    List<T> fetchByName(String name);
+    List<T> findByName(String name);
 
     T findById(long id);
 

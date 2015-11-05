@@ -1,9 +1,11 @@
 package de.thi.mymusic.domain;
 
+import java.io.Serializable;
+
 /**
  * Functional data model of a song
  */
-public class Song {
+public class Song implements Serializable {
 
     private long songNumber;
     private String title;

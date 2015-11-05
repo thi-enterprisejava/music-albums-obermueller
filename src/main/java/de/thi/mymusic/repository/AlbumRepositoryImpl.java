@@ -17,12 +17,12 @@ public class AlbumRepositoryImpl implements Repository<Album> {
     private static final List<Album> albumList = new ArrayList<>();
 
     @Override
-    public List<Album> fetchAll() {
+    public List<Album> findAll() {
         return albumList;
     }
 
     @Override
-    public List<Album> fetchByName(String name) {
+    public List<Album> findByName(String name) {
         return albumList.stream().filter(album -> name.contains(album.getTitle())).collect(Collectors.toList());
     }
 
