@@ -11,7 +11,7 @@ public class Album implements Serializable {
 
     private String title;
     // TODO Switch String interpret to new domain model interpret
-    private String interpret;
+    private Interpret interpret;
     private List<Song> songs = new ArrayList<>();
     private int releaseYear;
 
@@ -23,7 +23,7 @@ public class Album implements Serializable {
 
     }
 
-    public Album(String title, String interpret, List<Song> songs, int releaseYear) {
+    public Album(String title, Interpret interpret, List<Song> songs, int releaseYear) {
         this.title = title;
         this.interpret = interpret;
         this.songs = songs;
@@ -42,11 +42,11 @@ public class Album implements Serializable {
         this.title = title;
     }
 
-    public String getInterpret() {
+    public Interpret getInterpret() {
         return interpret;
     }
 
-    public void setInterpret(String interpret) {
+    public void setInterpret(Interpret interpret) {
         this.interpret = interpret;
     }
 

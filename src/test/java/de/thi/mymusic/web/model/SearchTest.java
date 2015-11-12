@@ -1,6 +1,7 @@
 package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.domain.Album;
+import de.thi.mymusic.domain.Interpret;
 import de.thi.mymusic.domain.Song;
 import de.thi.mymusic.repository.Repository;
 import org.junit.After;
@@ -40,14 +41,14 @@ public class SearchTest {
     @Test
     public void thatSearchFindOneEntryCorrect() throws Exception {
         when(mockedAlbumRepository.findByName("Limbo messiah")).
-                thenReturn(Arrays.asList(new Album("Limbo messiah", "Beatsteaks", Arrays.asList(new Song(1, "As I please", "03:12"),
+                thenReturn(Arrays.asList(new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
                         new Song(2, "Meantime", "02:14")), 2007)));
         search.setSearchString("Limbo messiah");
 
         String resultString = search.doSearch();
 
         assertEquals(1, search.getResult().size());
-        assertEquals(new Album("Limbo messiah", "Beatsteaks", Arrays.asList(new Song(1, "As I please", "03:12"),
+        assertEquals(new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
                 new Song(2, "Meantime", "02:14")), 2007), search.getResult().get(0));
         assertEquals("detailAlbum.xhtml?faces-redirect=true&album=Limbo messiah", resultString);
     }
@@ -55,18 +56,18 @@ public class SearchTest {
     @Test
     public void thatSearchFindMoreEntriesCorrect() throws Exception {
         when(mockedAlbumRepository.findByName("messiah")).
-                thenReturn(Arrays.asList(new Album("Black Messiah", "D'Angelo", Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
+                thenReturn(Arrays.asList(new Album("Black Messiah", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
                         new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Limbo messiah", "Beatsteaks", Arrays.asList(new Song(1, "As I please", "03:12"),
+                        new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
                                 new Song(2, "Meantime", "02:14")), 2007)));
         search.setSearchString("messiah");
 
         String resultString = search.doSearch();
 
         assertEquals(2, search.getResult().size());
-        assertEquals(search.getResult(), Arrays.asList(new Album("Black Messiah", "D'Angelo", Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
+        assertEquals(search.getResult(), Arrays.asList(new Album("Black Messiah", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
                         new Song(2, "1000 Deaths", "05:50")), 2014),
-                new Album("Limbo messiah", "Beatsteaks", Arrays.asList(new Song(1, "As I please", "03:12"),
+                new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
                         new Song(2, "Meantime", "02:14")), 2007)));
         assertEquals("listSearchResult", resultString);
     }
@@ -77,9 +78,9 @@ public class SearchTest {
     @Test
     public void thatAutoCompleteFindCorrectEntries() throws Exception{
         when(mockedAlbumRepository.findByName("messiah")).
-                thenReturn(Arrays.asList(new Album("Black Messiah", "D'Angelo", Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
+                thenReturn(Arrays.asList(new Album("Black Messiah", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
                         new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Limbo messiah", "Beatsteaks", Arrays.asList(new Song(1, "As I please", "03:12"),
+                        new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
                                 new Song(2, "Meantime", "02:14")), 2007)));
 
         List<String> searchResult = search.completeSearchInput("messiah");
@@ -91,19 +92,19 @@ public class SearchTest {
     @Test
     public void thatAutoCompleteReturnsMaxFiveElements() throws Exception {
         when(mockedAlbumRepository.findByName("messiah")).
-                thenReturn(Arrays.asList(new Album("Black Messiah", "D'Angelo", Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
+                thenReturn(Arrays.asList(new Album("Black Messiah", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
                         new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Black Messiah2", "D'Angelo", Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
+                        new Album("Black Messiah2", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
                                 new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Black Messiah3", "D'Angelo", Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
+                        new Album("Black Messiah3", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
                                 new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Black Messiah4", "D'Angelo", Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
+                        new Album("Black Messiah4", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
                                 new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Black Messiah5", "D'Angelo", Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
+                        new Album("Black Messiah5", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
                                 new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Black Messiah6", "D'Angelo", Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
+                        new Album("Black Messiah6", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
                                 new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Limbo messiah", "Beatsteaks", Arrays.asList(new Song(1, "As I please", "03:12"),
+                        new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
                                 new Song(2, "Meantime", "02:14")), 2007)));
 
         List<String> searchResult = search.completeSearchInput("messiah");

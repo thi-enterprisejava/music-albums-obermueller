@@ -14,7 +14,7 @@
         <ui:param name="title" value="#{msg['search.title']}"/>
         <ui:define name="content">
             <div class="content_container">
-                <div class="content_header"><h4>#{selectedAlbum.album.interpret}: #{selectedAlbum.album.title}</h4></div>
+                <div class="content_header"><h4>#{selectedAlbum.album.interpret.name}: #{selectedAlbum.album.title}</h4></div>
                 <div class="col_4 add_album">
                     <img class="album_cover_big" src="images/album_covers/limbomessiah_beatsteaks.jpg"/>
                 </div>
@@ -26,7 +26,7 @@
                         </tr>
                         <tr>
                             <td>#{msg['album.interpret']}:</td>
-                            <td>#{selectedAlbum.album.interpret}</td>
+                            <td>#{selectedAlbum.album.interpret.name}</td>
                         </tr>
                         <tr>
                             <td>#{msg['album.releaseYear']}:</td>
