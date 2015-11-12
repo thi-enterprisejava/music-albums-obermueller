@@ -8,6 +8,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Michael on 23.10.2015.
@@ -22,6 +23,9 @@ public class SelectedAlbum implements Serializable
     private String newSongDuration;
     private long newSongNumber;
     private Repository albumRepository;
+
+    //For Detail View
+    private String albumTitle;
 
     @Inject
     public SelectedAlbum(Repository<Album> albumRepository){
@@ -67,15 +71,31 @@ public class SelectedAlbum implements Serializable
         this.newSongNumber = newSongNumber;
     }
 
+    public String getAlbumTitle() {
+        return albumTitle;
+    }
+
+    public void setAlbumTitle(String albumTitle) {
+        this.albumTitle = albumTitle;
+    }
+
     //*******************************************************
     // Action Methods
     //*******************************************************
+
+    // TODO Implement Finding by ID instead of Name (After DB-Implementation)
+    public void init(){
+        List<Album> result = albumRepository.findByName(albumTitle);
+
+        // Take first list element
+        album = result.get(0);
+    }
 
     public String doSave() {
         System.out.println("Do Save Album");
         albumRepository.add(this.album);
 
-        return null;
+        return "detailAlbum.xhtml?faces-redirect=true&album="+album.getTitle();
     }
 
     public String doAddSong() {
@@ -89,6 +109,5 @@ public class SelectedAlbum implements Serializable
         this.newSongNumber++;
         return null;
     }
-
 
 }

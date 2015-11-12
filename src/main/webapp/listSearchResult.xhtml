@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/META-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:param name="title" value="#{msg['search.title']}"/>
+    <ui:define name="content">
+        <div class="content_container">
+            <div class="content_header"><h4>#{msg['search.results']}:</h4></div>
+            <ui:repeat value="#{search.result}" var="album">
+                <div>
+                    <div class="col_4 add_album">
+                        <img class="album_cover_small" src="images/album_covers/limbomessiah_beatsteaks.jpg"/>
+                    </div>
+                    <div class="col_8 add_album">
+                        <table cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td>#{msg['album.name']}:</td>
+                                <td>#{album.title}</td>
+                            </tr>
+                            <tr>
+                                <td>#{msg['album.interpret']}:</td>
+                                <td>#{album.interpret}</td>
+                            </tr>
+                            <tr>
+                                <td>#{msg['album.releaseYear']}:</td>
+                                <td>#{album.releaseYear}</td>
+                            </tr>
+                            <tr>
+                                <td>#{msg['album.completeDuration']}:</td>
+                                <td>Songduration</td>
+                            </tr>
+                            <tr>
+                                <td>#{msg['album.numberOfSongs']}:</td>
+                                <td>Anzahl Songs</td>
+                            </tr>
+                        </table>
+                    </div>
+                <div class="clear"></div>
+                </div>
+            </ui:repeat>
+        </div>
+    </ui:define>
+</ui:composition>

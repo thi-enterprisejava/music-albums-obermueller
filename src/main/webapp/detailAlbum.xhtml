@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <f:metadata>
+        <f:viewParam name="album" value="#{selectedAlbum.albumTitle}" />
+        <f:viewAction action="#{selectedAlbum.init}" />
+    </f:metadata>
+</h:head>
+<h:body>
+    <ui:composition template="/META-INF/templates/template.xhtml">
+        <ui:param name="title" value="#{msg['search.title']}"/>
+        <ui:define name="content">
+            <div class="content_container">
+                <div class="content_header"><h4>#{selectedAlbum.album.interpret}: #{selectedAlbum.album.title}</h4></div>
+                <div class="col_4 add_album">
+                    <img class="album_cover_big" src="images/album_covers/limbomessiah_beatsteaks.jpg"/>
+                </div>
+                <div class="col_8 add_album">
+                    <table cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>#{msg['album.name']}:</td>
+                            <td>#{selectedAlbum.album.title}</td>
+                        </tr>
+                        <tr>
+                            <td>#{msg['album.interpret']}:</td>
+                            <td>#{selectedAlbum.album.interpret}</td>
+                        </tr>
+                        <tr>
+                            <td>#{msg['album.releaseYear']}:</td>
+                            <td>#{selectedAlbum.album.releaseYear}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col_4 add_album">
+
+                </div>
+                <div class="col_8">
+                     <h5>Album Songs:</h5>
+                    <table cellspacing="0" cellpadding="0" >
+                        <thead><tr>
+                            <th>#</th>
+                            <th width="70%">#{msg['add.song.title']}:</th>
+                            <th>#{msg['add.song.duration']} (mm:ss):</th>
+                        </tr></thead>
+                        <tbody>
+                        <ui:repeat value="#{selectedAlbum.album.songs}" var="song">
+                            <tr>
+                                <td>#{song.songNumber}</td>
+                                <td>#{song.title}</td>
+                                <td>#{song.getFormattedDuration()}</td>
+                            </tr>
+                        </ui:repeat>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

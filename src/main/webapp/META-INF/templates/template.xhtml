@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<head>
+<h:head>
     <meta charset="UTF-8"/>
     <title>#{title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -11,9 +11,11 @@
     <link rel="stylesheet" type="text/css" href="style/kickstart/kickstart.css"/>
     <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="js/kickstart.js"></script>
+    <!-- For Primefaces -->
+    <script type="text/javascript" src="js/jquery-ui.js"></script>
     <!-- Project CSS -->
     <link rel="stylesheet" type="text/css" href="style/style.css"/>
-</head>
+</h:head>
 <body>
 
 <!-- Grid Layout -->
@@ -26,7 +28,7 @@
             <ul class="menu">
                 <li><a href="search.xhtml"><i class="icon-search"></i> Music Search</a></li>
                 <li class="current"><a href="add.xhtml"><i class="icon-plus"></i> Add Album</a></li>
-                <li><a href=""><i class="icon-th-list"></i> List Albums</a></li>
+                <!-- <li><a href=""><i class="icon-th-list"></i> List Albums</a></li> -->
                 <li><a href=""><i class="icon-user"></i> Create Account</a></li>
                 <li class="right">
                     <div class="login">

@@ -2,7 +2,9 @@
 <ui:composition template="/META-INF/templates/template.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+               xmlns:p="http://primefaces.org/ui">
     <ui:param name="title" value="#{msg['add.album.title']}"/>
 
     <ui:define name="content">
@@ -20,7 +22,8 @@
                         <tr>
                             <td><h:outputLabel for="interpret" value="#{msg['album.interpret']}:"/></td>
                             <td><h:inputText id="interpret" size="30" maxlength="30"
-                                                value="#{selectedAlbum.album.interpret}"/></td>
+                                                value="#{selectedAlbum.album.interpret}"/>
+                            </td>
                         </tr>
                         <tr>
                             <td> <h:outputLabel for="release_year" value="#{msg['album.releaseYear']}:"/></td>
@@ -45,14 +48,14 @@
                     <tr>
                         <td>#{song.songNumber}</td>
                         <td>#{song.title}</td>
-                        <td>#{song.duration}</td>
+                        <td>#{song.getFormattedDuration()}</td>
                         <td>Action</td>
                     </tr>
                 </ui:repeat>
                 <tr>
                     <td>#{selectedAlbum.newSongNumber}</td>
-                    <td><h:inputText id="newSongTitle" value="#{selectedAlbum.newSongTitle}" p:placeholder="Song title"/></td>
-                    <td><h:inputText id="newSongDuration" value="#{selectedAlbum.newSongDuration}" p:placeholder="mm:ss" /></td>
+                    <td><h:inputText id="newSongTitle" value="#{selectedAlbum.newSongTitle}" pt:placeholder="Song title"/></td>
+                    <td><h:inputText id="newSongDuration" value="#{selectedAlbum.newSongDuration}" pt:placeholder="mm:ss" /></td>
                     <td> <h:commandButton actionListener="#{selectedAlbum.doAddSong}" value="#{msg['add.addSong']}" /></td>
                 </tr><tr>
                 </tr></tbody>

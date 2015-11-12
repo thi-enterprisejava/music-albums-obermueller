@@ -125,17 +125,17 @@ div.add_album{
     font-size: 16px;
 }
 
-
 /*---------------------------------
 	FORM STYLES
 -----------------------------------*/
 
-input.search{
+span.search_input{
     font-size: 24px;
 }
 
 input.button_search{
     margin-left: 5px;
+    margin-bottom: 5px;
 }
 
 input.button_add{
@@ -143,3 +143,18 @@ input.button_add{
 }
 
 
+/*---------------------------------
+	IMAGES STYLES
+-----------------------------------*/
+
+img.album_cover_big{
+    width: 300px;
+    /*border: 2px solid rgb(122,188,255);*/
+    border: 2px solid #777;
+}
+
+img.album_cover_small{
+    width: 150px;
+    /*border: 2px solid rgb(122,188,255);*/
+    border: 2px solid #777;
+}

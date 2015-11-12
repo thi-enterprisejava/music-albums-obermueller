@@ -3,20 +3,22 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
-<ui:define name="content">
-    <div class="search">
-        <h1 class="center">
-            <i class="icon-music"></i><br></br>
-            #{msg['search.header']}</h1>
-        <h4 style="margin-bottom:40px;" class="center">#{msg['search.info']}:</h4>
-        <div>
-            <h:form action="">
-                <h:inputText id="search" size="30" styleClass="search" p:placeholder="#{msg['search.placeholder']}"/>
-                <h:commandButton id="save" styleClass="blue large button_search" action="#{selectedAlbum.doSave}" value="#{msg['search.search']}"/>
-            </h:form>
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:param name="title" value="#{msg['search.title']}"/>
+    <ui:define name="content">
+        <div class="search">
+            <h1 class="center">
+                <i class="icon-music"></i><br></br>
+                #{msg['search.header']}</h1>
+            <h4 style="margin-bottom:40px;" class="center">#{msg['search.info']}:</h4>
+            <div>
+                <h:form action="">
+                    <p:autoComplete id="search" styleClass="search_input" size="30" maxResults="5" minQueryLength="4" pt:placeholder="#{msg['search.placeholder']}" value="#{search.searchString}" completeMethod="#{search.completeSearchInput}" />
+
+                    <h:commandButton id="save" styleClass="blue large button_search" action="#{search.doSearch}" value="#{msg['search.search']}"/>
+                </h:form>
+            </div>
         </div>
-    </div>
-</ui:define>
+    </ui:define>
 </ui:composition>

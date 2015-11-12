@@ -23,11 +23,14 @@ public class AlbumRepositoryImpl implements Repository<Album> {
 
     @Override
     public List<Album> findByName(String name) {
-        return albumList.stream().filter(album -> name.contains(album.getTitle())).collect(Collectors.toList());
+        return albumList
+                .stream()
+                .filter(album -> album.getTitle().toLowerCase().contains(name.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     @Override
-    // To Do
+    // TODO Implement method findById
     public Album findById(long id) {
         return null;
     }
@@ -38,7 +41,7 @@ public class AlbumRepositoryImpl implements Repository<Album> {
     }
 
     @Override
-    // To Do
+    // TODO Implement method update
     public void update(Album object) {
 
     }

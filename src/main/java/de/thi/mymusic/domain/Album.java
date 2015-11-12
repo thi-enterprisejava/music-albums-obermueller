@@ -10,9 +10,25 @@ import java.util.List;
 public class Album implements Serializable {
 
     private String title;
+    // TODO Switch String interpret to new domain model interpret
     private String interpret;
     private List<Song> songs = new ArrayList<>();
     private int releaseYear;
+
+    //************************************************
+    // Constructors
+    //************************************************
+
+    public Album() {
+
+    }
+
+    public Album(String title, String interpret, List<Song> songs, int releaseYear) {
+        this.title = title;
+        this.interpret = interpret;
+        this.songs = songs;
+        this.releaseYear = releaseYear;
+    }
 
     //************************************************
     // Getter and Setter
@@ -54,5 +70,30 @@ public class Album implements Serializable {
         this.releaseYear = releaseYear;
     }
 
+    //************************************************
+    // Equals and HashCode
+    //************************************************
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Album album = (Album) o;
+
+        if (releaseYear != album.releaseYear) return false;
+        if (title != null ? !title.equals(album.title) : album.title != null) return false;
+        if (interpret != null ? !interpret.equals(album.interpret) : album.interpret != null) return false;
+        return !(songs != null ? !songs.equals(album.songs) : album.songs != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = title != null ? title.hashCode() : 0;
+        result = 31 * result + (interpret != null ? interpret.hashCode() : 0);
+        result = 31 * result + (songs != null ? songs.hashCode() : 0);
+        result = 31 * result + releaseYear;
+        return result;
+    }
 }
