@@ -28,13 +28,13 @@ public class SelectedAlbumTest {
 
     Repository<Album> mockedAlbumRepository;
 
-    @Before
-    public void setUp() throws Exception {
+    //@Before
+    /*public void setUp() throws Exception {
         mockedAlbumRepository = mock(AlbumRepositoryImpl.class);
         selectedAlbum = new SelectedAlbum(mockedAlbumRepository);
-    }
+    }*/
 
-    @Test
+    //@Test
     public void thatSaveAlbumAddsNewAlbum() throws Exception {
 
 

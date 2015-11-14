@@ -1,16 +1,24 @@
 package de.thi.mymusic.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Functional data model of a song
  */
+
+@Entity
 public class Song implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long id;
     private long songNumber;
     private String title;
-    // String with Format mm:ss
-    //private String duration;
     private long duration;
 
     //**********************************************
@@ -39,6 +47,14 @@ public class Song implements Serializable {
     // Getter and Setter
     //**********************************************
 
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public long getSongNumber() {
         return songNumber;
@@ -89,20 +105,13 @@ public class Song implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Song song = (Song) o;
-
-        if (songNumber != song.songNumber) return false;
-        if (duration != song.duration) return false;
-        return !(title != null ? !title.equals(song.title) : song.title != null);
-
+        return duration == song.duration &&
+                Objects.equals(title, song.title);
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (songNumber ^ (songNumber >>> 32));
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (int) (duration ^ (duration >>> 32));
-        return result;
+        return Objects.hash(title, duration);
     }
 }

@@ -4,6 +4,7 @@ import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.domain.Interpret;
 import de.thi.mymusic.domain.Song;
 import de.thi.mymusic.repository.Repository;
+import de.thi.mymusic.service.AlbumService;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -24,14 +25,14 @@ public class SelectedAlbum implements Serializable
     private String newSongTitle;
     private String newSongDuration;
     private long newSongNumber;
-    private Repository albumRepository;
+    private AlbumService albumService;
 
     //For Detail View
-    private String albumTitle;
+    private long albumId;
 
     @Inject
-    public SelectedAlbum(Repository<Album> albumRepository){
-        this.albumRepository = albumRepository;
+    public SelectedAlbum(AlbumService albumService){
+        this.albumService = albumService;
         interpret = new Interpret();
         album = new Album();
 
@@ -83,14 +84,13 @@ public class SelectedAlbum implements Serializable
         this.newSongNumber = newSongNumber;
     }
 
-    public String getAlbumTitle() {
-        return albumTitle;
+    public long getAlbumId() {
+        return albumId;
     }
 
-    public void setAlbumTitle(String albumTitle) {
-        this.albumTitle = albumTitle;
+    public void setAlbumId(long albumId) {
+        this.albumId = albumId;
     }
-
 
     //*******************************************************
     // Action Methods
@@ -98,17 +98,14 @@ public class SelectedAlbum implements Serializable
 
     // TODO Implement Finding by ID instead of Name (After DB-Implementation)
     public void init(){
-        List<Album> result = albumRepository.findByName(albumTitle);
-
-        // Take first list element
-        album = result.get(0);
+        album = albumService.findById(albumId);
     }
 
     public String doSave() {
         album.setInterpret(interpret);
-        albumRepository.add(this.album);
+        albumService.add(this.album);
 
-        return "detailAlbum.xhtml?faces-redirect=true&album="+album.getTitle();
+        return "detailAlbum.xhtml?faces-redirect=true&album="+album.getId();
     }
 
     public String doAddSong() {
@@ -126,7 +123,6 @@ public class SelectedAlbum implements Serializable
     public String doCancel() {
         interpret = new Interpret();
         album = new Album();
-        albumTitle = "";
         newSongNumber = 1;
         newSongDuration = "";
         newSongTitle = "";

@@ -1,10 +1,21 @@
 package de.thi.mymusic.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.util.Objects;
+
 /**
  * Functional data model of a interpret
  */
+
+@Entity
 public class Interpret {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long id;
     private String name;
 
 
@@ -25,6 +36,14 @@ public class Interpret {
     //************************************************
 
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -42,15 +61,12 @@ public class Interpret {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Interpret interpret = (Interpret) o;
-
-        return !(name != null ? !name.equals(interpret.name) : interpret.name != null);
-
+        return Objects.equals(name, interpret.name);
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        return Objects.hash(name);
     }
 }

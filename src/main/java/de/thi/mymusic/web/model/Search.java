@@ -2,6 +2,7 @@ package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.repository.Repository;
+import de.thi.mymusic.service.AlbumService;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -21,11 +22,11 @@ public class Search implements Serializable {
 
     private List<Album> result;
     private String searchString;
-    private Repository albumRepository;
+    private AlbumService albumService;
 
     @Inject
-    public Search(Repository<Album> albumRepository) {
-        this.albumRepository = albumRepository;
+    public Search(AlbumService albumService) {
+        this.albumService = albumService;
     }
 
     //*******************************************************
@@ -50,11 +51,11 @@ public class Search implements Serializable {
     // Action Methods
     //*******************************************************
     public String doSearch(){
-        result = albumRepository.findByName(searchString);
+        result = albumService.findByName(searchString);
 
         // Only one match show album detail page
         if(result.size() == 1) {
-            return "detailAlbum.xhtml?faces-redirect=true&album="+result.get(0).getTitle();
+            return "detailAlbum.xhtml?faces-redirect=true&album="+result.get(0).getId();
         } else {
 
             return "listSearchResult";
@@ -64,7 +65,7 @@ public class Search implements Serializable {
     // AJAX Request: Complete Search Input
     public List<String> completeSearchInput(String query) {
         List<String> results = new ArrayList<String>();
-        List<Album> foundedResults = albumRepository.findByName(query);
+        List<Album> foundedResults = albumService.findByName(query);
 
         System.out.println(foundedResults.toString());
 

@@ -1,16 +1,27 @@
 package de.thi.mymusic.domain;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Functional data model of an album
  */
+
+@Entity
 public class Album implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long Id;
     private String title;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private Interpret interpret;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Song> songs = new ArrayList<>();
     private int releaseYear;
 
@@ -32,6 +43,15 @@ public class Album implements Serializable {
     //************************************************
     // Getter and Setter
     //************************************************
+
+
+    public long getId() {
+        return Id;
+    }
+
+    public void setId(long id) {
+        Id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -75,26 +95,19 @@ public class Album implements Serializable {
 
 
     //TODO Java Objects für Equals und HashCode verwenden! (V7)
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Album album = (Album) o;
-
-        if (releaseYear != album.releaseYear) return false;
-        if (title != null ? !title.equals(album.title) : album.title != null) return false;
-        if (interpret != null ? !interpret.equals(album.interpret) : album.interpret != null) return false;
-        return !(songs != null ? !songs.equals(album.songs) : album.songs != null);
-
+        return releaseYear == album.releaseYear &&
+                Objects.equals(title, album.title) &&
+                Objects.equals(interpret, album.interpret);
     }
 
     @Override
     public int hashCode() {
-        int result = title != null ? title.hashCode() : 0;
-        result = 31 * result + (interpret != null ? interpret.hashCode() : 0);
-        result = 31 * result + (songs != null ? songs.hashCode() : 0);
-        result = 31 * result + releaseYear;
-        return result;
+        return Objects.hash(title, interpret, releaseYear);
     }
 }
