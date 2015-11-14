@@ -123,4 +123,15 @@ public class SelectedAlbum implements Serializable
         return null;
     }
 
+    public String doCancel() {
+        interpret = new Interpret();
+        album = new Album();
+        albumTitle = "";
+        newSongNumber = 1;
+        newSongDuration = "";
+        newSongTitle = "";
+
+        return "add.xhtml";
+    }
+
 }

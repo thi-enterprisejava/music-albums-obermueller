@@ -17,4 +17,13 @@
             <var>msg</var>
         </resource-bundle>
     </application>
+
+    <render-kit>
+        <renderer>
+            <component-family>javax.faces.Message</component-family>
+            <renderer-type>javax.faces.Message</renderer-type>
+            <renderer-class>de.thi.mymusic.util.CustomMessageRenderer</renderer-class>
+        </renderer>
+    </render-kit> -->
+
 </faces-config>

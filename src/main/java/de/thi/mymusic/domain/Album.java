@@ -10,7 +10,6 @@ import java.util.List;
 public class Album implements Serializable {
 
     private String title;
-    // TODO Switch String interpret to new domain model interpret
     private Interpret interpret;
     private List<Song> songs = new ArrayList<>();
     private int releaseYear;
@@ -74,6 +73,8 @@ public class Album implements Serializable {
     // Equals and HashCode
     //************************************************
 
+
+    //TODO Java Objects für Equals und HashCode verwenden! (V7)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

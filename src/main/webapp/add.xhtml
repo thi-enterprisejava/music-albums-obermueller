@@ -9,25 +9,30 @@
 
     <ui:define name="content">
         <div class="content_container">
-            <div class="content_header"><h4>#{msg['add.album.title']}</h4></div>
-            <h:messages showDetail="true" showSummary="false"/>
+           <div class="content_header"><h4>#{msg['add.album.title']}</h4></div>
+
             <h:form id="form">
-                <div class="col_5 add_album" align="center">
+               <!-- <h:messages showDetail="true" showSummary="false"/> -->
+                <div class="col_6 add_album" align="center">
                     <table cellspacing="0" cellpadding="0">
                         <tr>
                             <td><h:outputLabel for="titel" value="#{msg['album.name']}:"/></td>
-                            <td><h:inputText id="titel" size="30" maxlength="30"
-                                               value="#{selectedAlbum.album.title}"/></td>
+                            <td><h:message for="titel" />
+                                <h:inputText id="titel" size="30" maxlength="30" required="true"
+                                               value="#{selectedAlbum.album.title}"/>
+                            </td>
                         </tr>
                         <tr>
                             <td><h:outputLabel for="interpret" value="#{msg['album.interpret']}:"/></td>
-                            <td><h:inputText id="interpret" size="30" maxlength="30"
+                            <td><h:message for="interpret"/>
+                                <h:inputText id="interpret" size="30" maxlength="30" required="true"
                                                 value="#{selectedAlbum.interpret.name}"/>
                             </td>
                         </tr>
                         <tr>
                             <td> <h:outputLabel for="release_year" value="#{msg['album.releaseYear']}:"/></td>
-                            <td> <h:inputText id="release_year" size="4" maxlength="4"
+                            <td> <h:message for="release_year"/>
+                                <h:inputText id="release_year" size="4" maxlength="4" required="true"
                                               value="#{selectedAlbum.album.releaseYear}"/>
                             </td>
                         </tr>
@@ -35,36 +40,44 @@
                 </div>
                 <div class="clear"></div>
                 <h5>Album Songs:</h5>
-
-                <table cellspacing="0" cellpadding="0" >
-                <thead><tr>
-                    <th>#</th>
-                    <th>#{msg['add.song.title']}:</th>
-                    <th>#{msg['add.song.duration']} (mm:ss):</th>
-                    <th>Action:</th>
-                </tr></thead>
-                <tbody>
-                <ui:repeat value="#{selectedAlbum.album.songs}" var="song">
+                <h:panelGroup layout="block" id="songs">
+                    <table cellspacing="0" cellpadding="0" >
+                    <thead><tr>
+                        <th>#</th>
+                        <th>#{msg['add.song.title']}:</th>
+                        <th>#{msg['add.song.duration']} (mm:ss):</th>
+                        <th>Action:</th>
+                    </tr></thead>
+                    <tbody>
+                    <ui:repeat value="#{selectedAlbum.album.songs}" var="song">
+                        <tr>
+                            <td>#{song.songNumber}</td>
+                            <td>#{song.title}</td>
+                            <td>#{song.getFormattedDuration()}</td>
+                            <td>Action</td>
+                        </tr>
+                    </ui:repeat>
                     <tr>
-                        <td>#{song.songNumber}</td>
-                        <td>#{song.title}</td>
-                        <td>#{song.getFormattedDuration()}</td>
-                        <td>Action</td>
-                    </tr>
-                </ui:repeat>
-                <tr>
-                    <td>#{selectedAlbum.newSongNumber}</td>
-                    <td><h:inputText id="newSongTitle" value="#{selectedAlbum.newSongTitle}" pt:placeholder="Song title"/></td>
-                    <td><h:inputText id="newSongDuration" value="#{selectedAlbum.newSongDuration}" pt:placeholder="mm:ss">
-                            <f:validator validatorId="songDurationValidator"/>
-                        </h:inputText>
-                    </td>
-                    <td> <h:commandButton actionListener="#{selectedAlbum.doAddSong}" value="#{msg['add.addSong']}" /></td>
-                </tr></tbody>
-            </table>
+                        <td>#{selectedAlbum.newSongNumber}</td>
+                        <td><h:message for="newSongTitle" />
+                            <h:inputText id="newSongTitle" required="true" value="#{selectedAlbum.newSongTitle}" pt:placeholder="Song title"/>
+                        </td>
+                        <td><h:message for="newSongDuration" />
+                            <h:inputText id="newSongDuration" required="true" value="#{selectedAlbum.newSongDuration}" pt:placeholder="mm:ss">
+                                <f:validator validatorId="songDurationValidator"/>
+                            </h:inputText>
+                        </td>
+                        <td> <h:commandButton actionListener="#{selectedAlbum.doAddSong}" value="#{msg['add.addSong']}">
+                            <f:ajax execute="newSongTitle newSongDuration" render="songs"></f:ajax>
+                        </h:commandButton></td>
+                    </tr></tbody>
+                </table>
+            </h:panelGroup>
 
-                <h:commandButton id="save" styleClass="button_add" action="#{selectedAlbum.doSave}" value="#{msg['common.save']}"/>
-                <h:commandButton id="cancel" styleClass="button_add" value="#{msg['common.cancel']}" action="/index.xhtml" immediate="true"/>
+                <h:commandButton id="save" styleClass="button_add" action="#{selectedAlbum.doSave}" value="#{msg['common.save']}">
+                    <f:ajax execute="titel interpret release_year" render="form"></f:ajax>
+                </h:commandButton>
+                <h:commandButton id="cancel" styleClass="button_add" value="#{msg['common.cancel']}" action="#{selectedAlbum.doCancel}" immediate="true"/>
 
             </h:form>
         </div>
