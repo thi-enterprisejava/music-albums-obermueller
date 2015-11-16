@@ -1,7 +1,6 @@
 package de.thi.mymusic.domain;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,11 +10,14 @@ import java.util.Objects;
  */
 
 @Entity
-public class Album implements Serializable {
+@NamedQueries({
+        @NamedQuery(name = "Album.findAll",
+                query = "SELECT a FROM Album a"),
+        @NamedQuery(name = "Album.findByName",
+                query = "SELECT a FROM Album a WHERE UPPER(a.title) like CONCAT('%', Upper(:name), '%')"),
+})
+public class Album extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long Id;
     private String title;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -43,15 +45,6 @@ public class Album implements Serializable {
     //************************************************
     // Getter and Setter
     //************************************************
-
-
-    public long getId() {
-        return Id;
-    }
-
-    public void setId(long id) {
-        Id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -92,9 +85,6 @@ public class Album implements Serializable {
     //************************************************
     // Equals and HashCode
     //************************************************
-
-
-    //TODO Java Objects für Equals und HashCode verwenden! (V7)
 
     @Override
     public boolean equals(Object o) {

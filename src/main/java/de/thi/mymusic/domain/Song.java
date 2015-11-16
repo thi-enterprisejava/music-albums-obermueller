@@ -1,10 +1,8 @@
 package de.thi.mymusic.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.io.Serializable;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import java.util.Objects;
 
 /**
@@ -12,11 +10,12 @@ import java.util.Objects;
  */
 
 @Entity
-public class Song implements Serializable {
+@NamedQueries({
+        @NamedQuery(name = "Song.findByName",
+                query = "SELECT s FROM Song s WHERE  UPPER(s.title) like CONCAT('%', UPPER(:name), '%')"),
+})
+public class Song extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long id;
     private long songNumber;
     private String title;
     private long duration;
@@ -46,15 +45,6 @@ public class Song implements Serializable {
     //**********************************************
     // Getter and Setter
     //**********************************************
-
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public long getSongNumber() {
         return songNumber;
@@ -99,7 +89,6 @@ public class Song implements Serializable {
     //************************************************
     // Equals and HashCode
     //************************************************
-
 
     @Override
     public boolean equals(Object o) {

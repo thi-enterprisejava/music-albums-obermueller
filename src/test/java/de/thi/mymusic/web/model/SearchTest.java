@@ -3,9 +3,7 @@ package de.thi.mymusic.web.model;
 import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.domain.Interpret;
 import de.thi.mymusic.domain.Song;
-import de.thi.mymusic.repository.Repository;
-import de.thi.mymusic.service.AlbumService;
-import org.junit.After;
+import de.thi.mymusic.service.SearchService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,33 +28,33 @@ public class SearchTest {
      */
     Search search;
 
-    AlbumService mockedAlbumService;
+    SearchService mockedSearchService;
 
     @Before
     public void setUp() throws Exception {
-        mockedAlbumService = mock(AlbumService.class);
-        search = new Search(mockedAlbumService);
+        mockedSearchService = mock(SearchService.class);
+        search = new Search(mockedSearchService);
     }
 
 
     @Test
     public void thatSearchFindOneEntryCorrect() throws Exception {
-        when(mockedAlbumService.findByName("Limbo messiah")).
+        when(mockedSearchService.findAlbumByName("Limbo messiah")).
                 thenReturn(Arrays.asList(new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
                         new Song(2, "Meantime", "02:14")), 2007)));
         search.setSearchString("Limbo messiah");
 
         String resultString = search.doSearch();
 
-        assertEquals(1, search.getResult().size());
+        assertEquals(1, search.getAlbumResult().size());
         assertEquals(new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
-                new Song(2, "Meantime", "02:14")), 2007), search.getResult().get(0));
-        assertEquals("detailAlbum.xhtml?faces-redirect=true&album=0", resultString);
+                new Song(2, "Meantime", "02:14")), 2007), search.getAlbumResult().get(0));
+        assertEquals("listSearchResult", resultString);
     }
 
     @Test
     public void thatSearchFindMoreEntriesCorrect() throws Exception {
-        when(mockedAlbumService.findByName("messiah")).
+        when(mockedSearchService.findAlbumByName("messiah")).
                 thenReturn(Arrays.asList(new Album("Black Messiah", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
                         new Song(2, "1000 Deaths", "05:50")), 2014),
                         new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
@@ -65,8 +63,8 @@ public class SearchTest {
 
         String resultString = search.doSearch();
 
-        assertEquals(2, search.getResult().size());
-        assertEquals(search.getResult(), Arrays.asList(new Album("Black Messiah", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
+        assertEquals(2, search.getAlbumResult().size());
+        assertEquals(search.getAlbumResult(), Arrays.asList(new Album("Black Messiah", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
                         new Song(2, "1000 Deaths", "05:50")), 2014),
                 new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
                         new Song(2, "Meantime", "02:14")), 2007)));
@@ -78,7 +76,7 @@ public class SearchTest {
 
     @Test
     public void thatAutoCompleteFindCorrectEntries() throws Exception{
-        when(mockedAlbumService.findByName("messiah")).
+        when(mockedSearchService.findAlbumByName("messiah")).
                 thenReturn(Arrays.asList(new Album("Black Messiah", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
                         new Song(2, "1000 Deaths", "05:50")), 2014),
                         new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
@@ -92,7 +90,7 @@ public class SearchTest {
 
     @Test
     public void thatAutoCompleteReturnsMaxFiveElements() throws Exception {
-        when(mockedAlbumService.findByName("messiah")).
+        when(mockedSearchService.findAlbumByName("messiah")).
                 thenReturn(Arrays.asList(new Album("Black Messiah", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
                         new Song(2, "1000 Deaths", "05:50")), 2014),
                         new Album("Black Messiah2", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
@@ -115,7 +113,7 @@ public class SearchTest {
 
     @Test
     public void thatAutoCompleteReturnEmptyListIfNothingFounded() throws Exception{
-        when(mockedAlbumService.findByName("Beat")).
+        when(mockedSearchService.findAlbumByName("Beat")).
                 thenReturn(Arrays.asList());
 
         List<String> searchResult = search.completeSearchInput("Beat");

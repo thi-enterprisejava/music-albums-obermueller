@@ -1,11 +1,10 @@
 package de.thi.mymusic.service;
 
+import de.thi.mymusic.dao.CrudService;
 import de.thi.mymusic.domain.Album;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -16,23 +15,16 @@ import java.util.List;
 @ApplicationScoped
 public class AlbumService {
 
-    @PersistenceContext(unitName="mymusic")
-    private EntityManager em;
+    @Inject
+    private CrudService crudService;
 
-    @Transactional(Transactional.TxType.REQUIRED)
+    @Transactional
     public void add(Album album) {
-        em.persist(album);
+        crudService.persist(album);
     }
 
     public Album findById(long id) {
-        return em.find(Album.class, id);
-    }
-
-    public List<Album> findByName(String name) {
-        Query q = em.createQuery("SELECT a from" +
-                " Album as a WHERE UPPER(a.title) like CONCAT('%', :name, '%')");
-        q.setParameter("name", name.toUpperCase());
-        return  q.getResultList();
+        return crudService.findById(Album.class, id);
     }
 
 }

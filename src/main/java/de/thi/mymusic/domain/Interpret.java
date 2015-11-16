@@ -1,9 +1,8 @@
 package de.thi.mymusic.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import java.util.Objects;
 
 /**
@@ -11,13 +10,13 @@ import java.util.Objects;
  */
 
 @Entity
-public class Interpret {
+@NamedQueries({
+        @NamedQuery(name = "Interpret.findByName",
+                query = "SELECT i FROM Interpret i WHERE  UPPER(i.name) like CONCAT('%', UPPER(:name), '%')"),
+})
+public class Interpret extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long id;
     private String name;
-
 
     //************************************************
     // Constructors
@@ -35,15 +34,6 @@ public class Interpret {
     // Getter and Setter
     //************************************************
 
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -55,7 +45,6 @@ public class Interpret {
     //************************************************
     // Equals and HashCode
     //************************************************
-
 
     @Override
     public boolean equals(Object o) {

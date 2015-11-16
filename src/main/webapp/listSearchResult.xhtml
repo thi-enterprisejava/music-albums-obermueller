@@ -6,7 +6,13 @@
     <ui:define name="content">
         <div class="content_container">
             <div class="content_header"><h4>#{msg['search.results']}:</h4></div>
-            <ui:repeat value="#{search.result}" var="album">
+            <ul class="tabs left">
+                <li><a href="#tabr1">Albums (#{search.countAlbumResult})</a></li>
+                <li><a href="#tabr2">Interpreten (#{search.countInterpretResult})</a></li>
+                <li><a href="#tabr3">Songs (#{search.countSongResult})</a></li>
+            </ul>
+            <div id="tabr1" class="tab-content">
+            <ui:repeat value="#{search.albumResult}" var="album">
                 <div>
                     <div class="col_4 add_album">
                         <img class="album_cover_small" src="images/album_covers/limbomessiah_beatsteaks.jpg"/>
@@ -38,6 +44,53 @@
                 <div class="clear"></div>
                 </div>
             </ui:repeat>
+            </div>
+
+            <div id="tabr2" class="tab-content">
+                <div>
+                    <div class="col_8 add_album">
+                        <table cellspacing="0" cellpadding="0">
+                            <thead><tr>
+                                <th>#{msg['album.interpret']}:</th>
+                                <th>Details</th>
+                            </tr></thead>
+                            <tbody>
+                            <ui:repeat value="#{search.interpretResult}" var="interpret">
+                                <tr>
+                                    <td>#{interpret.name}</td>
+                                    <td>Link Details</td>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+            <div id="tabr3" class="tab-content">
+                <div>
+                    <div class="col_8 add_album">
+                        <table cellspacing="0" cellpadding="0">
+                            <thead><tr>
+                                <th>#{msg['add.song.title']}:</th>
+                                <th>#{msg['add.song.duration']}:</th>
+                                <th>more</th>
+                            </tr></thead>
+                            <tbody>
+                            <ui:repeat value="#{search.songResult}" var="song">
+                                <tr>
+                                    <td>#{song.title}</td>
+                                    <td>#{song.getFormattedDuration()}</td>
+                                    <td>Show Album</td>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
         </div>
     </ui:define>
 </ui:composition>

@@ -1,8 +1,9 @@
 package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.domain.Album;
-import de.thi.mymusic.repository.Repository;
-import de.thi.mymusic.service.AlbumService;
+import de.thi.mymusic.domain.Interpret;
+import de.thi.mymusic.domain.Song;
+import de.thi.mymusic.service.SearchService;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -20,13 +21,15 @@ import java.util.List;
 @SessionScoped
 public class Search implements Serializable {
 
-    private List<Album> result;
+    private List<Album> albumResult;
+    private List<Song> songResult;
+    private List<Interpret> interpretResult;
     private String searchString;
-    private AlbumService albumService;
+    private SearchService searchService;
 
     @Inject
-    public Search(AlbumService albumService) {
-        this.albumService = albumService;
+    public Search(SearchService searchService) {
+        this.searchService = searchService;
     }
 
     //*******************************************************
@@ -42,8 +45,28 @@ public class Search implements Serializable {
         this.searchString = searchString;
     }
 
-    public List<Album> getResult() {
-        return result;
+    public List<Album> getAlbumResult() {
+        return albumResult;
+    }
+
+    public List<Song> getSongResult() {
+        return songResult;
+    }
+
+    public List<Interpret> getInterpretResult() {
+        return interpretResult;
+    }
+
+    public long getCountAlbumResult() {
+        return albumResult.size();
+    }
+
+    public long getCountInterpretResult() {
+        return interpretResult.size();
+    }
+
+    public long getCountSongResult() {
+        return songResult.size();
     }
 
 
@@ -51,21 +74,17 @@ public class Search implements Serializable {
     // Action Methods
     //*******************************************************
     public String doSearch(){
-        result = albumService.findByName(searchString);
+        albumResult = searchService.findAlbumByName(searchString);
+        songResult = searchService.findSongByName(searchString);
+        interpretResult = searchService.findInterpretByName(searchString);
 
-        // Only one match show album detail page
-        if(result.size() == 1) {
-            return "detailAlbum.xhtml?faces-redirect=true&album="+result.get(0).getId();
-        } else {
-
-            return "listSearchResult";
-        }
+        return "listSearchResult";
     }
 
     // AJAX Request: Complete Search Input
     public List<String> completeSearchInput(String query) {
         List<String> results = new ArrayList<String>();
-        List<Album> foundedResults = albumService.findByName(query);
+        List<Album> foundedResults = searchService.findAlbumByName(query);
 
         System.out.println(foundedResults.toString());
 
