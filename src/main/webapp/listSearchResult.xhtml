@@ -58,7 +58,7 @@
                             <ui:repeat value="#{search.interpretResult}" var="interpret">
                                 <tr>
                                     <td>#{interpret.name}</td>
-                                    <td>Link Details</td>
+                                    <td>#{interpret.albums.get(0).title}</td>
                                 </tr>
                             </ui:repeat>
                             </tbody>
@@ -82,7 +82,7 @@
                                 <tr>
                                     <td>#{song.title}</td>
                                     <td>#{song.getFormattedDuration()}</td>
-                                    <td>Show Album</td>
+                                    <td>#{song.album.title}</td>
                                 </tr>
                             </ui:repeat>
                             </tbody>

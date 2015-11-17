@@ -6,6 +6,8 @@ import de.thi.mymusic.domain.Song;
 import de.thi.mymusic.repository.Repository;
 import de.thi.mymusic.service.AlbumService;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,6 +31,9 @@ public class SelectedAlbum implements Serializable
 
     //For Detail View
     private long albumId;
+
+    //For Add/Edit View
+    private boolean isEditorDetailView = false;
 
     @Inject
     public SelectedAlbum(AlbumService albumService){
@@ -96,9 +101,23 @@ public class SelectedAlbum implements Serializable
     // Action Methods
     //*******************************************************
 
-    // TODO Implement Finding by ID instead of Name (After DB-Implementation)
-    public void init(){
-        album = albumService.findById(albumId);
+    public String init(){
+        if(albumId > 0) {
+            album = albumService.findById(albumId);
+
+            if(album != null) {
+                isEditorDetailView = true;
+            } else {
+                //TODO Translate Message String
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Album konnte nicht gefunden werden!", null);
+                FacesContext.getCurrentInstance().addMessage(null, message);
+
+                return "error";
+            }
+        }
+
+        return "";
     }
 
     public String doSave() {
@@ -111,13 +130,21 @@ public class SelectedAlbum implements Serializable
     public String doAddSong() {
         System.out.println("Add Song");
 
-        this.album.addSong(new Song(this.newSongNumber, this.newSongTitle, this.newSongDuration));
+        this.album.addSong(new Song(this.newSongNumber, this.newSongTitle, this.newSongDuration, this.album));
         this.newSongTitle=null;
         this.newSongDuration=null;
 
         // Inkrement SongNumber
         this.newSongNumber++;
         return null;
+    }
+
+    public String doEditSong() {
+        return "";
+    }
+
+    public String dodeleteSong() {
+        return "";
     }
 
     public String doCancel() {
@@ -128,6 +155,13 @@ public class SelectedAlbum implements Serializable
         newSongTitle = "";
 
         return "add.xhtml";
+    }
+
+    public String doDelete() {
+
+        albumService.delete(album);
+
+        return "search.xhtml";
     }
 
 }

@@ -23,7 +23,7 @@ public class Album extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     private Interpret interpret;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
     private List<Song> songs = new ArrayList<>();
     private int releaseYear;
 
@@ -39,6 +39,10 @@ public class Album extends BaseEntity {
         this.title = title;
         this.interpret = interpret;
         this.songs = songs;
+
+        for(int i=0; i < songs.size(); i++) {
+            songs.get(0).setAlbum(this);
+        }
         this.releaseYear = releaseYear;
     }
 

@@ -3,6 +3,9 @@ package de.thi.mymusic.domain;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -12,11 +15,16 @@ import java.util.Objects;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Interpret.findByName",
-                query = "SELECT i FROM Interpret i WHERE  UPPER(i.name) like CONCAT('%', UPPER(:name), '%')"),
+                query = "SELECT i FROM Interpret i WHERE UPPER(i.name) like CONCAT('%', UPPER(:name), '%')"),
+        @NamedQuery(name = "Interpret.findByExactName",
+                query = "SELECT i FROM Interpret i WHERE i.name like :name"),
 })
 public class Interpret extends BaseEntity {
 
     private String name;
+
+    @OneToMany(mappedBy="interpret")
+    private List<Album> albums;
 
     //************************************************
     // Constructors
@@ -40,6 +48,14 @@ public class Interpret extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Album> getAlbums() {
+        return Collections.unmodifiableList(albums);
+    }
+
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
     }
 
     //************************************************

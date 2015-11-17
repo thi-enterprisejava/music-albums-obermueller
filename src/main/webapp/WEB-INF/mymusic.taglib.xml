@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<facelet-taglib version="2.2"
+                xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_2.xsd">
+
+    <namespace>http://de.thi/mymusic</namespace>
+    <function>
+        <function-name>getCurrentNavigationClass</function-name>
+        <function-class>
+            de.thi.mymusic.util.GuiUtil
+        </function-class>
+        <function-signature>
+            java.lang.String getCurrentNavigationClass(java.lang.String)
+        </function-signature>
+    </function>
+</facelet-taglib>

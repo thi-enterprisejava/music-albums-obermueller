@@ -1,6 +1,7 @@
 package de.thi.mymusic.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import java.util.Objects;
@@ -19,6 +20,9 @@ public class Song extends BaseEntity {
     private long songNumber;
     private String title;
     private long duration;
+
+    @ManyToOne
+    private Album album;
 
     //**********************************************
     // Constructors
@@ -39,6 +43,20 @@ public class Song extends BaseEntity {
         this.songNumber = songNumber;
         this.title = title;
         this.duration = duration;
+    }
+
+    public Song(long songNumber, String title, String formattedDuration, Album album) {
+        this.songNumber = songNumber;
+        this.title = title;
+        this.setFormattedDuration(formattedDuration);
+        this.album = album;
+    }
+
+    public Song(long songNumber, String title, long duration, Album album) {
+        this.songNumber = songNumber;
+        this.title = title;
+        this.duration = duration;
+        this.album = album;
     }
 
 
@@ -68,6 +86,14 @@ public class Song extends BaseEntity {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
     }
 
     // Convert and set song duration in seconds from a mm:ss formatted string

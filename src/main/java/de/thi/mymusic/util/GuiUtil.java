@@ -32,4 +32,22 @@ public class GuiUtil {
 
         return new FacesMessage(severity, msg, null);
     }
+
+    public static String getCurrentNavigationClass(String navigationElement) {
+
+        String result = "current";
+        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+
+        if("search".equals(navigationElement)) {
+            if("/search.xhtml".equals(viewId) || "/listSearchResult.xhtml".equals(viewId)) {
+                return result;
+            }
+        } else if("add".equals(navigationElement)) {
+            if("/add.xhtml".equals(viewId)) {
+                return result;
+            }
+        }
+
+        return "";
+    }
 }

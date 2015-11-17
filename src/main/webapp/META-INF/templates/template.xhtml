@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:my="http://de.thi/mymusic">
 <h:head>
     <meta charset="UTF-8"/>
     <title>#{title}</title>
@@ -26,10 +27,10 @@
         <!-- Navigation -->
         <div class="col_12">
             <ul class="menu">
-                <li><a href="search.xhtml"><i class="icon-search"></i> Music Search</a></li>
-                <li class="current"><a href="add.xhtml"><i class="icon-plus"></i> Add Album</a></li>
+                <li class="#{my:getCurrentNavigationClass('search')}"><a href="search.xhtml"><i class="icon-search"></i> Music Search</a></li>
+                <li class="#{my:getCurrentNavigationClass('add')}"><a href="add.xhtml"><i class="icon-plus"></i> Add Album</a></li>
                 <!-- <li><a href=""><i class="icon-th-list"></i> List Albums</a></li> -->
-                <li><a href=""><i class="icon-user"></i> Create Account</a></li>
+                <li class="#{my:getCurrentNavigationClass('createAccount')}"><a href=""><i class="icon-user"></i> Create Account</a></li>
                 <li class="right">
                     <div class="login">
                         <form>

@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by Michael on 16.11.2015.
  *
- * Abstract BaseEntity with Entity Id and creationDate
+ * Abstract BaseEntity with Entity Id, creationTimestamp and updateTimestamp
  *
  */
 @MappedSuperclass
@@ -18,24 +18,37 @@ public abstract class BaseEntity implements Serializable{
     private long id;
 
     // Only Date will be saved in timestamp
-    @Temporal(TemporalType.DATE)
-    private Date creationDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date creationTimestamp;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date updateTimestamp;
 
     //************************************************
     // Getter and Setter
     //************************************************
 
-
     public long getId() {
         return id;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public Date getCreationTimestamp() {
+        return creationTimestamp;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public Date getUpdateTimestamp() {
+        return updateTimestamp;
+    }
+
+    @PrePersist
+    protected void prePersist() {
+        updateTimestamp = creationTimestamp = new Date();
+    }
+
+    @PreUpdate
+    protected void preUpdate() {
+        updateTimestamp = new Date();
     }
 }

@@ -78,10 +78,18 @@ public class Search implements Serializable {
         songResult = searchService.findSongByName(searchString);
         interpretResult = searchService.findInterpretByName(searchString);
 
+        // Reset search string
+        searchString = "";
         return "listSearchResult";
     }
 
     // AJAX Request: Complete Search Input
+
+    /**
+     *
+     * @param query
+     * @return
+     */
     public List<String> completeSearchInput(String query) {
         List<String> results = new ArrayList<String>();
         List<Album> foundedResults = searchService.findAlbumByName(query);

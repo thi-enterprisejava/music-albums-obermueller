@@ -6,13 +6,18 @@
                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:param name="title" value="#{msg['add.album.title']}"/>
-
+    <h:head>
+        <f:metadata>
+            <f:viewParam name="album" value="#{selectedAlbum.albumId}" />
+            <f:viewAction action="#{selectedAlbum.init}" />
+        </f:metadata>
+    </h:head>
     <ui:define name="content">
         <div class="content_container">
            <div class="content_header"><h4>#{msg['add.album.title']}</h4></div>
 
             <h:form id="form">
-               <!-- <h:messages showDetail="true" showSummary="false"/> -->
+                <h:messages globalOnly="true"/>
                 <div class="col_6 add_album" align="center">
                     <table cellspacing="0" cellpadding="0">
                         <tr>
