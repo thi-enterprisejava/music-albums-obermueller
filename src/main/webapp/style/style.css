@@ -120,9 +120,19 @@ div.content_container{
     padding-top: 5px;
 }
 
-div.add_album{
+div.edit_album{
     text-align: center;
     font-size: 16px;
+}
+
+div.searchResult{
+    text-align: center;
+    font-size: 16px;
+}
+
+div.search_noResult{
+    font-size: 16px;
+    color: red;
 }
 
 /*---------------------------------
@@ -142,6 +152,27 @@ input.button_add{
     margin: 15px;
 }
 
+input.navigationbar_username{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+input.navigationbar_password{
+    margin-right: 5px;
+}
+
+/*---------------------------------
+    LINK STYLES
+-----------------------------------*/
+
+a.delete_song{
+    margin-left: 10px;
+}
+
+a.delete_album{
+    margin-left: 10px;
+}
+
 
 /*---------------------------------
 	IMAGES STYLES
@@ -158,3 +189,14 @@ img.album_cover_small{
     /*border: 2px solid rgb(122,188,255);*/
     border: 2px solid #777;
 }
+
+
+/*---------------------------------
+	TAB STYLES
+-----------------------------------*/
+
+ul.tabs li a{
+    font-size: 16px;
+    font-weight: bold;
+}
+

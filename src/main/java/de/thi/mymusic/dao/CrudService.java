@@ -2,6 +2,7 @@ package de.thi.mymusic.dao;
 
 import de.thi.mymusic.domain.BaseEntity;
 
+import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -18,7 +19,7 @@ import java.util.List;
  *
  */
 
-@ApplicationScoped
+@Stateless
 public class CrudService {
 
     @PersistenceContext(unitName="mymusic")
@@ -30,8 +31,8 @@ public class CrudService {
     }
 
     // Update existing entity
-    public <T extends BaseEntity> void merge(T entity) {
-        em.merge(entity);
+    public <T extends BaseEntity> T merge(T entity) {
+        return em.merge(entity);
     }
 
     public <T extends BaseEntity> T findById(Class<T> clazz, long id) {
@@ -61,7 +62,7 @@ public class CrudService {
     }
 
     public <T extends BaseEntity> void delete(T entity) {
-        em.remove(entity);
+        em.remove(em.contains(entity) ? entity : em.merge(entity));
     }
 
 }

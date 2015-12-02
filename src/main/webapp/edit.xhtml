@@ -5,20 +5,20 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:param name="title" value="#{msg['add.album.title']}"/>
     <h:head>
         <f:metadata>
             <f:viewParam name="album" value="#{selectedAlbum.albumId}" />
             <f:viewAction action="#{selectedAlbum.init}" />
         </f:metadata>
     </h:head>
+    <ui:param name="title" value="#{selectedAlbum.album.id == 0 ? msg['add.album.title'] : msg['edit.album.title']}"/>
     <ui:define name="content">
         <div class="content_container">
-           <div class="content_header"><h4>#{msg['add.album.title']}</h4></div>
+            <div class="content_header"><h4>#{selectedAlbum.album.id == 0 ? msg['add.album.title'] : msg['edit.album.title']}</h4></div>
 
             <h:form id="form">
                 <h:messages globalOnly="true"/>
-                <div class="col_6 add_album" align="center">
+                <div class="col_6 edit_album" align="center">
                     <table cellspacing="0" cellpadding="0">
                         <tr>
                             <td><h:outputLabel for="titel" value="#{msg['album.name']}:"/></td>
@@ -44,14 +44,14 @@
                     </table>
                 </div>
                 <div class="clear"></div>
-                <h5>Album Songs:</h5>
+                <h5>#{msg['album.song.title']}:</h5>
                 <h:panelGroup layout="block" id="songs">
                     <table cellspacing="0" cellpadding="0" >
                     <thead><tr>
                         <th>#</th>
-                        <th>#{msg['add.song.title']}:</th>
-                        <th>#{msg['add.song.duration']} (mm:ss):</th>
-                        <th>Action:</th>
+                        <th>#{msg['song.title']}:</th>
+                        <th>#{msg['song.duration']} (mm:ss):</th>
+                        <th>#{msg['edit.song.action']}:</th>
                     </tr></thead>
                     <tbody>
                     <ui:repeat value="#{selectedAlbum.album.songs}" var="song">
@@ -59,21 +59,27 @@
                             <td>#{song.songNumber}</td>
                             <td>#{song.title}</td>
                             <td>#{song.getFormattedDuration()}</td>
-                            <td>Action</td>
+                            <td><h:commandLink actionListener="#{selectedAlbum.doPrepareEditSong(song)}" value="#{msg['common.edit']}">
+                                    <f:ajax render="form:songs" />
+                                </h:commandLink>
+                                <h:commandLink styleClass="delete_song" rendered="#{song.songNumber == selectedAlbum.album.getNumberOfSongs()}" actionListener="#{selectedAlbum.doDeleteSong(song)}" value="#{msg['common.delete']}">
+                                    <f:ajax render="form:songs"/>
+                                </h:commandLink>
+                            </td>
                         </tr>
                     </ui:repeat>
                     <tr>
                         <td>#{selectedAlbum.newSongNumber}</td>
                         <td><h:message for="newSongTitle" />
-                            <h:inputText id="newSongTitle" required="true" value="#{selectedAlbum.newSongTitle}" pt:placeholder="Song title"/>
+                            <h:inputText id="newSongTitle" required="true" value="#{selectedAlbum.newSongTitle}" pt:placeholder="#{msg['song.title']}"/>
                         </td>
                         <td><h:message for="newSongDuration" />
                             <h:inputText id="newSongDuration" required="true" value="#{selectedAlbum.newSongDuration}" pt:placeholder="mm:ss">
                                 <f:validator validatorId="songDurationValidator"/>
                             </h:inputText>
                         </td>
-                        <td> <h:commandButton actionListener="#{selectedAlbum.doAddSong}" value="#{msg['add.addSong']}">
-                            <f:ajax execute="newSongTitle newSongDuration" render="songs"></f:ajax>
+                        <td> <h:commandButton actionListener="#{selectedAlbum.doAddSong}" value="#{msg['add.song.button']}">
+                            <f:ajax execute="newSongTitle newSongDuration" render="songs" resetValues="true"></f:ajax>
                         </h:commandButton></td>
                     </tr></tbody>
                 </table>

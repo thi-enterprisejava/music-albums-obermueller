@@ -39,11 +39,11 @@ public class GuiUtil {
         String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
 
         if("search".equals(navigationElement)) {
-            if("/search.xhtml".equals(viewId) || "/listSearchResult.xhtml".equals(viewId)) {
+            if("/search.xhtml".equals(viewId) || "/listSearchResult.xhtml".equals(viewId) || "/detailAlbum.xhtml".equals(viewId)) {
                 return result;
             }
-        } else if("add".equals(navigationElement)) {
-            if("/add.xhtml".equals(viewId)) {
+        } else if("edit".equals(navigationElement)) {
+            if("/edit.xhtml".equals(viewId)) {
                 return result;
             }
         }

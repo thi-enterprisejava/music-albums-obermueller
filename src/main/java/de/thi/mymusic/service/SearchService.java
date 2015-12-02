@@ -5,6 +5,8 @@ import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.domain.Interpret;
 import de.thi.mymusic.domain.Song;
 
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.List;
@@ -13,10 +15,10 @@ import java.util.List;
  * Created by Michael on 16.11.2015.
  */
 
-@ApplicationScoped
+@Stateless
 public class SearchService {
 
-    @Inject
+    @EJB
     private CrudService crudService;
 
     public List<Album> findAlbumByName(String name) {

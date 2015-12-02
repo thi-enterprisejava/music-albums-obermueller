@@ -7,6 +7,7 @@ import de.thi.mymusic.repository.Repository;
 import de.thi.mymusic.service.AlbumService;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -23,27 +24,24 @@ public class SelectedAlbum implements Serializable
 {
 
     private Album album;
+    private Song editSong;
     private Interpret interpret;
-    private String newSongTitle;
-    private String newSongDuration;
-    private long newSongNumber;
+    private String currentSongTitle;
+    private String currentSongDuration;
+    private long currentSongNumber;
     private AlbumService albumService;
 
     //For Detail View
     private long albumId;
 
-    //For Add/Edit View
-    private boolean isEditorDetailView = false;
 
     @Inject
     public SelectedAlbum(AlbumService albumService){
         this.albumService = albumService;
         interpret = new Interpret();
         album = new Album();
-
-        this.newSongNumber = 1;
+        initSong();
     }
-
 
     //*******************************************************
     // Getter and Setter
@@ -66,27 +64,27 @@ public class SelectedAlbum implements Serializable
     }
 
     public String getNewSongTitle() {
-        return newSongTitle;
+        return currentSongTitle;
     }
 
     public void setNewSongTitle(String newSongTitle) {
-        this.newSongTitle = newSongTitle;
+        this.currentSongTitle = newSongTitle;
     }
 
     public String getNewSongDuration() {
-        return newSongDuration;
+        return currentSongDuration;
     }
 
     public void setNewSongDuration(String newSongDuration) {
-        this.newSongDuration = newSongDuration;
+        this.currentSongDuration = newSongDuration;
     }
 
     public long getNewSongNumber() {
-        return newSongNumber;
+        return currentSongNumber;
     }
 
     public void setNewSongNumber(long newSongNumber) {
-        this.newSongNumber = newSongNumber;
+        this.currentSongNumber = newSongNumber;
     }
 
     public long getAlbumId() {
@@ -106,7 +104,8 @@ public class SelectedAlbum implements Serializable
             album = albumService.findById(albumId);
 
             if(album != null) {
-                isEditorDetailView = true;
+                currentSongNumber = album.getSongs().size() + 1;
+                interpret = album.getInterpret() ;
             } else {
                 //TODO Translate Message String
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -117,51 +116,72 @@ public class SelectedAlbum implements Serializable
             }
         }
 
-        return "";
+        return null;
     }
 
     public String doSave() {
-        album.setInterpret(interpret);
-        albumService.add(this.album);
+        albumService.saveOrUpdate(this.album, this.interpret);
 
         return "detailAlbum.xhtml?faces-redirect=true&album="+album.getId();
     }
 
     public String doAddSong() {
-        System.out.println("Add Song");
+        Song song = null;
+        if(editSong != null) {
+            song = editSong;
+            song.setTitle(currentSongTitle);
+            song.setFormattedDuration(currentSongDuration);
+        } else {
+            song = new Song(currentSongNumber, currentSongTitle, currentSongDuration, album);
+        }
 
-        this.album.addSong(new Song(this.newSongNumber, this.newSongTitle, this.newSongDuration, this.album));
-        this.newSongTitle=null;
-        this.newSongDuration=null;
+        this.album.addSong(song);
+        initSong();
 
-        // Inkrement SongNumber
-        this.newSongNumber++;
         return null;
     }
 
-    public String doEditSong() {
-        return "";
+    public String doPrepareEditSong(Song song) {
+        this.editSong=song;
+        this.currentSongNumber = song.getSongNumber();
+        this.currentSongTitle = song.getTitle();
+        this.currentSongDuration = song.getFormattedDuration();
+
+        return null;
     }
 
-    public String dodeleteSong() {
-        return "";
+
+    public String doDeleteSong(Song song) {
+        System.out.println("Delete Song: " + song.getTitle());
+        album.removeSong(song);
+
+        return null;
     }
 
     public String doCancel() {
+        if(editSong != null) {
+            return "edit.xhtml?album=" + editSong.getId();
+        }
         interpret = new Interpret();
         album = new Album();
-        newSongNumber = 1;
-        newSongDuration = "";
-        newSongTitle = "";
+        initSong();
 
-        return "add.xhtml";
+        return "edit.xhtml";
     }
 
     public String doDelete() {
 
+        //TODO Info Message that delete was successful
         albumService.delete(album);
 
-        return "search.xhtml";
+        return "search.xhtml?faces-redirect=true";
+    }
+
+    private void initSong() {
+        currentSongNumber = album.getSongs().size() + 1;
+        currentSongDuration = null;
+        currentSongTitle = null;
+        editSong = null;
     }
 
 }

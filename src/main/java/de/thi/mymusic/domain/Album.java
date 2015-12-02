@@ -1,6 +1,7 @@
 package de.thi.mymusic.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,12 +19,15 @@ import java.util.Objects;
 })
 public class Album extends BaseEntity {
 
+    @NotNull
     private String title;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @NotNull
     private Interpret interpret;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album", fetch = FetchType.EAGER)
+    @OrderBy("songNumber ASC")
     private List<Song> songs = new ArrayList<>();
     private int releaseYear;
 
@@ -74,16 +78,30 @@ public class Album extends BaseEntity {
         this.songs = songs;
     }
 
-    public void addSong(Song song) {
-        this.songs.add(song);
-    }
-
     public int getReleaseYear() {
         return releaseYear;
     }
 
     public void setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
+    }
+
+    public int getNumberOfSongs() {
+        return songs.size();
+    }
+
+
+    public void addSong(Song song) {
+        song.setAlbum(this);
+        if(songs.size() >=  song.getSongNumber()) {
+            songs.set((int) song.getSongNumber() - 1, song);
+        } else {
+            this.songs.add((int) song.getSongNumber() - 1, song);
+        }
+    }
+
+    public void removeSong(Song song) {
+        this.songs.remove(song);
     }
 
     //************************************************

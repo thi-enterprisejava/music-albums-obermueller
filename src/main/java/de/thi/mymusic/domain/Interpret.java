@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -21,10 +23,11 @@ import java.util.Objects;
 })
 public class Interpret extends BaseEntity {
 
+    @NotNull
     private String name;
 
     @OneToMany(mappedBy="interpret")
-    private List<Album> albums;
+    private List<Album> albums = new ArrayList<>();
 
     //************************************************
     // Constructors
@@ -56,6 +59,14 @@ public class Interpret extends BaseEntity {
 
     public void setAlbums(List<Album> albums) {
         this.albums = albums;
+    }
+
+    public void addAlbum(Album album) {
+        this.albums.add(album);
+    }
+
+    public void removeAlbum(Album album) {
+        this.albums.remove(album);
     }
 
     //************************************************

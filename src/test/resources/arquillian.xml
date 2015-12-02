@@ -6,4 +6,10 @@
         <property name="browser">htmlUnit</property>
     </extension>
 
+    <container qualifier="wildfly-managed" default="true">
+        <configuration>
+            <property name="managementPort">9991</property>
+        </configuration>
+    </container>
+
 </arquillian>

@@ -32,6 +32,16 @@
                             <td>#{msg['album.releaseYear']}:</td>
                             <td>#{selectedAlbum.album.releaseYear}</td>
                         </tr>
+                        <h:panelGroup>
+                        <tr>
+                            <td>#{msg['detailAlbum.actions']}:</td>
+                            <td><h:form>
+                                    <h:link outcome="edit.xhtml?album=#{selectedAlbum.album.id}" value="#{msg['common.edit']}"></h:link>
+                                    <h:commandLink styleClass="delete_album" action="#{selectedAlbum.doDelete()}" value="#{msg['common.delete']}"></h:commandLink>
+                                </h:form>
+                            </td>
+                        </tr>
+                        </h:panelGroup>
                     </table>
                 </div>
                 <div class="col_4 add_album">
@@ -42,8 +52,8 @@
                     <table cellspacing="0" cellpadding="0" >
                         <thead><tr>
                             <th>#</th>
-                            <th width="70%">#{msg['add.song.title']}:</th>
-                            <th>#{msg['add.song.duration']} (mm:ss):</th>
+                            <th width="70%">#{msg['song.title']}:</th>
+                            <th>#{msg['song.duration']} (mm:ss):</th>
                         </tr></thead>
                         <tbody>
                         <ui:repeat value="#{selectedAlbum.album.songs}" var="song">
