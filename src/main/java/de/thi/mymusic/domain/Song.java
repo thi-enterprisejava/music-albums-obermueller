@@ -1,5 +1,7 @@
 package de.thi.mymusic.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -22,6 +24,7 @@ public class Song extends BaseEntity {
     private long duration;
 
     @ManyToOne
+    @JsonIgnore
     private Album album;
 
     //**********************************************
