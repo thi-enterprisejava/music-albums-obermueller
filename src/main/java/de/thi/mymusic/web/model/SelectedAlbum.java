@@ -3,17 +3,18 @@ package de.thi.mymusic.web.model;
 import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.domain.Interpret;
 import de.thi.mymusic.domain.Song;
-import de.thi.mymusic.repository.Repository;
 import de.thi.mymusic.service.AlbumService;
+import de.thi.mymusic.util.FileUtils;
+import org.apache.log4j.Logger;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.List;
+import javax.servlet.http.Part;
+import java.io.*;
+import java.util.UUID;
 
 /**
  * Created by Michael on 23.10.2015.
@@ -23,6 +24,8 @@ import java.util.List;
 public class SelectedAlbum implements Serializable
 {
 
+    private static final Logger logger = Logger.getLogger(AlbumService.class);
+
     private Album album;
     private Song editSong;
     private Interpret interpret;
@@ -30,6 +33,8 @@ public class SelectedAlbum implements Serializable
     private String currentSongDuration;
     private long currentSongNumber;
     private AlbumService albumService;
+    private Part imageFile;
+    private String imageName;
 
     //For Detail View
     private long albumId;
@@ -95,6 +100,22 @@ public class SelectedAlbum implements Serializable
         this.albumId = albumId;
     }
 
+    public Part getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(Part imageFile) {
+        this.imageFile = imageFile;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
     //*******************************************************
     // Action Methods
     //*******************************************************
@@ -106,6 +127,7 @@ public class SelectedAlbum implements Serializable
             if(album != null) {
                 currentSongNumber = album.getSongs().size() + 1;
                 interpret = album.getInterpret() ;
+                imageName = album.getImageFilename();
             } else {
                 //TODO Translate Message String
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -120,9 +142,41 @@ public class SelectedAlbum implements Serializable
     }
 
     public String doSave() {
-        albumService.saveOrUpdate(this.album, this.interpret);
+        uploadImage();
+
+        albumService.saveOrUpdate(this.album, this.interpret, imageName);
 
         return "detailAlbum.xhtml?faces-redirect=true&album="+album.getId();
+    }
+
+    private void uploadImage() {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+
+        try {
+            if (imageFile != null && imageFile.getSize() > 0) {
+                String fileTyp = FileUtils.getFileTypFromPart(imageFile);
+                String uuid = UUID.randomUUID().toString();
+                imageName = uuid + fileTyp;
+                File outputFile = new File(FileUtils.IMAGE_PATH + File.separator  + imageName);
+                inputStream = imageFile.getInputStream();
+                outputStream = new FileOutputStream(outputFile);
+                byte[] buffer = new byte[1024];
+                int bytesRead = 0;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            }
+        }catch(IOException ex) {
+            logger.error("Image couldn´t be loaded!");
+            imageName = null;
+        }
     }
 
     public String doAddSong() {
@@ -150,7 +204,6 @@ public class SelectedAlbum implements Serializable
         return null;
     }
 
-
     public String doDeleteSong(Song song) {
         System.out.println("Delete Song: " + song.getTitle());
         album.removeSong(song);
@@ -175,6 +228,12 @@ public class SelectedAlbum implements Serializable
         albumService.delete(album);
 
         return "search.xhtml?faces-redirect=true";
+    }
+
+    public String doDeleteImage() {
+        this.imageName = null;
+
+        return null;
     }
 
     private void initSong() {

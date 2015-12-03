@@ -16,7 +16,7 @@
                     <ui:repeat value="#{search.albumResult}" var="album">
                         <div>
                             <div class="col_4 add_album">
-                                <img class="album_cover_small" src="images/album_covers/limbomessiah_beatsteaks.jpg"/>
+                                <h:graphicImage styleClass="album_cover_small" rendered="#{album.imageFilename != null}" value="../../img/#{album.imageFilename}"/>
                             </div>
                             <div class="col_8 searchResult">
                                 <table cellspacing="0" cellpadding="0">

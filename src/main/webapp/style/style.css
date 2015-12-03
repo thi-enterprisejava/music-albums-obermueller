@@ -70,7 +70,7 @@ body{
 
 #footer{
     text-align:center;
-    padding:20px;
+    padding:15px;
     margin:0;
     border-top:5px solid rgb(122,188,255);
     color:#999;
@@ -123,6 +123,10 @@ div.content_container{
 div.edit_album{
     text-align: center;
     font-size: 16px;
+}
+
+div.edit_album_cover{
+    text-align: center;
 }
 
 div.searchResult{
@@ -180,13 +184,11 @@ a.delete_album{
 
 img.album_cover_big{
     width: 300px;
-    /*border: 2px solid rgb(122,188,255);*/
-    border: 2px solid #777;
+    border: 3px solid #777;
 }
 
 img.album_cover_small{
     width: 150px;
-    /*border: 2px solid rgb(122,188,255);*/
     border: 2px solid #777;
 }
 

@@ -16,7 +16,7 @@
             <div class="content_container">
                 <div class="content_header"><h4>#{selectedAlbum.album.interpret.name}: #{selectedAlbum.album.title}</h4></div>
                 <div class="col_4 add_album">
-                    <img class="album_cover_big" src="images/album_covers/limbomessiah_beatsteaks.jpg"/>
+                    <h:graphicImage styleClass="album_cover_big" rendered="#{selectedAlbum.album.imageFilename != null}" value="../../img/#{selectedAlbum.album.imageFilename}"/>
                 </div>
                 <div class="col_8 add_album">
                     <table cellspacing="0" cellpadding="0">
@@ -31,6 +31,10 @@
                         <tr>
                             <td>#{msg['album.releaseYear']}:</td>
                             <td>#{selectedAlbum.album.releaseYear}</td>
+                        </tr>
+                        <tr>
+                            <td>#{msg['album.totalDuration']}:</td>
+                            <td>#{selectedAlbum.album.formatedTotalDuration()}</td>
                         </tr>
                         <h:panelGroup>
                         <tr>

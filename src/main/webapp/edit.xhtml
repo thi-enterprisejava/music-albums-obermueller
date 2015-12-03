@@ -16,7 +16,7 @@
         <div class="content_container">
             <div class="content_header"><h4>#{selectedAlbum.album.id == 0 ? msg['add.album.title'] : msg['edit.album.title']}</h4></div>
 
-            <h:form id="form">
+            <h:form id="form" enctype="multipart/form-data">
                 <h:messages globalOnly="true"/>
                 <div class="col_6 edit_album" align="center">
                     <table cellspacing="0" cellpadding="0">
@@ -41,7 +41,25 @@
                                               value="#{selectedAlbum.album.releaseYear}"/>
                             </td>
                         </tr>
+                        <tr>
+                            <td> <h:outputLabel for="imageFile" value="#{msg['album.imageFile']}:"/></td>
+                            <td> <h:message for="imageFile"/>
+                                <h:inputFile id="imageFile" value="#{selectedAlbum.imageFile}">
+                                    <f:validator validatorId="imageValidator"/>
+                                </h:inputFile>
+                            </td>
+                        </tr>
                     </table>
+                </div>
+                <div class="col_6 edit_album_cover">
+                    <h:panelGroup id="album_cover">
+                        <h:graphicImage styleClass="album_cover_big" rendered="#{selectedAlbum.imageName!= null}" value="../../img/#{selectedAlbum.imageName}"/>
+                        <div>
+                            <h:commandLink rendered="#{selectedAlbum.imageName != null}" actionListener="#{selectedAlbum.doDeleteImage()}" value="#{msg['edit.album.deleteCover']}">
+                                <f:ajax render="album_cover" />
+                            </h:commandLink>
+                        </div>
+                    </h:panelGroup>
                 </div>
                 <div class="clear"></div>
                 <h5>#{msg['album.song.title']}:</h5>
@@ -86,7 +104,7 @@
             </h:panelGroup>
 
                 <h:commandButton id="save" styleClass="button_add" action="#{selectedAlbum.doSave}" value="#{msg['common.save']}">
-                    <f:ajax execute="titel interpret release_year" render="form"></f:ajax>
+                    <f:ajax execute="titel interpret release_year imageFile" render="form"></f:ajax>
                 </h:commandButton>
                 <h:commandButton id="cancel" styleClass="button_add" value="#{msg['common.cancel']}" action="#{selectedAlbum.doCancel}" immediate="true"/>
 

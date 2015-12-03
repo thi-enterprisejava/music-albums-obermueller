@@ -31,6 +31,8 @@ public class Album extends BaseEntity {
     private List<Song> songs = new ArrayList<>();
     private int releaseYear;
 
+    private String imageFilename;
+
     //************************************************
     // Constructors
     //************************************************
@@ -90,6 +92,13 @@ public class Album extends BaseEntity {
         return songs.size();
     }
 
+    public String getImageFilename() {
+        return imageFilename;
+    }
+
+    public void setImageFilename(String imageFilename) {
+        this.imageFilename = imageFilename;
+    }
 
     public void addSong(Song song) {
         song.setAlbum(this);
@@ -102,6 +111,14 @@ public class Album extends BaseEntity {
 
     public void removeSong(Song song) {
         this.songs.remove(song);
+    }
+
+    public String formatedTotalDuration() {
+        long totalDuration = songs
+                     .stream()
+                     .mapToLong(s -> s.getDuration())
+                     .sum();
+        return String.format("%02d:%02d", totalDuration / 60, totalDuration % 60);
     }
 
     //************************************************

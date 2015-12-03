@@ -1,6 +1,7 @@
 package de.thi.mymusic.dao;
 
 import de.thi.mymusic.domain.BaseEntity;
+import org.apache.log4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
@@ -24,6 +25,8 @@ public class CrudService {
 
     @PersistenceContext(unitName="mymusic")
     private EntityManager em;
+
+    private static final Logger logger = Logger.getLogger(CrudService.class);
 
     // Create new entity
     public <T extends BaseEntity> void persist(T entity) {
@@ -57,7 +60,7 @@ public class CrudService {
         }
 
         List<T> result = query.getResultList();
-        System.out.println("FindByNamedQuery: " + clazz.toString() + " Value:" + values[0] + ", Founded:" + result.size());
+        logger.info("FindByNamedQuery: " + clazz.toString() + " Value:" + values[0] + ", Founded:" + result.size());
         return (List<T>) result;
     }
 

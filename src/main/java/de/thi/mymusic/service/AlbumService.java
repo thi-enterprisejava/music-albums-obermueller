@@ -4,12 +4,15 @@ import de.thi.mymusic.dao.CrudService;
 import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.domain.Interpret;
 import de.thi.mymusic.domain.Song;
+import de.thi.mymusic.util.FileUtils;
+import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -22,7 +25,9 @@ public class AlbumService {
     @EJB
     private CrudService crudService;
 
-    public void saveOrUpdate(Album album, Interpret interpret) {
+    private static final Logger logger = Logger.getLogger(AlbumService.class);
+
+    public void saveOrUpdate(Album album, Interpret interpret, String imageName) {
         /**
          * Check if interpret with same name already exists
          */
@@ -32,6 +37,14 @@ public class AlbumService {
         }
 
         interpret.addAlbum(album);
+
+        if((album.getImageFilename() != null && imageName == null)
+                || (imageName != null && !imageName.equals(album.getImageFilename()))) {
+            FileUtils.deleteFile(FileUtils.IMAGE_PATH + File.separator + album.getImageFilename());
+            logger.info("Delete File: " + album.getImageFilename());
+        }
+
+        album.setImageFilename(imageName);
 
         if(0 == album.getId()) {
            save(album, interpret);
@@ -43,6 +56,7 @@ public class AlbumService {
     private void save(Album album, Interpret interpret) {
         album.setInterpret(interpret);
         crudService.persist(album);
+        logger.info("Save-Album: " + album.getTitle());
     }
 
     private void update(Album album, Interpret interpret) {
@@ -61,6 +75,7 @@ public class AlbumService {
         }
 
         crudService.merge(album);
+        logger.info("Update-Album: " + album.getTitle());
     }
 
     public Album findById(long id) {
@@ -68,24 +83,31 @@ public class AlbumService {
     }
 
     public List<Interpret> findInterpretByExactName(String name) {
-        return crudService.findByNamedQuery(Interpret.class,"Interpret.findByExactName", new String[] {"name"}, new Object[] {name});
+        return crudService.findByNamedQuery(Interpret.class,"Interpret.findByExactName",
+                new String[] {"name"}, new Object[] {name});
     }
-
 
     public void delete(Album album) {
         Interpret interpret = crudService.findById(Interpret.class, album.getInterpret().getId());
+
+        if(album.getImageFilename() != null) {
+            FileUtils.deleteFile(FileUtils.IMAGE_PATH + album.getImageFilename());
+        }
+
+        logger.info("Delete-Album: " + album.getTitle());
+
         crudService.delete(album);
         if(interpret.getAlbums().size() == 1) {
             crudService.delete(interpret);
         }
     }
 
-    public void deleteSong(Song song) {
+    /*public void deleteSong(Song song) {
         Album album = song.getAlbum();
         album.removeSong(song);
         crudService.merge(album);
         Song songMerged = crudService.merge(song);
         crudService.delete(songMerged);
-    }
+    }*/
 
 }
