@@ -20,7 +20,6 @@ import javax.ejb.EJB;
  * Created by Michael on 20.11.2015.
  */
 
-
 @RunWith(Arquillian.class)
 public class AlbumServiceIntegrationTest {
 
@@ -45,7 +44,7 @@ public class AlbumServiceIntegrationTest {
 
     @Test
     public void ThatAlbumCanBeAdded() {
-        Album album = new Album();
+        //Album album = new Album();
         //album.addSong(new Song(1, ""));
     }
 }

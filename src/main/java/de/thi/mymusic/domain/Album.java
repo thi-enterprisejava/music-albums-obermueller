@@ -1,5 +1,8 @@
 package de.thi.mymusic.domain;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -29,8 +32,8 @@ public class Album extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "album", fetch = FetchType.EAGER)
     @OrderBy("songNumber ASC")
     private List<Song> songs = new ArrayList<>();
-    private int releaseYear;
 
+    private int releaseYear;
     private String imageFilename;
 
     //************************************************
@@ -88,6 +91,7 @@ public class Album extends BaseEntity {
         this.releaseYear = releaseYear;
     }
 
+    @JsonIgnore
     public int getNumberOfSongs() {
         return songs.size();
     }

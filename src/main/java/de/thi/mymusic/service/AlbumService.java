@@ -9,9 +9,6 @@ import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.io.File;
 import java.util.List;
 
@@ -27,7 +24,7 @@ public class AlbumService {
 
     private static final Logger logger = Logger.getLogger(AlbumService.class);
 
-    public void saveOrUpdate(Album album, Interpret interpret, String imageName) {
+    public Album saveOrUpdate(Album album, Interpret interpret, String imageName) {
         /**
          * Check if interpret with same name already exists
          */
@@ -51,6 +48,8 @@ public class AlbumService {
         } else {
            update(album, interpret);
         }
+
+        return album;
     }
 
     private void save(Album album, Interpret interpret) {
@@ -80,6 +79,10 @@ public class AlbumService {
 
     public Album findById(long id) {
         return crudService.findById(Album.class, id);
+    }
+
+    public List<Album> findAll(){
+        return crudService.findAll(Album.class);
     }
 
     public List<Interpret> findInterpretByExactName(String name) {

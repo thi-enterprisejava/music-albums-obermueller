@@ -1,5 +1,7 @@
 package de.thi.mymusic.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -20,10 +22,12 @@ public abstract class BaseEntity implements Serializable{
     // Only Date will be saved in timestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
+    @JsonIgnore
     private Date creationTimestamp;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
+    @JsonIgnore
     private Date updateTimestamp;
 
     //************************************************

@@ -1,5 +1,8 @@
 package de.thi.mymusic.domain;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -21,12 +24,14 @@ import java.util.Objects;
         @NamedQuery(name = "Interpret.findByExactName",
                 query = "SELECT i FROM Interpret i WHERE i.name like :name"),
 })
+
 public class Interpret extends BaseEntity {
 
     @NotNull
     private String name;
 
     @OneToMany(mappedBy="interpret")
+    @JsonIgnore
     private List<Album> albums = new ArrayList<>();
 
     //************************************************
