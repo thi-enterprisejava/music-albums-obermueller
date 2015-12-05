@@ -72,6 +72,7 @@ public class Album extends BaseEntity {
     }
 
     public void setInterpret(Interpret interpret) {
+        interpret.addAlbum(this);
         this.interpret = interpret;
     }
 

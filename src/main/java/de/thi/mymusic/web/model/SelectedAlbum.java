@@ -144,7 +144,9 @@ public class SelectedAlbum implements Serializable
     public String doSave() {
         uploadImage();
 
-        albumService.saveOrUpdate(this.album, this.interpret, imageName);
+        album.setInterpret(interpret);
+
+        albumService.saveOrUpdate(this.album);
 
         return "detailAlbum.xhtml?faces-redirect=true&album="+album.getId();
     }
@@ -172,6 +174,8 @@ public class SelectedAlbum implements Serializable
                 if (inputStream != null) {
                     inputStream.close();
                 }
+
+                album.setImageFilename(imageName);
             }
         }catch(IOException ex) {
             logger.error("Image couldn´t be loaded!");
