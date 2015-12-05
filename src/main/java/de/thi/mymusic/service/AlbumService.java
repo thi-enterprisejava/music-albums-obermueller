@@ -24,49 +24,42 @@ public class AlbumService {
 
     private static final Logger logger = Logger.getLogger(AlbumService.class);
 
-    public Album saveOrUpdate(Album album, Interpret interpret, String imageName) {
+    public Album saveOrUpdate(Album album) {
         /**
          * Check if interpret with same name already exists
          */
-        List<Interpret> interprets = this.findInterpretByExactName(interpret.getName());
+        List<Interpret> interprets = this.findInterpretByExactName(album.getInterpret().getName());
         if(interprets != null && interprets.size() > 0 ) {
-            interpret = interprets.get(0);
+            album.setInterpret(interprets.get(0));
         }
-
-        interpret.addAlbum(album);
-
-        if((album.getImageFilename() != null && imageName == null)
-                || (imageName != null && !imageName.equals(album.getImageFilename()))) {
-            FileUtils.deleteFile(FileUtils.IMAGE_PATH + File.separator + album.getImageFilename());
-            logger.info("Delete File: " + album.getImageFilename());
-        }
-
-        album.setImageFilename(imageName);
 
         if(0 == album.getId()) {
-           save(album, interpret);
+           save(album);
         } else {
-           update(album, interpret);
+           update(album);
         }
 
         return album;
     }
 
-    private void save(Album album, Interpret interpret) {
-        album.setInterpret(interpret);
+    private void save(Album album) {
         crudService.persist(album);
         logger.info("Save-Album: " + album.getTitle());
     }
 
-    private void update(Album album, Interpret interpret) {
-        Interpret oldInterpret = crudService.findById(Interpret.class, album.getInterpret().getId());
+    private void update(Album album) {
+        Album oldAlbum = crudService.findById(Album.class, album.getId());
+        Interpret oldInterpret = crudService.findById(Interpret.class, oldAlbum.getInterpret().getId());
+
+        // Delete old Image file
+        deleteOldImageFileIfChanged(oldAlbum, album);
+
+        // Delete interpret if only this album was mapped
         if(oldInterpret.getAlbums().size() == 1){
             crudService.delete(oldInterpret);
         }
 
-        album.setInterpret(crudService.merge(interpret));
-
-        Album oldAlbum = findById(album.getId());
+        // Delete old songs which now aren´t mapped with updated album
         for(Song song : oldAlbum.getSongs()) {
             if(!album.getSongs().contains(song)) {
                 crudService.delete(song);
@@ -75,6 +68,14 @@ public class AlbumService {
 
         crudService.merge(album);
         logger.info("Update-Album: " + album.getTitle());
+    }
+
+    private void deleteOldImageFileIfChanged(Album oldAlbum, Album updatedAlbum) {
+        if((oldAlbum.getImageFilename() != null && updatedAlbum.getImageFilename() == null)
+                || (updatedAlbum.getImageFilename() != null && !updatedAlbum.getImageFilename().equals(oldAlbum.getImageFilename()))) {
+            FileUtils.deleteFile(FileUtils.IMAGE_PATH + File.separator + oldAlbum.getImageFilename());
+            logger.info("Delete File: " + updatedAlbum.getImageFilename());
+        }
     }
 
     public Album findById(long id) {
