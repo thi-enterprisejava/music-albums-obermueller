@@ -31,9 +31,7 @@ public class Song extends BaseEntity {
     // Constructors
     //**********************************************
 
-    public Song()
-    {
-
+    public Song() {
     }
 
     public Song(long songNumber, String title, String formattedDuration) {
@@ -118,7 +116,6 @@ public class Song extends BaseEntity {
     //************************************************
     // Equals and HashCode
     //************************************************
-
 
     @Override
     public boolean equals(Object o) {

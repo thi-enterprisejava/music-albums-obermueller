@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 
-public class GuiUtil {
+public class GuiUtils {
 
     /**
      *
@@ -44,6 +44,14 @@ public class GuiUtil {
             }
         } else if("edit".equals(navigationElement)) {
             if("/edit.xhtml".equals(viewId)) {
+                return result;
+            }
+        } else if("userManagement".equals(navigationElement)) {
+            if("/editUser.xhtml".equals(viewId)) {
+                return result;
+            }
+        } else if("changePassword".equals(navigationElement)) {
+            if("/changePassword.xhtml".equals(viewId)) {
                 return result;
             }
         }

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="/META-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <f:metadata>
+            <f:viewParam name="user" value="#{userManagement.userId}" />
+            <f:viewAction action="#{userManagement.init}" />
+        </f:metadata>
+    </h:head>
+    <ui:param name="title" value="#{userManagement.userId == 0 ? msg['add.user.title'] : msg['edit.user.title']}"/>
+    <ui:define name="content">
+        <div class="content_container">
+            <div class="content_header"><h4>#{userManagement.userId == 0 ? msg['add.user.title'] : msg['edit.user.title']}</h4></div>
+            <h:form id="form">
+                <h:messages globalOnly="true"/>
+                <div class="col_6 edit_user" align="center">
+                    <table cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td><h:outputLabel for="username" value="#{msg['user.username']}:"/></td>
+                            <td><h:inputText id="username" size="30" maxlength="30" required="true"
+                                               value="#{userManagement.user.username}"/>
+                            </td>
+                            <td><h:message for="username"/></td>
+                        </tr>
+                        <h:panelGroup rendered="#{userManagement.userId == 0 ? false : true}">
+                            <tr>
+                                <td><h:outputLabel for="check_passwordChange" value="#{msg['edit.user.passwordChange']}:"/></td>
+                                <td><h:selectBooleanCheckbox id="check_passwordChange" binding="#{checkbox}">
+                                        <f:ajax render="edit_password edit_passwordRepeat" />
+                                </h:selectBooleanCheckbox>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </h:panelGroup>
+                        <tr>
+                            <td><h:outputLabel for="password" value="#{msg['user.password']}:"/></td>
+                            <td><h:inputSecret id="password" size="30" maxlength="30" required="true"
+                                               value="#{userManagement.user.password}" disabled="#{userManagement.userId == 0 ? false : not checkbox.value}">
+                                   <f:validator validatorId="passwordValidator" />
+                                   <f:attribute name="confirmPassword" value="#{confirmPassword}" />
+                               </h:inputSecret>
+                            </td>
+                            <td><h:message for="password"/></td>
+                        </tr>
+                        <tr>
+                            <td><h:outputLabel for="confirmPassword" value="#{msg['user.passwordRepeat']}:"/></td>
+                            <td>
+                                <h:inputSecret id="confirmPassword" size="30" maxlength="30" required="true" binding="#{confirmPassword}"
+                                               disabled="#{userManagement.userId == 0 ? false : not checkbox.value}"/>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="clear"></div>
+                <h:commandButton id="save" styleClass="button_add" action="#{userManagement.doSave}" value="#{msg['common.save']}"/>
+                <h:commandButton id="cancel" styleClass="button_add" value="#{msg['common.cancel']}" action="#{userManagement.doCancel}" immediate="true"/>
+            </h:form>
+
+            <div class="col_6">
+                <h5>#{msg['edit.user.list.title']}</h5>
+                <table cellspacing="0" cellpadding="0">
+                    <thead><tr>
+                        <th>#{msg['user.username']}:</th>
+                        <th>#{msg['common.actions']}:</th>
+                    </tr></thead>
+                    <tbody>
+                    <ui:repeat value="#{userManagement.allUsers()}" var="user">
+                        <tr>
+                            <td>#{user.username}</td>
+                            <td><h:link outcome="editUser.xhtml?user=#{user.id}" value="#{msg['common.edit']}"></h:link>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                    </tbody>
+                </table>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </ui:define>
+</ui:composition>

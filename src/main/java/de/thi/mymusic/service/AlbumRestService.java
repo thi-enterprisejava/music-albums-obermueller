@@ -35,7 +35,7 @@ public class AlbumRestService {
     @POST
     @Consumes("application/json")
     public Album post(Album album) {
-        return albumService.saveOrUpdate(album);
+        return albumService.createOrUpdate(album);
     }
 
     @PUT
@@ -45,7 +45,7 @@ public class AlbumRestService {
     public Album update(Album album) {
 
         //TODO Implement REST - PUT
-        albumService.saveOrUpdate(album);
+        albumService.createOrUpdate(album);
 
         return album;
     }

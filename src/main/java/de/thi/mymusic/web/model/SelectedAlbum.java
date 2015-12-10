@@ -24,7 +24,7 @@ import java.util.UUID;
 public class SelectedAlbum implements Serializable
 {
 
-    private static final Logger logger = Logger.getLogger(AlbumService.class);
+    private static final Logger logger = Logger.getLogger(SelectedAlbum.class);
 
     private Album album;
     private Song editSong;
@@ -146,7 +146,7 @@ public class SelectedAlbum implements Serializable
 
         album.setInterpret(interpret);
 
-        albumService.saveOrUpdate(this.album);
+        albumService.createOrUpdate(this.album);
 
         return "detailAlbum.xhtml?faces-redirect=true&album="+album.getId();
     }
@@ -209,15 +209,15 @@ public class SelectedAlbum implements Serializable
     }
 
     public String doDeleteSong(Song song) {
-        System.out.println("Delete Song: " + song.getTitle());
+        logger.info("Delete Song: " + song.getTitle());
         album.removeSong(song);
 
         return null;
     }
 
     public String doCancel() {
-        if(editSong != null) {
-            return "edit.xhtml?album=" + editSong.getId();
+        if(albumId > 0) {
+            return "edit.xhtml?album=" + albumId;
         }
         interpret = new Interpret();
         album = new Album();
@@ -227,7 +227,6 @@ public class SelectedAlbum implements Serializable
     }
 
     public String doDelete() {
-
         //TODO Info Message that delete was successful
         albumService.delete(album);
 

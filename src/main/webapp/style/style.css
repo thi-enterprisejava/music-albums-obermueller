@@ -1,7 +1,7 @@
 /*---------------------------------
 	IMPORTS
 -----------------------------------*/
-@import url(http://fonts.googleapis.com/css?family=Arimo:400,700);
+/*@import url(http://fonts.googleapis.com/css?family=Arimo:400,700);*/
 
 /*---------------------------------
 	OVERRIDES
@@ -154,6 +154,12 @@ input.button_search{
 
 input.button_add{
     margin: 15px;
+}
+
+input.logout_button{
+    font-size:0.8em;
+    padding: 5px 10px;
+    margin-left: 10px;
 }
 
 input.navigationbar_username{
