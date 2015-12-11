@@ -10,6 +10,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.formatter.Formatters;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,18 +36,21 @@ public class AlbumServiceIntegrationTest {
                 .addClass(Song.class)
                 .addClass(Interpret.class)
                 .addClass(CrudService.class)
-                /*.setWebXML("WEB-INF/web.xml")
-                .addAsWebInfResource("/src/main/webapp/WEB-INF/web.xml", "web.xml")
-                .addAsWebInfResource("WEB-INF/jboss-web.xml", "WEB-INF/jboss-web.xml")
-                .addAsWebInfResource("WEB-INF/faces-config.xml", "WEB-INF/faces-config.xml")*/
+                //.addAsWebInfResource("WEB-INF/web.xml", "WEB-INF/web.xml")
+                //.setWebXML("web.xml")
+                //.addAsWebInfResource("WEB-INF/web.xml", "WEB-INF/web.xml")
+                //.addAsWebInfResource("WEB-INF/jboss-web.xml", "WEB-INF/jboss-web.xml")
+                //.addAsWebInfResource("WEB-INF/faces-config.xml", "WEB-INF/faces-config.xml")
                 .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
                 ;
         System.out.println(webarchive.toString(Formatters.VERBOSE));
+
         return webarchive;
     }
 
 
     @Test
+    @Ignore
     public void ThatAlbumCanBeAdded() {
         //Album album = new Album();
         //album.addSong(new Song(1, ""));

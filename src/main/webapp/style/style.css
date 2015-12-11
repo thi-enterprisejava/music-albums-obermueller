@@ -208,3 +208,11 @@ ul.tabs li a{
     font-weight: bold;
 }
 
+/*---------------------------------
+	TABLE STYLES
+-----------------------------------*/
+
+table.form td{
+    border: 0px;
+}
+

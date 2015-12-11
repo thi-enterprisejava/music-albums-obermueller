@@ -31,7 +31,7 @@
                 <li class="#{my:getCurrentNavigationClass('search')}"><a href="search.xhtml"><i class="icon-search"></i> #{msg['navigation.search']}</a></li>
                 <li class="#{my:getCurrentNavigationClass('edit')}"><a href="edit.xhtml"><i class="icon-plus"></i> #{msg['navigation.addAlbum']}</a></li>
                 <h:panelGroup rendered="#{request.remoteUser != null}">
-                    <li class="#{my:getCurrentNavigationClass('changePassword')}"><a href="changePassword.xhtml"><i class="icon-user"></i> #{msg['navigation.changePasswort']}</a></li>
+                    <li class="#{my:getCurrentNavigationClass('changePassword')}"><a href="changePassword.xhtml"><i class="icon-key"></i> #{msg['navigation.changePasswort']}</a></li>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{request.isUserInRole('Admin')}">
                     <li class="#{my:getCurrentNavigationClass('userManagement')}"><a href="editUser.xhtml"><i class="icon-user"></i> #{msg['navigation.userManagement']}</a></li>

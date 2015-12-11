@@ -17,7 +17,7 @@
             <h:form id="form">
                 <h:messages globalOnly="true"/>
                 <div class="col_6 edit_user" align="center">
-                    <table cellspacing="0" cellpadding="0">
+                    <table cellspacing="0" cellpadding="0" class="form">
                         <tr>
                             <td><h:outputLabel for="username" value="#{msg['user.username']}:"/></td>
                             <td><h:inputText id="username" size="30" maxlength="30" required="true"
@@ -59,26 +59,27 @@
                 <h:commandButton id="save" styleClass="button_add" action="#{userManagement.doSave}" value="#{msg['common.save']}"/>
                 <h:commandButton id="cancel" styleClass="button_add" value="#{msg['common.cancel']}" action="#{userManagement.doCancel}" immediate="true"/>
             </h:form>
-
-            <div class="col_6">
+            <div class="center">
                 <h5>#{msg['edit.user.list.title']}</h5>
-                <table cellspacing="0" cellpadding="0">
-                    <thead><tr>
-                        <th>#{msg['user.username']}:</th>
-                        <th>#{msg['common.actions']}:</th>
-                    </tr></thead>
-                    <tbody>
-                    <ui:repeat value="#{userManagement.allUsers()}" var="user">
-                        <tr>
-                            <td>#{user.username}</td>
-                            <td><h:link outcome="editUser.xhtml?user=#{user.id}" value="#{msg['common.edit']}"></h:link>
-                            </td>
-                        </tr>
-                    </ui:repeat>
-                    </tbody>
-                </table>
+                <div class="center col_6">
+                    <table cellspacing="0" cellpadding="0" class="sortable">
+                        <thead><tr>
+                            <th>#{msg['user.username']}:</th>
+                            <th>#{msg['common.actions']}:</th>
+                        </tr></thead>
+                        <tbody>
+                        <ui:repeat value="#{userManagement.allUsers()}" var="user">
+                            <tr>
+                                <td>#{user.username}</td>
+                                <td><h:link outcome="editUser.xhtml?user=#{user.id}" value="#{msg['common.edit']}"></h:link>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clear"></div>
             </div>
-            <div class="clear"></div>
         </div>
     </ui:define>
 </ui:composition>
