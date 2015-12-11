@@ -80,7 +80,7 @@
                             <td><h:commandLink actionListener="#{selectedAlbum.doPrepareEditSong(song)}" value="#{msg['common.edit']}">
                                     <f:ajax render="form:songs" />
                                 </h:commandLink>
-                                <h:commandLink styleClass="delete_song" rendered="#{song.songNumber == selectedAlbum.album.getNumberOfSongs()}" actionListener="#{selectedAlbum.doDeleteSong(song)}" value="#{msg['common.delete']}">
+                                <h:commandLink styleClass="delete_link" rendered="#{song.songNumber == selectedAlbum.album.getNumberOfSongs()}" actionListener="#{selectedAlbum.doDeleteSong(song)}" value="#{msg['common.delete']}">
                                     <f:ajax render="form:songs"/>
                                 </h:commandLink>
                             </td>

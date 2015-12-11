@@ -16,12 +16,14 @@
             <div class="content_header"><h4>#{userManagement.userId == 0 ? msg['add.user.title'] : msg['edit.user.title']}</h4></div>
             <h:form id="form">
                 <h:messages globalOnly="true"/>
-                <div class="col_6 edit_user" align="center">
+                <div class="col_8 edit_user" align="center">
                     <table cellspacing="0" cellpadding="0" class="form">
                         <tr>
                             <td><h:outputLabel for="username" value="#{msg['user.username']}:"/></td>
                             <td><h:inputText id="username" size="30" maxlength="30" required="true"
-                                               value="#{userManagement.user.username}"/>
+                                               value="#{userManagement.user.username}" validator="#{userManagement.validateUniqueUsername}">
+                                <f:attribute name="userId" value="#{userManagement.user.id}" />
+                            </h:inputText>
                             </td>
                             <td><h:message for="username"/></td>
                         </tr>
@@ -29,7 +31,7 @@
                             <tr>
                                 <td><h:outputLabel for="check_passwordChange" value="#{msg['edit.user.passwordChange']}:"/></td>
                                 <td><h:selectBooleanCheckbox id="check_passwordChange" binding="#{checkbox}">
-                                        <f:ajax render="edit_password edit_passwordRepeat" />
+                                        <f:ajax render="password confirmPassword" />
                                 </h:selectBooleanCheckbox>
                                 </td>
                                 <td></td>
@@ -61,7 +63,7 @@
             </h:form>
             <div class="center">
                 <h5>#{msg['edit.user.list.title']}</h5>
-                <div class="center col_6">
+                <div class="center col_8">
                     <table cellspacing="0" cellpadding="0" class="sortable">
                         <thead><tr>
                             <th>#{msg['user.username']}:</th>
@@ -71,7 +73,11 @@
                         <ui:repeat value="#{userManagement.allUsers()}" var="user">
                             <tr>
                                 <td>#{user.username}</td>
-                                <td><h:link outcome="editUser.xhtml?user=#{user.id}" value="#{msg['common.edit']}"></h:link>
+                                <td><h:form>
+                                        <h:link outcome="editUser.xhtml?user=#{user.id}" value="#{msg['common.edit']}"></h:link>
+                                        <h:commandLink styleClass="delete_link" actionListener="#{userManagement.doDelete(user)}" value="#{msg['common.delete']}">
+                                        </h:commandLink>
+                                    </h:form>
                                 </td>
                             </tr>
                         </ui:repeat>

@@ -2,9 +2,12 @@ package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.domain.User;
 import de.thi.mymusic.service.UserService;
+import de.thi.mymusic.util.GuiUtils;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -95,7 +98,7 @@ public class UserManagement implements Serializable {
     public String doSave() {
         userService.createOrUpdate(this.user);
 
-        return "editUser.xhtml";
+        return "editUser.xhtml?faces-redirect=true";
     }
 
     public String doCancel() {
@@ -120,4 +123,37 @@ public class UserManagement implements Serializable {
 
         return "changePassword.xhtml";
     }
+
+    public String doDelete(User user){
+        userService.delete(user);
+
+        return null;
+    }
+
+    //*******************************************************
+    // Validation Methods
+    //*******************************************************
+
+    public void validateUniqueUsername(FacesContext context, UIComponent component,
+                         Object value) throws ValidatorException {
+        long userId;
+        User user;
+
+        String username = value.toString();
+        userId = (long) component.getAttributes().get("userId");
+
+        if(username == null) {
+            return;
+        }
+
+        // Find user with input username
+        user = userService.findByUsername(username);
+
+        if (user != null && user.getId() != userId) {
+            FacesMessage msg = GuiUtils.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
+                    "edit.user.usernameNotUnique");
+            throw new ValidatorException(msg);
+        }
+    }
+
 }

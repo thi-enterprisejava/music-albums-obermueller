@@ -175,11 +175,7 @@ input.navigationbar_password{
     LINK STYLES
 -----------------------------------*/
 
-a.delete_song{
-    margin-left: 10px;
-}
-
-a.delete_album{
+a.delete_link{
     margin-left: 10px;
 }
 

@@ -41,7 +41,7 @@
                             <td>#{msg['detailAlbum.actions']}:</td>
                             <td><h:form>
                                     <h:link outcome="edit.xhtml?album=#{selectedAlbum.album.id}" value="#{msg['common.edit']}"></h:link>
-                                    <h:commandLink styleClass="delete_album" action="#{selectedAlbum.doDelete()}" value="#{msg['common.delete']}"></h:commandLink>
+                                    <h:commandLink styleClass="delete_link" action="#{selectedAlbum.doDelete()}" value="#{msg['common.delete']}"></h:commandLink>
                                 </h:form>
                             </td>
                         </tr>

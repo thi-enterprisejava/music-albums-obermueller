@@ -22,9 +22,20 @@
         <web-resource-collection>
             <web-resource-name>Site Access Constraint</web-resource-name>
             <url-pattern>/edit.xhtml</url-pattern>
+            <url-pattern>/passwordChange.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>User</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Access Constraint Admin</display-name>
+        <web-resource-collection>
+            <web-resource-name>Site Access Constraint</web-resource-name>
+            <url-pattern>/editUser.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Admin</role-name>
         </auth-constraint>
     </security-constraint>
     <security-constraint>
@@ -36,6 +47,9 @@
     </security-constraint>
     <security-role>
         <role-name>User</role-name>
+    </security-role>
+    <security-role>
+        <role-name>Admin</role-name>
     </security-role>
 
 </web-app>

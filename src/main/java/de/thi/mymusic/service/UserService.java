@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.jboss.security.auth.spi.Util;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.util.List;
@@ -44,7 +45,7 @@ public class UserService {
     }
 
 
-    @PermitAll
+    @RolesAllowed({"User", "Admin"})
     public User createOrUpdate(User user) {
         if(user.getId() > 0) {
             update(user);
@@ -54,7 +55,7 @@ public class UserService {
         return user;
     }
 
-    @PermitAll
+    @RolesAllowed("User")
     private void update(User user){
         User oldUser = findById(user.getId());
         if(!user.getPassword().equals(oldUser.getPassword())) {
@@ -64,14 +65,20 @@ public class UserService {
         logger.info("Update user: " + user.getUsername() +" with id: " + user.getId());
     }
 
-    @PermitAll
+    @RolesAllowed("Admin")
     private void create(User user){
         hashPassword(user);
         crudService.persist(user);
         logger.info("Create new user: "+ user.getUsername() + " with id: " + user.getId());
     }
 
-    @PermitAll
+    @RolesAllowed("Admin")
+    public void delete(User user) {
+        logger.info("Delete-User: " + user.getUsername());
+        crudService.delete(user);
+    }
+
+    @RolesAllowed("User")
     private void hashPassword(User user) {
         user.setPassword(Util.createPasswordHash("SHA-256", "BASE64", "UTF-8", null, user.getPassword()));
     }

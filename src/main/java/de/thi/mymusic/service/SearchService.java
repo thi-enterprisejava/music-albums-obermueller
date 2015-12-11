@@ -5,6 +5,7 @@ import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.domain.Interpret;
 import de.thi.mymusic.domain.Song;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
@@ -21,14 +22,17 @@ public class SearchService {
     @EJB
     private CrudService crudService;
 
+    @PermitAll
     public List<Album> findAlbumByName(String name) {
         return  crudService.findByNamedQuery(Album.class,"Album.findByName",new String[] {"name"}, new Object[] {name} );
     }
 
+    @PermitAll
     public List<Song> findSongByName(String name) {
         return  crudService.findByNamedQuery(Song.class,"Song.findByName",new String[] {"name"}, new Object[] {name} );
     }
 
+    @PermitAll
     public List<Interpret> findInterpretByName(String name) {
         return  crudService.findByNamedQuery(Interpret.class,"Interpret.findByName",new String[] {"name"}, new Object[] {name} );
     }
