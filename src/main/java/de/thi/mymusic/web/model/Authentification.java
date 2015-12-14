@@ -1,11 +1,10 @@
 package de.thi.mymusic.web.model;
 
-import de.thi.mymusic.domain.User;
 import de.thi.mymusic.service.UserService;
 
 
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -19,7 +18,7 @@ import java.io.Serializable;
  */
 
 @Named
-@SessionScoped
+@RequestScoped
 public class Authentification implements Serializable {
 
 
@@ -62,19 +61,12 @@ public class Authentification implements Serializable {
         HttpServletRequest request = (HttpServletRequest)
                 context.getExternalContext().getRequest();
 
-        String originalURI =  request.getRequestURI();
-
-        System.out.println("Orignial URI: " + originalURI);
-
         try {
             request.login(this.username, this.password);
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Login failed."));
             return "/loginerror.xhtml";
         }
-
-        username = null;
-        password = null;
 
         if("/login.xhtml".equals(context.getViewRoot().getViewId()) || "/loginerror.xhtml".equals(context.getViewRoot().getViewId())) {
             return "/search.xhtml";

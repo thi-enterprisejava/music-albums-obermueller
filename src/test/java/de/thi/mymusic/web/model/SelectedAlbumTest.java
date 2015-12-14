@@ -2,8 +2,6 @@ package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.domain.Song;
-import de.thi.mymusic.repository.AlbumRepositoryImpl;
-import de.thi.mymusic.repository.Repository;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +24,6 @@ public class SelectedAlbumTest {
      */
     SelectedAlbum selectedAlbum;
 
-    Repository<Album> mockedAlbumRepository;
 
     //@Before
     /*public void setUp() throws Exception {

@@ -155,5 +155,4 @@ public class UserManagement implements Serializable {
             throw new ValidatorException(msg);
         }
     }
-
 }
