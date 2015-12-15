@@ -44,8 +44,7 @@ public class UserService {
         return crudService.findAll(User.class);
     }
 
-
-    @RolesAllowed({"User", "Admin"})
+    @RolesAllowed("Admin")
     public User createOrUpdate(User user) {
         if(user.getId() > 0) {
             update(user);
@@ -55,11 +54,12 @@ public class UserService {
         return user;
     }
 
-    @RolesAllowed("User")
+    @RolesAllowed("Admin")
     private void update(User user){
         User oldUser = findById(user.getId());
+        logger.info("Old password: " + oldUser.getPassword() + " new password: " + user.getPassword());
         if(!user.getPassword().equals(oldUser.getPassword())) {
-            hashPassword(user);
+            user = hashPassword(user);
         }
         crudService.merge(user);
         logger.info("Update user: " + user.getUsername() +" with id: " + user.getId());
@@ -67,7 +67,7 @@ public class UserService {
 
     @RolesAllowed("Admin")
     private void create(User user){
-        hashPassword(user);
+        user = hashPassword(user);
         crudService.persist(user);
         logger.info("Create new user: "+ user.getUsername() + " with id: " + user.getId());
     }
@@ -78,8 +78,20 @@ public class UserService {
         crudService.delete(user);
     }
 
-    @RolesAllowed("User")
-    private void hashPassword(User user) {
+    @RolesAllowed({"User", "Admin"})
+    public void changePassword(User user) {
+        User oldUser = findById(user.getId());
+        if(!user.getPassword().equals(oldUser.getPassword())) {
+            user = hashPassword(user);
+        }
+        crudService.merge(user);
+        logger.info("Change-Password from user: " + user.getUsername());
+    }
+
+    @RolesAllowed({"User", "Admin"})
+    private User hashPassword(User user) {
         user.setPassword(Util.createPasswordHash("SHA-256", "BASE64", "UTF-8", null, user.getPassword()));
+        logger.info("Rehash Password for userId:" + user.getId() + " with username: " + user.getUsername());
+        return user;
     }
 }

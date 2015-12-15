@@ -82,6 +82,7 @@
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-impl</artifactId>
             <version>2.2.12</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -96,7 +97,6 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
     <build>
         <finalName>mymusic</finalName>
         <plugins>
@@ -105,7 +105,7 @@
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>1.0.1.Final</version>
                 <configuration>
-                    <port>9991</port>
+                    <port>9990</port>
                 </configuration>
             </plugin>
         </plugins>

@@ -28,6 +28,7 @@ public class AlbumServiceIntegrationTest {
     AlbumService albumService;
 
     @Deployment(testable = true)
+    @Ignore
     public static WebArchive createDeployment() {
         WebArchive webarchive = ShrinkWrap.create(WebArchive.class, "test.war")
                 .addClass(BaseEntity.class)
@@ -36,12 +37,7 @@ public class AlbumServiceIntegrationTest {
                 .addClass(Song.class)
                 .addClass(Interpret.class)
                 .addClass(CrudService.class)
-                //.addAsWebInfResource("WEB-INF/web.xml", "WEB-INF/web.xml")
-                //.setWebXML("web.xml")
-                //.addAsWebInfResource("WEB-INF/web.xml", "WEB-INF/web.xml")
-                //.addAsWebInfResource("WEB-INF/jboss-web.xml", "WEB-INF/jboss-web.xml")
-                //.addAsWebInfResource("WEB-INF/faces-config.xml", "WEB-INF/faces-config.xml")
-                .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
+                .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 ;
         System.out.println(webarchive.toString(Formatters.VERBOSE));
 

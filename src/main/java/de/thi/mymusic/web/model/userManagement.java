@@ -113,7 +113,7 @@ public class UserManagement implements Serializable {
     }
 
     public String doChangePassword() {
-        userService.createOrUpdate(this.user);
+        userService.changePassword(this.user);
 
         return null;
     }

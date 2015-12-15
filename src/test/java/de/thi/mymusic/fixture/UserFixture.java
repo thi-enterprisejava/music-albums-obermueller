@@ -14,4 +14,12 @@ public class UserFixture {
 
         return testUser;
     }
+
+    public static User aStoredUser() {
+        User storedUser = new User();
+        storedUser.setUsername("storedMichael");
+        storedUser.setPassword("7NcYcNGWMxapfjrDQIyYNa2M8PPBvHA1J8MCZVNPda4="); // test123
+
+        return storedUser;
+    }
 }
