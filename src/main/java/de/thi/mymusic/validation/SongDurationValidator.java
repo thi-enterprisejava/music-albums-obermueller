@@ -1,6 +1,6 @@
 package de.thi.mymusic.validation;
 
-import de.thi.mymusic.util.GuiUtil;
+import de.thi.mymusic.util.GuiUtils;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -23,7 +23,7 @@ public class SongDurationValidator implements Validator {
         String duration = (String) value;
 
         if (!Pattern.matches("^([0-5]?\\d):([0-5]?\\d)$", duration)) {
-            FacesMessage msg = GuiUtil.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
+            FacesMessage msg = GuiUtils.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
                     "add.song.duration.formatError");
 
             throw new ValidatorException(msg);

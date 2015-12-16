@@ -8,7 +8,7 @@
     <function>
         <function-name>getCurrentNavigationClass</function-name>
         <function-class>
-            de.thi.mymusic.util.GuiUtil
+            de.thi.mymusic.util.GuiUtils
         </function-class>
         <function-signature>
             java.lang.String getCurrentNavigationClass(java.lang.String)

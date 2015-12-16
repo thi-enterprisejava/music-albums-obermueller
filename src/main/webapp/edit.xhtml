@@ -19,7 +19,7 @@
             <h:form id="form" enctype="multipart/form-data">
                 <h:messages globalOnly="true"/>
                 <div class="col_6 edit_album" align="center">
-                    <table cellspacing="0" cellpadding="0">
+                    <table cellspacing="0" cellpadding="0" class="form">
                         <tr>
                             <td><h:outputLabel for="titel" value="#{msg['album.name']}:"/></td>
                             <td><h:message for="titel" />
@@ -80,7 +80,7 @@
                             <td><h:commandLink actionListener="#{selectedAlbum.doPrepareEditSong(song)}" value="#{msg['common.edit']}">
                                     <f:ajax render="form:songs" />
                                 </h:commandLink>
-                                <h:commandLink styleClass="delete_song" rendered="#{song.songNumber == selectedAlbum.album.getNumberOfSongs()}" actionListener="#{selectedAlbum.doDeleteSong(song)}" value="#{msg['common.delete']}">
+                                <h:commandLink styleClass="delete_link" rendered="#{song.songNumber == selectedAlbum.album.getNumberOfSongs()}" actionListener="#{selectedAlbum.doDeleteSong(song)}" value="#{msg['common.delete']}">
                                     <f:ajax render="form:songs"/>
                                 </h:commandLink>
                             </td>
