@@ -7,6 +7,9 @@ import de.thi.mymusic.domain.Song;
 import de.thi.mymusic.util.FileUtils;
 import org.apache.log4j.Logger;
 
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.io.File;
@@ -24,7 +27,8 @@ public class AlbumService {
 
     private static final Logger logger = Logger.getLogger(AlbumService.class);
 
-    public Album saveOrUpdate(Album album) {
+    @RolesAllowed("User")
+    public Album createOrUpdate(Album album) {
         /**
          * Check if interpret with same name already exists
          */
@@ -42,11 +46,13 @@ public class AlbumService {
         return album;
     }
 
+    @RolesAllowed("User")
     private void save(Album album) {
         crudService.persist(album);
         logger.info("Save-Album: " + album.getTitle());
     }
 
+    @RolesAllowed("User")
     private void update(Album album) {
         Album oldAlbum = crudService.findById(Album.class, album.getId());
         Interpret oldInterpret = crudService.findById(Interpret.class, oldAlbum.getInterpret().getId());
@@ -70,6 +76,7 @@ public class AlbumService {
         logger.info("Update-Album: " + album.getTitle());
     }
 
+    @RolesAllowed("User")
     private void deleteOldImageFileIfChanged(Album oldAlbum, Album updatedAlbum) {
         if((oldAlbum.getImageFilename() != null && updatedAlbum.getImageFilename() == null)
                 || (updatedAlbum.getImageFilename() != null && !updatedAlbum.getImageFilename().equals(oldAlbum.getImageFilename()))) {
@@ -78,19 +85,23 @@ public class AlbumService {
         }
     }
 
+    @PermitAll
     public Album findById(long id) {
         return crudService.findById(Album.class, id);
     }
 
+    @PermitAll
     public List<Album> findAll(){
         return crudService.findAll(Album.class);
     }
 
+    @PermitAll
     public List<Interpret> findInterpretByExactName(String name) {
         return crudService.findByNamedQuery(Interpret.class,"Interpret.findByExactName",
                 new String[] {"name"}, new Object[] {name});
     }
 
+    @RolesAllowed("User")
     public void delete(Album album) {
         Interpret interpret = crudService.findById(Interpret.class, album.getInterpret().getId());
 
@@ -105,13 +116,4 @@ public class AlbumService {
             crudService.delete(interpret);
         }
     }
-
-    /*public void deleteSong(Song song) {
-        Album album = song.getAlbum();
-        album.removeSong(song);
-        crudService.merge(album);
-        Song songMerged = crudService.merge(song);
-        crudService.delete(songMerged);
-    }*/
-
 }

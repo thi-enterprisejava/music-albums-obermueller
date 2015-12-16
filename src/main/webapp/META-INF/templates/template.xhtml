@@ -9,7 +9,7 @@
     <title>#{title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content="" />
-    <!-- Kickstart -->
+    <!-- For Kickstart -->
     <link rel="stylesheet" type="text/css" href="style/kickstart/kickstart.css"/>
     <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="js/kickstart.js"></script>
@@ -30,17 +30,32 @@
             <ul class="menu">
                 <li class="#{my:getCurrentNavigationClass('search')}"><a href="search.xhtml"><i class="icon-search"></i> #{msg['navigation.search']}</a></li>
                 <li class="#{my:getCurrentNavigationClass('edit')}"><a href="edit.xhtml"><i class="icon-plus"></i> #{msg['navigation.addAlbum']}</a></li>
-                <li class="#{my:getCurrentNavigationClass('createAccount')}"><a href=""><i class="icon-user"></i> #{msg['navigation.createAccount']}</a></li>
+                <h:panelGroup rendered="#{request.remoteUser != null}">
+                    <li class="#{my:getCurrentNavigationClass('changePassword')}"><a href="changePassword.xhtml"><i class="icon-key"></i> #{msg['navigation.changePasswort']}</a></li>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{request.isUserInRole('Admin')}">
+                    <li class="#{my:getCurrentNavigationClass('userManagement')}"><a href="editUser.xhtml"><i class="icon-user"></i> #{msg['navigation.userManagement']}</a></li>
+                </h:panelGroup>
                 <li class="right">
                     <div class="login">
-                        <h:form>
-                            <label>#{msg['user.login']}: </label>
-                            <h:inputText styleClass="navigationbar_username" id="username" size="12" maxlength="30" required="true"
-                                         value="" pt:placeholder="#{msg['user.username']}"/>
-                            <h:inputSecret styleClass="navigationbar_password" id="password" size="12" maxlength="30" required="true"
-                                         value="" pt:placeholder="#{msg['user.password']}"/>
-                            <button type="submit" class="small blue">#{msg['user.login']}</button>
-                        </h:form>
+                        <h:panelGroup rendered="#{request.remoteUser == null}">
+                            <h:form id="loginFormNavbar" action="#{authentification.doLogin}" method="post">
+                                <label>#{msg['user.login']}: </label>
+                                <h:inputText styleClass="navigationbar_username"  value="#{authentification.username}" required="true"
+                                             size="12"  maxlength="30" pt:placeholder="#{msg['user.username']}"
+                                             disabled="#{authentification.checkNavigationLoginDisable()}"/>
+                                <h:inputSecret styleClass="navigationbar_password" value="#{authentification.password}" disabled="#{authentification.checkNavigationLoginDisable()}"
+                                               size="12"  required="true" maxlength="30" pt:placeholder="#{msg['user.password']}"/>
+                                <h:commandButton action="#{authentification.doLogin}" styleClass="blue logout_button"
+                                                 disabled="#{authentification.checkNavigationLoginDisable()}" value="#{msg['user.login']}"/>
+                            </h:form>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{request.remoteUser != null}">
+                            <h:form>
+                                <label>Hallo #{request.remoteUser}! </label>
+                                <h:commandButton action="#{authentification.doLogout}" styleClass="blue logout_button" value="#{msg['user.logout']}"/>
+                            </h:form>
+                        </h:panelGroup>
                     </div>
                 </li>
             </ul>

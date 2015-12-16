@@ -1,7 +1,7 @@
 /*---------------------------------
 	IMPORTS
 -----------------------------------*/
-@import url(http://fonts.googleapis.com/css?family=Arimo:400,700);
+/*@import url(http://fonts.googleapis.com/css?family=Arimo:400,700);*/
 
 /*---------------------------------
 	OVERRIDES
@@ -156,6 +156,12 @@ input.button_add{
     margin: 15px;
 }
 
+input.logout_button{
+    font-size:0.8em;
+    padding: 5px 10px;
+    margin-left: 10px;
+}
+
 input.navigationbar_username{
     margin-left: 5px;
     margin-right: 5px;
@@ -169,11 +175,7 @@ input.navigationbar_password{
     LINK STYLES
 -----------------------------------*/
 
-a.delete_song{
-    margin-left: 10px;
-}
-
-a.delete_album{
+a.delete_link{
     margin-left: 10px;
 }
 
@@ -200,5 +202,13 @@ img.album_cover_small{
 ul.tabs li a{
     font-size: 16px;
     font-weight: bold;
+}
+
+/*---------------------------------
+	TABLE STYLES
+-----------------------------------*/
+
+table.form td{
+    border: 0px;
 }
 

@@ -1,6 +1,6 @@
 package de.thi.mymusic.validation;
 
-import de.thi.mymusic.util.GuiUtil;
+import de.thi.mymusic.util.GuiUtils;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -25,14 +25,14 @@ public class ImageValidator implements Validator {
             if (!"image/jpeg".equals(file.getContentType())
                     && !"image/png".equals(file.getContentType())
                     && !"image/gif".equals(file.getContentType())) {
-                FacesMessage msg = GuiUtil.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
+                FacesMessage msg = GuiUtils.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
                         "edit.album.validateError.noImageFile");
 
                 throw new ValidatorException(msg);
             }
 
             if (file.getSize() > (2024 * 1024)) {
-                FacesMessage msg = GuiUtil.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
+                FacesMessage msg = GuiUtils.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
                         "edit.album.validateError.imageFileToBig");
 
                 throw new ValidatorException(msg);

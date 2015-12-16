@@ -32,32 +32,4 @@ public class AlbumRestService {
         return album;
     }
 
-    @POST
-    @Consumes("application/json")
-    public Album post(Album album) {
-        return albumService.saveOrUpdate(album);
-    }
-
-    @PUT
-    @Consumes("application/json")
-    @Produces("application/json")
-    @Path("{albumId}")
-    public Album update(Album album) {
-
-        //TODO Implement REST - PUT
-        albumService.saveOrUpdate(album);
-
-        return album;
-    }
-
-
-    @DELETE
-    @Path("{albumId}")
-    public void deleteAlbum(@PathParam("albumId") Long id) {
-        Album album = albumService.findById(id);
-        if(album != null) {
-            albumService.delete(album);
-        }
-    }
-
 }

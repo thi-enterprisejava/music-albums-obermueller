@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:body>
+    <ui:composition template="/META-INF/templates/template.xhtml">
+        <ui:param name="title" value="#{msg['login.title']}"/>
+        <ui:define name="content">
+            <div class="content_container">
+                <div class="content_header"><h4>#{msg['login.title']}</h4></div>
+                <div class="col_4">
+                    <form id="loginForm" action="j_security_check" method="post">
+                        <table cellspacing="0" cellpadding="0" class="form">
+                            <tr>
+                                <td><h:outputLabel value="#{msg['user.username']}:"/></td>
+                                <td><input id="j_username" required="required" name="j_username" size="15" type="text" /></td>
+                            </tr>
+                            <tr>
+                                <td><h:outputLabel value="#{msg['user.password']}:"/></td>
+                                <td><input id="j_password" required="required" name="j_password" size="15" type="password" /></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input type="submit" value="#{msg['user.login']}"/></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

@@ -11,7 +11,7 @@
 </h:head>
 <h:body>
     <ui:composition template="/META-INF/templates/template.xhtml">
-        <ui:param name="title" value="#{msg['search.title']}"/>
+        <ui:param name="title" value="#{msg['detailAlbum.title']}"/>
         <ui:define name="content">
             <div class="content_container">
                 <div class="content_header"><h4>#{selectedAlbum.album.interpret.name}: #{selectedAlbum.album.title}</h4></div>
@@ -41,7 +41,7 @@
                             <td>#{msg['detailAlbum.actions']}:</td>
                             <td><h:form>
                                     <h:link outcome="edit.xhtml?album=#{selectedAlbum.album.id}" value="#{msg['common.edit']}"></h:link>
-                                    <h:commandLink styleClass="delete_album" action="#{selectedAlbum.doDelete()}" value="#{msg['common.delete']}"></h:commandLink>
+                                    <h:commandLink styleClass="delete_link" action="#{selectedAlbum.doDelete()}" value="#{msg['common.delete']}"></h:commandLink>
                                 </h:form>
                             </td>
                         </tr>
