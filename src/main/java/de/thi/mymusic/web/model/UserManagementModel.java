@@ -21,14 +21,14 @@ import java.util.List;
 
 @Named
 @ViewScoped
-public class UserManagement implements Serializable {
+public class UserManagementModel implements Serializable {
 
     private UserService userService;
     private User user;
     private long userId;
 
     @Inject
-    public UserManagement(UserService userService) {
+    public UserManagementModel(UserService userService) {
         this.userService = userService;
         user = new User();
     }

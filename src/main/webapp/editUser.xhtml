@@ -6,14 +6,14 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <f:metadata>
-            <f:viewParam name="user" value="#{userManagement.userId}" />
-            <f:viewAction action="#{userManagement.init}" />
+            <f:viewParam name="user" value="#{userManagementModel.userId}" />
+            <f:viewAction action="#{userManagementModel.init}" />
         </f:metadata>
     </h:head>
-    <ui:param name="title" value="#{userManagement.userId == 0 ? msg['add.user.title'] : msg['edit.user.title']}"/>
+    <ui:param name="title" value="#{userManagementModel.userId == 0 ? msg['add.user.title'] : msg['edit.user.title']}"/>
     <ui:define name="content">
         <div class="content_container">
-            <div class="content_header"><h4>#{userManagement.userId == 0 ? msg['add.user.title'] : msg['edit.user.title']}</h4></div>
+            <div class="content_header"><h4>#{userManagementModel.userId == 0 ? msg['add.user.title'] : msg['edit.user.title']}</h4></div>
             <h:form id="form">
                 <h:messages globalOnly="true"/>
                 <div class="col_8 edit_user" align="center">
@@ -21,13 +21,13 @@
                         <tr>
                             <td><h:outputLabel for="username" value="#{msg['user.username']}:"/></td>
                             <td><h:inputText id="username" size="30" maxlength="30" required="true"
-                                               value="#{userManagement.user.username}" validator="#{userManagement.validateUniqueUsername}">
-                                <f:attribute name="userId" value="#{userManagement.user.id}" />
+                                             value="#{userManagementModel.user.username}" validator="#{userManagementModel.validateUniqueUsername}">
+                                <f:attribute name="userId" value="#{userManagementModel.user.id}" />
                             </h:inputText>
                             </td>
                             <td><h:message for="username"/></td>
                         </tr>
-                        <h:panelGroup rendered="#{userManagement.userId == 0 ? false : true}">
+                        <h:panelGroup rendered="#{userManagementModel.userId == 0 ? false : true}">
                             <tr>
                                 <td><h:outputLabel for="check_passwordChange" value="#{msg['edit.user.passwordChange']}:"/></td>
                                 <td><h:selectBooleanCheckbox id="check_passwordChange" binding="#{checkbox}">
@@ -40,7 +40,7 @@
                         <tr>
                             <td><h:outputLabel for="password" value="#{msg['user.password']}:"/></td>
                             <td><h:inputSecret id="password" size="30" maxlength="30" required="true"
-                                               value="#{userManagement.user.password}" disabled="#{userManagement.userId == 0 ? false : not checkbox.value}">
+                                               value="#{userManagementModel.user.password}" disabled="#{userManagementModel.userId == 0 ? false : not checkbox.value}">
                                    <f:validator validatorId="passwordValidator" />
                                    <f:attribute name="confirmPassword" value="#{confirmPassword}" />
                                </h:inputSecret>
@@ -51,15 +51,15 @@
                             <td><h:outputLabel for="confirmPassword" value="#{msg['user.passwordRepeat']}:"/></td>
                             <td>
                                 <h:inputSecret id="confirmPassword" size="30" maxlength="30" required="true" binding="#{confirmPassword}"
-                                               disabled="#{userManagement.userId == 0 ? false : not checkbox.value}"/>
+                                               disabled="#{userManagementModel.userId == 0 ? false : not checkbox.value}"/>
                             </td>
                             <td></td>
                         </tr>
                     </table>
                 </div>
                 <div class="clear"></div>
-                <h:commandButton id="save" styleClass="button_add" action="#{userManagement.doSave}" value="#{msg['common.save']}"/>
-                <h:commandButton id="cancel" styleClass="button_add" value="#{msg['common.cancel']}" action="#{userManagement.doCancel}" immediate="true"/>
+                <h:commandButton id="save" styleClass="button_add" action="#{userManagementModel.doSave}" value="#{msg['common.save']}"/>
+                <h:commandButton id="cancel" styleClass="button_add" value="#{msg['common.cancel']}" action="#{userManagementModel.doCancel}" immediate="true"/>
             </h:form>
             <div class="center">
                 <h5>#{msg['edit.user.list.title']}</h5>
@@ -70,12 +70,12 @@
                             <th>#{msg['common.actions']}:</th>
                         </tr></thead>
                         <tbody>
-                        <ui:repeat value="#{userManagement.allUsers()}" var="user">
+                        <ui:repeat value="#{userManagementModel.allUsers()}" var="user">
                             <tr>
                                 <td>#{user.username}</td>
                                 <td><h:form>
                                         <h:link outcome="editUser.xhtml?user=#{user.id}" value="#{msg['common.edit']}"></h:link>
-                                        <h:commandLink styleClass="delete_link" actionListener="#{userManagement.doDelete(user)}" value="#{msg['common.delete']}">
+                                        <h:commandLink styleClass="delete_link" actionListener="#{userManagementModel.doDelete(user)}" value="#{msg['common.delete']}">
                                         </h:commandLink>
                                     </h:form>
                                 </td>
