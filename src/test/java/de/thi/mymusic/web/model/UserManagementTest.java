@@ -43,7 +43,7 @@ public class UserManagementTest {
     /**
      * class under test
      */
-    UserManagementModel userManagement;
+    UserManagement userManagement;
 
     UserService mockedUserService;
     @Mock
@@ -60,7 +60,7 @@ public class UserManagementTest {
     @Before
     public void setUp() throws Exception {
         mockedUserService = mock(UserService.class);
-        userManagement = new UserManagementModel(mockedUserService);
+        userManagement = new UserManagement(mockedUserService);
         PowerMockito.mockStatic(FacesContext.class);
     }
 
