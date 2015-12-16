@@ -10,9 +10,13 @@ public class UserFixture {
     public static User aUser() {
         User testUser = new User();
         testUser.setUsername("Michael");
-        testUser.setPassword("testPassword");
+        testUser.setPassword("testPassword"); // Hash-Wert: /Vy1G6/WD2/b7d5uYsRz2m8kfbJxYz4VkZureKAu6es=
 
         return testUser;
+    }
+
+    public static String hashedPasswordFromAUser() {
+        return "/Vy1G6/WD2/b7d5uYsRz2m8kfbJxYz4VkZureKAu6es=";
     }
 
     public static User aStoredUser() {

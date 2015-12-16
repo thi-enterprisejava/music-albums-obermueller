@@ -69,4 +69,7 @@ public class CrudService {
         em.remove(em.contains(entity) ? entity : em.merge(entity));
     }
 
+    public EntityManager getEntityManager() {
+        return em;
+    }
 }

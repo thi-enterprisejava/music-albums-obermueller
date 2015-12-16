@@ -188,7 +188,7 @@ public class UserManagementTest {
         mockedValue = mock(Object.class);
         mockedUIComponent = mock(UIComponent.class);
         when(mockedValue.toString()).thenReturn("Michael");
-        Map<String, Object> mapAttributes = new HashMap();
+        Map<String, Object> mapAttributes = new HashMap<>();
         mapAttributes.put("userId", 2L);
         when(mockedUIComponent.getAttributes()).thenReturn(mapAttributes);
         when(mockedUserService.findByUsername("Michael")).thenReturn(testUser);

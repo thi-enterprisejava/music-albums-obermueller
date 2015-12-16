@@ -12,14 +12,11 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.formatter.Formatters;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
-import javax.transaction.Transactional;
-
 import java.io.File;
 
 import static org.junit.Assert.*;
@@ -53,13 +50,6 @@ public class UserServiceIntegrationTest {
                 .addClass(AuthenticatedWithRoleAdmin.class)
                 .addClass(AuthenticatedWithRoleUser.class)
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/web.xml"), "web.xml")
-                /*.addAsResource("sql/data.sql", "META-INF/sql/data.sql")
-                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/faces-config.xml"), "faces-config.xml")
-                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/mymusic.taglib.xml"), "mymusic.taglib.xml")
-                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/faces-config.xml"), "faces-config.xml")
-                .addAsResource(new File("src/main/resources/messages_de.properties"), "messages_de.properties")
-                .addAsResource(new File("src/main/resources/messages_en.properties"), "messages_en.properties")*/
-
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 ;
         System.out.println(webarchive.toString(Formatters.VERBOSE));
@@ -67,33 +57,13 @@ public class UserServiceIntegrationTest {
         return webarchive;
     }
 
-    @Test
-    @Ignore
-    public void That() throws Exception {
-        authenticatedWithRoleAdmin.call(() -> {
-            User user = new User();
-            user.setUsername("NeuerTestUser");
-            user.setPassword("huhu123");
-
-            userService.createOrUpdate(user);
-
-            User user2 = userService.findByUsername("NeuerTestUser");
-            assertNotNull(user2);
-            assertEquals(user.getUsername(), user2.getUsername());
-            assertEquals(user.getPassword(), user2.getPassword());
-
-            return null;
-        });
-    }
-
     /**
      * method under test: createOrUpdate
-     *
      */
 
     @Test
     public void ThatUserCanBeAddedWithAdminRole() throws Exception {
-        authenticatedWithRoleAdmin.call(() -> {
+        authenticatedWithRoleAdmin.run(() -> {
             User userMichael = UserFixture.aUser();
 
             userService.createOrUpdate(userMichael);
@@ -101,16 +71,15 @@ public class UserServiceIntegrationTest {
             User savedUser = userService.findByUsername("Michael");
             assertEquals("/Vy1G6/WD2/b7d5uYsRz2m8kfbJxYz4VkZureKAu6es=", savedUser.getPassword());
             assertNotNull(savedUser);
-            assertEquals(userMichael, savedUser);
+            assertEquals(userMichael.getUsername(), savedUser.getUsername());
             assertNotEquals(0, savedUser.getId());
             userService.delete(savedUser);
-            return null;
         });
     }
 
     @Test
-    public void ThatUserCanNotAddedWithUserRole() throws Exception {
-        authenticatedWithRoleUser.call(() -> {
+    public void ThatUserCanNotAddedorUpdatedWithUserRole() throws Exception {
+        authenticatedWithRoleUser.run(() -> {
             User userMichael = UserFixture.aUser();
 
             try {
@@ -119,12 +88,11 @@ public class UserServiceIntegrationTest {
                 fail("Should throw an EJBAccessException ");
             } catch(EJBAccessException ex) {
             }
-            return null;
         });
     }
 
     @Test(expected = EJBAccessException.class)
-    public void ThatUserCanNotBeAddedAnonymous() throws Exception {
+    public void ThatUserCanNotBeAddedOrUpdatedAnonymous() throws Exception {
         User userMichael = UserFixture.aUser();
 
         userService.createOrUpdate(userMichael);
@@ -133,7 +101,7 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void ThatUserCanBeUpdated() throws Exception {
-        authenticatedWithRoleAdmin.call(() -> {
+        authenticatedWithRoleAdmin.run(() -> {
             User userMichael = UserFixture.aUser();
             userService.createOrUpdate(userMichael);
             User savedUser = userService.findByUsername("Michael");
@@ -152,10 +120,160 @@ public class UserServiceIntegrationTest {
             assertEquals("Michael2", updatedUser.getUsername());
             assertEquals("7NcYcNGWMxapfjrDQIyYNa2M8PPBvHA1J8MCZVNPda4=", updatedUser.getPassword());
             userService.delete(updatedUser);
-
-            return null;
         });
     }
 
+    /**
+     * method under test: delete
+     */
 
+    @Test
+    public void ThatDeleteIsPossibleAsRoleAdmin() throws Exception {
+        authenticatedWithRoleAdmin.run(() -> {
+            User userMichael = UserFixture.aUser();
+            userService.createOrUpdate(userMichael);
+            User foundedUser = userService.findByUsername(userMichael.getUsername());
+
+            userService.delete(foundedUser);
+
+            User foundedUserAfterDelete = userService.findByUsername(userMichael.getUsername());
+            assertNull(foundedUserAfterDelete);
+        });
+    }
+
+    @Test(expected = EJBAccessException.class)
+    public void ThatDeleteIsNotPossibleAsRoleUser() throws Exception {
+        authenticatedWithRoleUser.run(() ->
+
+            userService.delete(UserFixture.aUser())
+        );
+    }
+
+    @Test(expected = EJBAccessException.class)
+    public void ThatDeleteIsNotPossibleAsAnonymous() throws Exception {
+
+        userService.delete(UserFixture.aUser());
+
+    }
+
+    /**
+     * method under test: findByUsername
+     */
+
+    @Test
+    public void ThatFindByUsernameReturnsCorrectUser() throws Exception {
+        authenticatedWithRoleAdmin.run(() ->
+            userService.createOrUpdate(UserFixture.aUser())
+        );
+
+        User foundedUser = userService.findByUsername(UserFixture.aUser().getUsername());
+
+        assertNotNull(foundedUser);
+        assertEquals(UserFixture.aUser().getUsername(), foundedUser.getUsername());
+        assertEquals(UserFixture.hashedPasswordFromAUser(), foundedUser.getPassword());
+
+        authenticatedWithRoleAdmin.run(() ->
+            userService.delete(foundedUser)
+        );
+    }
+
+    @Test
+    public void ThatFindByUsernameReturnsNullIfNoUserWasFounded() throws Exception {
+
+        User foundedUser = userService.findByUsername(UserFixture.aUser().getUsername());
+
+        assertNull(foundedUser);
+    }
+
+    /**
+     * method under test: findById
+     */
+
+    @Test
+    public void ThatFindByIdReturnsCorrectUser() throws Exception {
+        authenticatedWithRoleAdmin.run(() ->
+                userService.createOrUpdate(UserFixture.aUser())
+        );
+        User createdUser = userService.findByUsername(UserFixture.aUser().getUsername());
+
+        User foundedUser = userService.findById(createdUser.getId());
+
+        assertNotNull(foundedUser);
+        assertEquals(UserFixture.aUser().getUsername(), foundedUser.getUsername());
+        assertEquals(UserFixture.hashedPasswordFromAUser(), foundedUser.getPassword());
+        authenticatedWithRoleAdmin.run(() ->
+                userService.delete(foundedUser)
+        );
+    }
+
+    @Test
+    public void ThatFindByIdReturnsNullIfNoUserWasFound() throws Exception {
+
+        User foundedUser = userService.findById(2000000000L);
+
+        assertNull(foundedUser);
+    }
+
+    /**
+     * method under test: changePassword
+     */
+
+    @Test
+    public void ThatChangePasswordCanBeAccessedAsRoleAdmin() throws Exception {
+        authenticatedWithRoleAdmin.run(() -> {
+            userService.createOrUpdate(UserFixture.aUser());
+            User createdUser = userService.findByUsername(UserFixture.aUser().getUsername());
+            createdUser.setPassword("test123");
+
+            userService.changePassword(createdUser);
+
+            User changedUser = userService.findByUsername(UserFixture.aUser().getUsername());
+            assertNotNull(changedUser);
+            assertEquals("7NcYcNGWMxapfjrDQIyYNa2M8PPBvHA1J8MCZVNPda4=", changedUser.getPassword());
+            userService.delete(changedUser);
+        });
+    }
+
+    @Test
+    public void ThatChangePasswordCanBeAccessedAsRoleUser() throws Exception {
+        authenticatedWithRoleAdmin.run(() ->
+                userService.createOrUpdate(UserFixture.aUser())
+        );
+        authenticatedWithRoleUser.run(() -> {
+        User createdUser = userService.findByUsername(UserFixture.aUser().getUsername());
+        createdUser.setPassword("test123");
+
+            userService.changePassword(createdUser);
+
+            User changedUser = userService.findByUsername(UserFixture.aUser().getUsername());
+            assertNotNull(changedUser);
+            assertEquals("7NcYcNGWMxapfjrDQIyYNa2M8PPBvHA1J8MCZVNPda4=", changedUser.getPassword());
+        });
+        authenticatedWithRoleAdmin.run(() -> {
+            User deleteUser = userService.findByUsername(UserFixture.aUser().getUsername());
+            userService.delete(deleteUser);
+        });
+    }
+
+    @Test
+    public void ThatChangePasswordNotChangesPasswordIfPasswordNotBeUpdated() throws Exception {
+        authenticatedWithRoleAdmin.run(() -> {
+            userService.createOrUpdate(UserFixture.aUser());
+            User createdUser = userService.findByUsername(UserFixture.aUser().getUsername());
+
+            userService.changePassword(createdUser);
+
+            User changedUser = userService.findByUsername(UserFixture.aUser().getUsername());
+            assertNotNull(changedUser);
+            assertEquals(UserFixture.hashedPasswordFromAUser(), changedUser.getPassword());
+            userService.delete(changedUser);
+        });
+    }
+
+    @Test(expected = EJBAccessException.class)
+    public void ThatChangePasswordCanNotBeAccessedAsAnonymous() throws Exception {
+
+        userService.changePassword(UserFixture.aUser());
+
+    }
 }

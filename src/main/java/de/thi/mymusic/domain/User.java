@@ -67,18 +67,17 @@ public class User extends BaseEntity {
     // Equals and HashCode
     //************************************************
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(username, user.username) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(userRoles, user.userRoles);
+        return Objects.equals(username, user.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, password, userRoles);
+        return Objects.hash(username);
     }
 }

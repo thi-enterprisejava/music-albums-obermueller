@@ -57,7 +57,7 @@ public class PasswordValidatorTest {
         when(mockedValue.toString()).thenReturn("password");
         UIInput uiInput= new UIInput();
         uiInput.setSubmittedValue("password");
-        Map<String, Object> mapAttributes = new HashMap();
+        Map<String, Object> mapAttributes = new HashMap<>();
         mapAttributes.put("confirmPassword", uiInput);
         when(mockedUIComponent.getAttributes()).thenReturn(mapAttributes);
         passwordValidator = new PasswordValidator();
@@ -77,7 +77,7 @@ public class PasswordValidatorTest {
         when(mockedValue.toString()).thenReturn("password");
         UIInput uiInput= new UIInput();
         uiInput.setSubmittedValue("password2");
-        Map<String, Object> mapAttributes = new HashMap();
+        Map<String, Object> mapAttributes = new HashMap<>();
         mapAttributes.put("confirmPassword", uiInput);
         when(mockedUIComponent.getAttributes()).thenReturn(mapAttributes);
         passwordValidator = new PasswordValidator();

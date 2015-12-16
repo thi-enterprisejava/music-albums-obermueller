@@ -28,7 +28,9 @@ public class UserService {
                 new String[] {"username"}, new Object[] {username});
 
         if(users.size() > 0) {
-            return users.get(0);
+            User user = users.get(0);
+            crudService.getEntityManager().detach(user);
+            return user;
         } else {
             return null;
         }
@@ -36,11 +38,20 @@ public class UserService {
 
     @PermitAll
     public User findById(long id) {
+        User user = crudService.findById(User.class, id);
+        if(user != null) {
+            crudService.getEntityManager().detach(user);
+        }
+
         return crudService.findById(User.class, id);
     }
 
     @PermitAll
     public List<User> findAll(){
+
+        List<User> users = crudService.findAll(User.class);
+        users.forEach(user -> crudService.getEntityManager().detach(user));
+
         return crudService.findAll(User.class);
     }
 
@@ -94,4 +105,5 @@ public class UserService {
         logger.info("Rehash Password for userId:" + user.getId() + " with username: " + user.getUsername());
         return user;
     }
+
 }

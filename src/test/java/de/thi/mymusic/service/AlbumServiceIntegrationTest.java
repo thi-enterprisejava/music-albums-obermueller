@@ -24,6 +24,9 @@ import javax.ejb.EJB;
 @RunWith(Arquillian.class)
 public class AlbumServiceIntegrationTest {
 
+    /**
+     * class under test
+     */
     @EJB
     AlbumService albumService;
 
