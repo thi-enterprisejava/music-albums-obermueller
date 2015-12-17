@@ -5,6 +5,7 @@ import de.thi.mymusic.domain.Interpret;
 import de.thi.mymusic.domain.Song;
 import de.thi.mymusic.service.AlbumService;
 import de.thi.mymusic.util.FileUtils;
+import de.thi.mymusic.util.GuiUtils;
 import org.apache.log4j.Logger;
 
 import javax.faces.application.FacesMessage;
@@ -51,7 +52,7 @@ public class SelectedAlbum implements Serializable
     //*******************************************************
     // Getter and Setter
     //*******************************************************
-
+    
     public Album getAlbum() {
         return album;
     }
@@ -84,11 +85,11 @@ public class SelectedAlbum implements Serializable
         this.currentSongDuration = newSongDuration;
     }
 
-    public long getNewSongNumber() {
+    public long getCurrentSongNumber() {
         return currentSongNumber;
     }
 
-    public void setNewSongNumber(long newSongNumber) {
+    public void setCurrentSongNumber(long newSongNumber) {
         this.currentSongNumber = newSongNumber;
     }
 
@@ -129,10 +130,10 @@ public class SelectedAlbum implements Serializable
                 interpret = album.getInterpret() ;
                 imageName = album.getImageFilename();
             } else {
-                //TODO Translate Message String
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        "Album konnte nicht gefunden werden!", null);
-                FacesContext.getCurrentInstance().addMessage(null, message);
+                FacesContext context = FacesContext.getCurrentInstance();
+                FacesMessage message = GuiUtils.getFacesMessage(FacesContext.getCurrentInstance(),
+                        FacesMessage.SEVERITY_ERROR, "album.init.albumNotFoundError");
+                context.addMessage(null, message);
 
                 return "error";
             }
@@ -143,9 +144,7 @@ public class SelectedAlbum implements Serializable
 
     public String doSave() {
         uploadImage();
-
         album.setInterpret(interpret);
-
         albumService.createOrUpdate(this.album);
 
         return "detailAlbum.xhtml?faces-redirect=true&album="+album.getId();
@@ -217,7 +216,7 @@ public class SelectedAlbum implements Serializable
 
     public String doCancel() {
         if(albumId > 0) {
-            return "edit.xhtml?album=" + albumId;
+            return "edit.xhtml?album=" + albumId + "&faces-redirect=true";
         }
         interpret = new Interpret();
         album = new Album();
@@ -227,7 +226,11 @@ public class SelectedAlbum implements Serializable
     }
 
     public String doDelete() {
-        //TODO Info Message that delete was successful
+        FacesContext context = FacesContext.getCurrentInstance();
+        FacesMessage message = GuiUtils.getFacesMessage(FacesContext.getCurrentInstance(),
+                FacesMessage.SEVERITY_ERROR, "album.delete.info");
+        context.addMessage(null, message);
+
         albumService.delete(album);
 
         return "search.xhtml?faces-redirect=true";

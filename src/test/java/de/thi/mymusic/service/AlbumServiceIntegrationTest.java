@@ -31,7 +31,6 @@ public class AlbumServiceIntegrationTest {
     AlbumService albumService;
 
     @Deployment(testable = true)
-    @Ignore
     public static WebArchive createDeployment() {
         WebArchive webarchive = ShrinkWrap.create(WebArchive.class, "test.war")
                 .addClass(BaseEntity.class)
@@ -49,7 +48,6 @@ public class AlbumServiceIntegrationTest {
 
 
     @Test
-    @Ignore
     public void ThatAlbumCanBeAdded() {
         //Album album = new Album();
         //album.addSong(new Song(1, ""));

@@ -69,7 +69,7 @@ public class UserManagementTest {
      */
 
     @Test
-    public void ThatInitSetFoundedUserCorrect() throws Exception {
+    public void ThatInitSetFoundUserCorrect() throws Exception {
         userManagement.setUserId(1L);
         User testUser = UserFixture.aUser();
         when(mockedUserService.findById(1L)).thenReturn(testUser);

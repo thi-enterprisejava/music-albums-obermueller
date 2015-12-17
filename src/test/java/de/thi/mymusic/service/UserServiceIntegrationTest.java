@@ -49,7 +49,7 @@ public class UserServiceIntegrationTest {
                 .addClass(UserFixture.class)
                 .addClass(AuthenticatedWithRoleAdmin.class)
                 .addClass(AuthenticatedWithRoleUser.class)
-                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/web.xml"), "web.xml")
+                //.addAsWebInfResource(new File("src/main/webapp/WEB-INF/web.xml"), "web.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 ;
         System.out.println(webarchive.toString(Formatters.VERBOSE));
@@ -132,12 +132,12 @@ public class UserServiceIntegrationTest {
         authenticatedWithRoleAdmin.run(() -> {
             User userMichael = UserFixture.aUser();
             userService.createOrUpdate(userMichael);
-            User foundedUser = userService.findByUsername(userMichael.getUsername());
+            User foundUser = userService.findByUsername(userMichael.getUsername());
 
-            userService.delete(foundedUser);
+            userService.delete(foundUser);
 
-            User foundedUserAfterDelete = userService.findByUsername(userMichael.getUsername());
-            assertNull(foundedUserAfterDelete);
+            User foundUserAfterDelete = userService.findByUsername(userMichael.getUsername());
+            assertNull(foundUserAfterDelete);
         });
     }
 
@@ -166,23 +166,23 @@ public class UserServiceIntegrationTest {
             userService.createOrUpdate(UserFixture.aUser())
         );
 
-        User foundedUser = userService.findByUsername(UserFixture.aUser().getUsername());
+        User foundUser = userService.findByUsername(UserFixture.aUser().getUsername());
 
-        assertNotNull(foundedUser);
-        assertEquals(UserFixture.aUser().getUsername(), foundedUser.getUsername());
-        assertEquals(UserFixture.hashedPasswordFromAUser(), foundedUser.getPassword());
+        assertNotNull(foundUser);
+        assertEquals(UserFixture.aUser().getUsername(), foundUser.getUsername());
+        assertEquals(UserFixture.hashedPasswordFromAUser(), foundUser.getPassword());
 
         authenticatedWithRoleAdmin.run(() ->
-            userService.delete(foundedUser)
+            userService.delete(foundUser)
         );
     }
 
     @Test
-    public void ThatFindByUsernameReturnsNullIfNoUserWasFounded() throws Exception {
+    public void ThatFindByUsernameReturnsNullIfNoUserWasFound() throws Exception {
 
-        User foundedUser = userService.findByUsername(UserFixture.aUser().getUsername());
+        User foundUser = userService.findByUsername(UserFixture.aUser().getUsername());
 
-        assertNull(foundedUser);
+        assertNull(foundUser);
     }
 
     /**
@@ -196,22 +196,22 @@ public class UserServiceIntegrationTest {
         );
         User createdUser = userService.findByUsername(UserFixture.aUser().getUsername());
 
-        User foundedUser = userService.findById(createdUser.getId());
+        User foundUser = userService.findById(createdUser.getId());
 
-        assertNotNull(foundedUser);
-        assertEquals(UserFixture.aUser().getUsername(), foundedUser.getUsername());
-        assertEquals(UserFixture.hashedPasswordFromAUser(), foundedUser.getPassword());
+        assertNotNull(foundUser);
+        assertEquals(UserFixture.aUser().getUsername(), foundUser.getUsername());
+        assertEquals(UserFixture.hashedPasswordFromAUser(), foundUser.getPassword());
         authenticatedWithRoleAdmin.run(() ->
-                userService.delete(foundedUser)
+                userService.delete(foundUser)
         );
     }
 
     @Test
     public void ThatFindByIdReturnsNullIfNoUserWasFound() throws Exception {
 
-        User foundedUser = userService.findById(2000000000L);
+        User foundUser = userService.findById(2000000000L);
 
-        assertNull(foundedUser);
+        assertNull(foundUser);
     }
 
     /**

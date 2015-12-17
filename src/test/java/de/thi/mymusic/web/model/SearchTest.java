@@ -112,7 +112,7 @@ public class SearchTest {
     }
 
     @Test
-    public void thatAutoCompleteReturnEmptyListIfNothingFounded() throws Exception{
+    public void thatAutoCompleteReturnEmptyListIfNothingFound() throws Exception{
         when(mockedSearchService.findAlbumByName("Beat")).
                 thenReturn(Arrays.asList());
 
