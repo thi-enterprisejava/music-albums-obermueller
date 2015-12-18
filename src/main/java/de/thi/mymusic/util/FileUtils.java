@@ -8,7 +8,7 @@ public class FileUtils {
 
     public static final String IMAGE_PATH = "C:\\Java Development Tools\\albumImages";
 
-    public static String getFileNameFromPart(Part part) {
+    public String getFileNameFromPart(Part part) {
         final String partHeader = part.getHeader("content-disposition");
         for (String content : partHeader.split(";")) {
             if (content.trim().startsWith("filename")) {
@@ -20,7 +20,7 @@ public class FileUtils {
         return null;
     }
 
-    public static String getFileTypFromPart(Part part) {
+    public String getFileTypFromPart(Part part) {
         String fileTyp = null;
         String fileName = getFileNameFromPart(part);
         if(fileName != null) {
@@ -38,7 +38,7 @@ public class FileUtils {
      * @return <code>true</code> if and only if the file was correctly deleted
      *         <code>false</code> otherwise
      */
-    public static boolean deleteFile(String file) {
+    public boolean deleteFile(String file) {
         boolean successful = false;
         if(file != null) {
             File image = new File(file);

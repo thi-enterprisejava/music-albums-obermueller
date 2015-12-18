@@ -24,7 +24,7 @@ import java.util.List;
 @Stateless
 public class CrudService {
 
-    @PersistenceContext(unitName="mymusic")
+    @PersistenceContext
     private EntityManager em;
 
     private static final Logger logger = Logger.getLogger(CrudService.class);

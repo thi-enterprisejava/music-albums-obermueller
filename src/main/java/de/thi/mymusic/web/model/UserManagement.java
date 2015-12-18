@@ -24,12 +24,14 @@ import java.util.List;
 public class UserManagement implements Serializable {
 
     private UserService userService;
+    private GuiUtils guiUtils;
     private User user;
     private long userId;
 
     @Inject
-    public UserManagement(UserService userService) {
+    public UserManagement(UserService userService, GuiUtils guiUtils) {
         this.userService = userService;
+        this.guiUtils = guiUtils;
         user = new User();
     }
 
@@ -150,7 +152,7 @@ public class UserManagement implements Serializable {
         user = userService.findByUsername(username);
 
         if (user != null && user.getId() != userId) {
-            FacesMessage msg = GuiUtils.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
+            FacesMessage msg = guiUtils.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
                     "edit.user.usernameNotUnique");
             throw new ValidatorException(msg);
         }

@@ -19,7 +19,7 @@ public class GuiUtils {
      * @param args: Optional arguements as message input
      * @return: Translated FacesMessage
      */
-    public static FacesMessage getFacesMessage(FacesContext context, FacesMessage.Severity severity,
+    public FacesMessage getFacesMessage(FacesContext context, FacesMessage.Severity severity,
             String msgKey, Object... args) {
         Locale loc = context.getViewRoot().getLocale();
         ResourceBundle bundle = ResourceBundle.getBundle(context.getApplication().getMessageBundle(), loc);

@@ -17,7 +17,6 @@ import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
-import java.io.File;
 
 import static org.junit.Assert.*;
 
@@ -51,6 +50,7 @@ public class UserServiceIntegrationTest {
                 .addClass(AuthenticatedWithRoleUser.class)
                 //.addAsWebInfResource(new File("src/main/webapp/WEB-INF/web.xml"), "web.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
+                .addAsWebInfResource("mymusictest-ds.xml")
                 ;
         System.out.println(webarchive.toString(Formatters.VERBOSE));
 

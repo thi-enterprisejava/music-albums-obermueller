@@ -34,16 +34,20 @@ public class SelectedAlbum implements Serializable
     private String currentSongDuration;
     private long currentSongNumber;
     private AlbumService albumService;
+    private GuiUtils guiUtils;
     private Part imageFile;
     private String imageName;
+    private FileUtils fileUtils;
 
     //For Detail View
     private long albumId;
 
 
     @Inject
-    public SelectedAlbum(AlbumService albumService){
+    public SelectedAlbum(AlbumService albumService, GuiUtils guiUtils, FileUtils fileUtils){
         this.albumService = albumService;
+        this.guiUtils = guiUtils;
+        this.fileUtils = fileUtils;
         interpret = new Interpret();
         album = new Album();
         initSong();
@@ -131,7 +135,7 @@ public class SelectedAlbum implements Serializable
                 imageName = album.getImageFilename();
             } else {
                 FacesContext context = FacesContext.getCurrentInstance();
-                FacesMessage message = GuiUtils.getFacesMessage(FacesContext.getCurrentInstance(),
+                FacesMessage message = guiUtils.getFacesMessage(FacesContext.getCurrentInstance(),
                         FacesMessage.SEVERITY_ERROR, "album.init.albumNotFoundError");
                 context.addMessage(null, message);
 
@@ -156,7 +160,7 @@ public class SelectedAlbum implements Serializable
 
         try {
             if (imageFile != null && imageFile.getSize() > 0) {
-                String fileTyp = FileUtils.getFileTypFromPart(imageFile);
+                String fileTyp = fileUtils.getFileTypFromPart(imageFile);
                 String uuid = UUID.randomUUID().toString();
                 imageName = uuid + fileTyp;
                 File outputFile = new File(FileUtils.IMAGE_PATH + File.separator  + imageName);
@@ -227,7 +231,7 @@ public class SelectedAlbum implements Serializable
 
     public String doDelete() {
         FacesContext context = FacesContext.getCurrentInstance();
-        FacesMessage message = GuiUtils.getFacesMessage(FacesContext.getCurrentInstance(),
+        FacesMessage message = guiUtils.getFacesMessage(FacesContext.getCurrentInstance(),
                 FacesMessage.SEVERITY_ERROR, "album.delete.info");
         context.addMessage(null, message);
 

@@ -2,15 +2,11 @@ package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.domain.User;
 import de.thi.mymusic.fixture.UserFixture;
+import de.thi.mymusic.mocker.ContextMocker;
 import de.thi.mymusic.service.UserService;
 import de.thi.mymusic.util.GuiUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIViewRoot;
@@ -19,7 +15,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import java.io.IOException;
 import java.io.Writer;
 
 import static org.junit.Assert.*;
@@ -29,8 +24,7 @@ import static org.mockito.Mockito.*;
 /**
  * Created by Michael on 11.12.2015.
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({ FacesContext.class, UIViewRoot.class, ExternalContext.class, Writer.class, HttpServletRequest.class, GuiUtils.class})
+
 public class AuthentificationTest {
 
     /**
@@ -39,29 +33,22 @@ public class AuthentificationTest {
     Authentification authentification;
 
     UserService mockedUserService;
-    @Mock
     FacesContext mockedFacesContext;
-    @Mock
     UIViewRoot mockedUIViewRoot;
-    @Mock
     ExternalContext mockedExternalContext;
-    @Mock
     Writer mockedWriter;
-    @Mock
     HttpServletRequest mockedHttpServletRequest;
-    @Mock
     GuiUtils mockedGuiUtils;
 
     @Before
     public void setUp() throws Exception {
         mockedUserService = mock(UserService.class);
-        authentification = new Authentification(mockedUserService);
-        PowerMockito.mockStatic(FacesContext.class);
-        PowerMockito.mockStatic(UIViewRoot.class);
-        PowerMockito.mockStatic(ExternalContext.class);
-        PowerMockito.mockStatic(HttpServletRequest.class);
-        PowerMockito.mockStatic(GuiUtils.class);
-        when(FacesContext.getCurrentInstance()).thenReturn(mockedFacesContext);
+        mockedGuiUtils = mock(GuiUtils.class);
+        authentification = new Authentification(mockedUserService, mockedGuiUtils);
+        mockedFacesContext = ContextMocker.mockFacesContext();
+        mockedUIViewRoot = mock(UIViewRoot.class);
+        mockedExternalContext = mock(ExternalContext.class);
+        mockedHttpServletRequest = mock(HttpServletRequest.class);
         when(mockedFacesContext.getExternalContext()).thenReturn(mockedExternalContext);
         when(mockedExternalContext.getRequest()).thenReturn(mockedHttpServletRequest);
         when(mockedFacesContext.getViewRoot()).thenReturn(mockedUIViewRoot);
@@ -123,7 +110,7 @@ public class AuthentificationTest {
 
     @Test
     public void ThatDoLogoutWriteResponseCorrect() throws Exception {
-        PowerMockito.mockStatic(Writer.class);
+        mockedWriter = mock(Writer.class);
         when(mockedExternalContext.getResponseOutputWriter()).thenReturn(mockedWriter);
 
         try{

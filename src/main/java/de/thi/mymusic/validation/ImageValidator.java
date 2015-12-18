@@ -8,6 +8,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import javax.inject.Inject;
 import javax.servlet.http.Part;
 
 /**
@@ -17,6 +18,15 @@ import javax.servlet.http.Part;
 @FacesValidator("imageValidator")
 public class ImageValidator implements Validator {
 
+    private GuiUtils guiUtils;
+
+    @Inject
+    public ImageValidator(GuiUtils guiUtils) {
+        this.guiUtils = guiUtils;
+    }
+
+    private static long MAX_FILE_SIZE = 2024 * 1024;
+
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
@@ -25,14 +35,14 @@ public class ImageValidator implements Validator {
             if (!"image/jpeg".equals(file.getContentType())
                     && !"image/png".equals(file.getContentType())
                     && !"image/gif".equals(file.getContentType())) {
-                FacesMessage msg = GuiUtils.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
+                FacesMessage msg = guiUtils.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
                         "edit.album.validateError.noImageFile");
 
                 throw new ValidatorException(msg);
             }
 
-            if (file.getSize() > (2024 * 1024)) {
-                FacesMessage msg = GuiUtils.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
+            if (file.getSize() > MAX_FILE_SIZE) {
+                FacesMessage msg = guiUtils.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
                         "edit.album.validateError.imageFileToBig");
 
                 throw new ValidatorException(msg);

@@ -16,7 +16,6 @@ import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
 
-
 /**
  * Created by Michael on 20.11.2015.
  */
@@ -31,6 +30,7 @@ public class AlbumServiceIntegrationTest {
     AlbumService albumService;
 
     @Deployment(testable = true)
+    @Ignore
     public static WebArchive createDeployment() {
         WebArchive webarchive = ShrinkWrap.create(WebArchive.class, "test.war")
                 .addClass(BaseEntity.class)
@@ -48,6 +48,7 @@ public class AlbumServiceIntegrationTest {
 
 
     @Test
+    @Ignore
     public void ThatAlbumCanBeAdded() {
         //Album album = new Album();
         //album.addSong(new Song(1, ""));

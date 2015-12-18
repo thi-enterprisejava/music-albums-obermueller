@@ -6,21 +6,14 @@ import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.fixture.AlbumFixture;
 import de.thi.mymusic.fixture.InterpretFixture;
 import de.thi.mymusic.fixture.SongFixture;
+import de.thi.mymusic.mocker.ContextMocker;
 import de.thi.mymusic.service.AlbumService;
 import de.thi.mymusic.util.FileUtils;
 import de.thi.mymusic.util.GuiUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
 import javax.faces.context.FacesContext;
-import javax.servlet.http.Part;
-import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,8 +22,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({ FacesContext.class, GuiUtils.class, FileUtils.class, UUID.class})
 public class SelectedAlbumTest {
 
     /**
@@ -39,20 +30,18 @@ public class SelectedAlbumTest {
     SelectedAlbum selectedAlbum;
 
     AlbumService mockedAlbumService;
-    @Mock
     FacesContext mockedFacesContext;
-    @Mock
     GuiUtils mockedGuiUtils;
-    @Mock
     FileUtils mockedFileUtils;
-    @Mock
     UUID mockedUUID;
 
     @Before
     public void setUp() throws Exception {
         mockedAlbumService = mock(AlbumService.class);
-        selectedAlbum = new SelectedAlbum(mockedAlbumService);
-        PowerMockito.mockStatic(FacesContext.class);
+        mockedGuiUtils = mock(GuiUtils.class);
+        mockedFileUtils = mock(FileUtils.class);
+        selectedAlbum = new SelectedAlbum(mockedAlbumService, mockedGuiUtils, mockedFileUtils);
+        mockedFacesContext = ContextMocker.mockFacesContext();
     }
 
     /**
@@ -77,8 +66,6 @@ public class SelectedAlbumTest {
     public void thatInitReturnErrorPageIfAlbumWasNotFound() throws Exception {
         selectedAlbum.setAlbumId(2L);
         when(mockedAlbumService.findById(2L)).thenReturn(null);
-        when(FacesContext.getCurrentInstance()).thenReturn(mockedFacesContext);
-        PowerMockito.mockStatic(GuiUtils.class);
 
         String viewResult = selectedAlbum.init();
 
@@ -105,8 +92,6 @@ public class SelectedAlbumTest {
     @Ignore
     //TODO Test doSave with FileUpload
     public void thatDoSaveAddNewAlbumWithImage() throws Exception {
-        PowerMockito.mockStatic(FileUtils.class);
-        PowerMockito.mockStatic(UUID.class);
         //Part imageFile = new Part();
         //when(FileUtils.getFileNameFromPart()).thenReturn()
         selectedAlbum.setInterpret(InterpretFixture.aInterpret());

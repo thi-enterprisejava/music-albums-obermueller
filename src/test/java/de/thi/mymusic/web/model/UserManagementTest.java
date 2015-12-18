@@ -2,6 +2,7 @@ package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.domain.User;
 import de.thi.mymusic.fixture.UserFixture;
+import de.thi.mymusic.mocker.ContextMocker;
 import de.thi.mymusic.service.UserService;
 import de.thi.mymusic.util.GuiUtils;
 import org.junit.Before;
@@ -20,12 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import sun.security.acl.PrincipalImpl;
 
 import java.security.Principal;
@@ -36,8 +32,6 @@ import java.util.Map;
  * Created by Michael on 11.12.2015.
  */
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({ FacesContext.class, ExternalContext.class, HttpServletRequest.class, GuiUtils.class})
 public class UserManagementTest {
 
     /**
@@ -46,22 +40,21 @@ public class UserManagementTest {
     UserManagement userManagement;
 
     UserService mockedUserService;
-    @Mock
+
     FacesContext mockedFacesContext;
-    @Mock
+
     ExternalContext mockedExternalContext;
-    @Mock
     HttpServletRequest mockedHttpServletRequest;
     UIComponent mockedUIComponent;
     Object mockedValue;
-    @Mock
     GuiUtils mockedGuiUtils;
 
     @Before
     public void setUp() throws Exception {
         mockedUserService = mock(UserService.class);
-        userManagement = new UserManagement(mockedUserService);
-        PowerMockito.mockStatic(FacesContext.class);
+        mockedGuiUtils = mock(GuiUtils.class);
+        userManagement = new UserManagement(mockedUserService, mockedGuiUtils);
+        mockedFacesContext  = ContextMocker.mockFacesContext();
     }
 
     /**
@@ -87,7 +80,6 @@ public class UserManagementTest {
     public void ThatInitIncorrectUserIdReturnErrorPageAndAddErrorMessage() throws Exception {
         userManagement.setUserId(2L);
         when(mockedUserService.findById(2L)).thenReturn(null);
-        when(FacesContext.getCurrentInstance()).thenReturn(mockedFacesContext);
         ArgumentCaptor<FacesMessage> facesMessageCaptor = ArgumentCaptor
                 .forClass(FacesMessage.class);
 
@@ -124,9 +116,8 @@ public class UserManagementTest {
     @Test
     public void ThatInitForPasswordSetCorrectUser() throws Exception {
         User testUser = UserFixture.aUser();
-        PowerMockito.mockStatic(ExternalContext.class);
-        PowerMockito.mockStatic(HttpServletRequest.class);
-        when(mockedFacesContext.getCurrentInstance()).thenReturn(mockedFacesContext);
+        mockedExternalContext = mock(ExternalContext.class);
+        mockedHttpServletRequest = mock(HttpServletRequest.class);
         when(mockedFacesContext.getExternalContext()).thenReturn(mockedExternalContext);
         when(mockedExternalContext.getRequest()).thenReturn(mockedHttpServletRequest);
         Principal principalMichael = new PrincipalImpl("Michael");
@@ -144,9 +135,8 @@ public class UserManagementTest {
 
     @Test
     public void ThatInitForPasswordIncorrectUserReturnErrorPage() throws Exception {
-        PowerMockito.mockStatic(ExternalContext.class);
-        PowerMockito.mockStatic(HttpServletRequest.class);
-        when(mockedFacesContext.getCurrentInstance()).thenReturn(mockedFacesContext);
+        mockedExternalContext = mock(ExternalContext.class);
+        mockedHttpServletRequest = mock(HttpServletRequest.class);
         when(mockedFacesContext.getExternalContext()).thenReturn(mockedExternalContext);
         when(mockedExternalContext.getRequest()).thenReturn(mockedHttpServletRequest);
         Principal principalMichael = new PrincipalImpl("Michael2");
@@ -162,9 +152,8 @@ public class UserManagementTest {
 
     @Test
     public void ThatInitForPasswordReturnErrorPageIfNotLoggedIn() throws Exception {
-        PowerMockito.mockStatic(ExternalContext.class);
-        PowerMockito.mockStatic(HttpServletRequest.class);
-        when(mockedFacesContext.getCurrentInstance()).thenReturn(mockedFacesContext);
+        mockedExternalContext = mock(ExternalContext.class);
+        mockedHttpServletRequest = mock(HttpServletRequest.class);
         when(mockedFacesContext.getExternalContext()).thenReturn(mockedExternalContext);
         when(mockedExternalContext.getRequest()).thenReturn(mockedHttpServletRequest);
         when(mockedHttpServletRequest.getUserPrincipal()).thenReturn(null);
@@ -192,7 +181,6 @@ public class UserManagementTest {
         mapAttributes.put("userId", 2L);
         when(mockedUIComponent.getAttributes()).thenReturn(mapAttributes);
         when(mockedUserService.findByUsername("Michael")).thenReturn(testUser);
-        PowerMockito.mockStatic(GuiUtils.class);
         when(mockedGuiUtils.getFacesMessage(mockedFacesContext, FacesMessage.SEVERITY_ERROR,
                 "edit.user.usernameNotUnique")).thenReturn(new FacesMessage("edit.user.usernameNotUnique"));
 
@@ -215,7 +203,6 @@ public class UserManagementTest {
         mapAttributes.put("userId", 0L);
         when(mockedUIComponent.getAttributes()).thenReturn(mapAttributes);
         when(mockedUserService.findByUsername("Michael")).thenReturn(testUser);
-        PowerMockito.mockStatic(GuiUtils.class);
         when(mockedGuiUtils.getFacesMessage(mockedFacesContext, FacesMessage.SEVERITY_ERROR,
                 "edit.user.usernameNotUnique")).thenReturn(new FacesMessage("edit.user.usernameNotUnique"));
 
@@ -236,7 +223,6 @@ public class UserManagementTest {
         mapAttributes.put("userId", 0L);
         when(mockedUIComponent.getAttributes()).thenReturn(mapAttributes);
         when(mockedUserService.findByUsername("Michael")).thenReturn(null);
-        PowerMockito.mockStatic(GuiUtils.class);
         when(mockedGuiUtils.getFacesMessage(mockedFacesContext, FacesMessage.SEVERITY_ERROR,
                 "edit.user.usernameNotUnique")).thenReturn(new FacesMessage("edit.user.usernameNotUnique"));
 
