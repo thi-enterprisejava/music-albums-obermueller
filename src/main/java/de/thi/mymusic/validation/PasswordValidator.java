@@ -9,6 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import javax.inject.Inject;
 
 /**
  * Created by Michael on 10.12.2015.
@@ -16,6 +17,13 @@ import javax.faces.validator.ValidatorException;
 
 @FacesValidator("passwordValidator")
 public class PasswordValidator implements Validator {
+
+    private GuiUtils guiUtils;
+
+    @Inject
+    public PasswordValidator(GuiUtils guiUtils) {
+        this.guiUtils = guiUtils;
+    }
 
     @Override
     public void validate(FacesContext context, UIComponent component,
@@ -37,7 +45,7 @@ public class PasswordValidator implements Validator {
         // If password and confirmPassword aren´t equal
         if (!password.equals(confirmPassword)) {
             uiInputConfirmPassword.setValid(false);
-            FacesMessage msg = GuiUtils.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
+            FacesMessage msg = guiUtils.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
                     "edit.user.passwordNotEqual");
             throw new ValidatorException(msg);
         }

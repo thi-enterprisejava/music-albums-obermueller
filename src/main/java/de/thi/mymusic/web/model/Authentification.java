@@ -1,6 +1,7 @@
 package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.service.UserService;
+import de.thi.mymusic.util.GuiUtils;
 
 
 import javax.enterprise.context.RequestScoped;
@@ -25,11 +26,13 @@ public class Authentification implements Serializable {
     private String username;
     private String password;
     private UserService userService;
+    private GuiUtils guiUtils;
 
 
     @Inject
-    public Authentification(UserService userService) {
+    public Authentification(UserService userService, GuiUtils guiUtils) {
         this.userService = userService;
+        this.guiUtils = guiUtils;
     }
 
     //*******************************************************

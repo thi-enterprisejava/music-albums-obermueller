@@ -25,6 +25,9 @@ public class AlbumService {
     @EJB
     private CrudService crudService;
 
+    @EJB
+    private FileUtils fileUtils;
+
     private static final Logger logger = Logger.getLogger(AlbumService.class);
 
     @RolesAllowed("User")
@@ -80,7 +83,7 @@ public class AlbumService {
     private void deleteOldImageFileIfChanged(Album oldAlbum, Album updatedAlbum) {
         if((oldAlbum.getImageFilename() != null && updatedAlbum.getImageFilename() == null)
                 || (updatedAlbum.getImageFilename() != null && !updatedAlbum.getImageFilename().equals(oldAlbum.getImageFilename()))) {
-            FileUtils.deleteFile(FileUtils.IMAGE_PATH + File.separator + oldAlbum.getImageFilename());
+            fileUtils.deleteFile(FileUtils.IMAGE_PATH + File.separator + oldAlbum.getImageFilename());
             logger.info("Delete File: " + updatedAlbum.getImageFilename());
         }
     }
@@ -106,7 +109,7 @@ public class AlbumService {
         Interpret interpret = crudService.findById(Interpret.class, album.getInterpret().getId());
 
         if(album.getImageFilename() != null) {
-            FileUtils.deleteFile(FileUtils.IMAGE_PATH + album.getImageFilename());
+            fileUtils.deleteFile(FileUtils.IMAGE_PATH + album.getImageFilename());
         }
 
         logger.info("Delete-Album: " + album.getTitle());

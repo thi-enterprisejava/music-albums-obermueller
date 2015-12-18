@@ -5,6 +5,7 @@ import de.thi.mymusic.domain.Interpret;
 import de.thi.mymusic.domain.Song;
 import de.thi.mymusic.service.AlbumService;
 import de.thi.mymusic.util.FileUtils;
+import de.thi.mymusic.util.GuiUtils;
 import org.apache.log4j.Logger;
 
 import javax.faces.application.FacesMessage;
@@ -33,16 +34,20 @@ public class SelectedAlbum implements Serializable
     private String currentSongDuration;
     private long currentSongNumber;
     private AlbumService albumService;
+    private GuiUtils guiUtils;
     private Part imageFile;
     private String imageName;
+    private FileUtils fileUtils;
 
     //For Detail View
     private long albumId;
 
 
     @Inject
-    public SelectedAlbum(AlbumService albumService){
+    public SelectedAlbum(AlbumService albumService, GuiUtils guiUtils, FileUtils fileUtils){
         this.albumService = albumService;
+        this.guiUtils = guiUtils;
+        this.fileUtils = fileUtils;
         interpret = new Interpret();
         album = new Album();
         initSong();
@@ -51,7 +56,7 @@ public class SelectedAlbum implements Serializable
     //*******************************************************
     // Getter and Setter
     //*******************************************************
-
+    
     public Album getAlbum() {
         return album;
     }
@@ -84,11 +89,11 @@ public class SelectedAlbum implements Serializable
         this.currentSongDuration = newSongDuration;
     }
 
-    public long getNewSongNumber() {
+    public long getCurrentSongNumber() {
         return currentSongNumber;
     }
 
-    public void setNewSongNumber(long newSongNumber) {
+    public void setCurrentSongNumber(long newSongNumber) {
         this.currentSongNumber = newSongNumber;
     }
 
@@ -129,10 +134,10 @@ public class SelectedAlbum implements Serializable
                 interpret = album.getInterpret() ;
                 imageName = album.getImageFilename();
             } else {
-                //TODO Translate Message String
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        "Album konnte nicht gefunden werden!", null);
-                FacesContext.getCurrentInstance().addMessage(null, message);
+                FacesContext context = FacesContext.getCurrentInstance();
+                FacesMessage message = guiUtils.getFacesMessage(FacesContext.getCurrentInstance(),
+                        FacesMessage.SEVERITY_ERROR, "album.init.albumNotFoundError");
+                context.addMessage(null, message);
 
                 return "error";
             }
@@ -143,9 +148,7 @@ public class SelectedAlbum implements Serializable
 
     public String doSave() {
         uploadImage();
-
         album.setInterpret(interpret);
-
         albumService.createOrUpdate(this.album);
 
         return "detailAlbum.xhtml?faces-redirect=true&album="+album.getId();
@@ -157,7 +160,7 @@ public class SelectedAlbum implements Serializable
 
         try {
             if (imageFile != null && imageFile.getSize() > 0) {
-                String fileTyp = FileUtils.getFileTypFromPart(imageFile);
+                String fileTyp = fileUtils.getFileTypFromPart(imageFile);
                 String uuid = UUID.randomUUID().toString();
                 imageName = uuid + fileTyp;
                 File outputFile = new File(FileUtils.IMAGE_PATH + File.separator  + imageName);
@@ -217,7 +220,7 @@ public class SelectedAlbum implements Serializable
 
     public String doCancel() {
         if(albumId > 0) {
-            return "edit.xhtml?album=" + albumId;
+            return "edit.xhtml?album=" + albumId + "&faces-redirect=true";
         }
         interpret = new Interpret();
         album = new Album();
@@ -227,7 +230,11 @@ public class SelectedAlbum implements Serializable
     }
 
     public String doDelete() {
-        //TODO Info Message that delete was successful
+        FacesContext context = FacesContext.getCurrentInstance();
+        FacesMessage message = guiUtils.getFacesMessage(FacesContext.getCurrentInstance(),
+                FacesMessage.SEVERITY_ERROR, "album.delete.info");
+        context.addMessage(null, message);
+
         albumService.delete(album);
 
         return "search.xhtml?faces-redirect=true";

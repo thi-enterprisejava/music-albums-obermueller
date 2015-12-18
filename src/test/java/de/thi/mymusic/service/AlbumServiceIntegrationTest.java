@@ -16,7 +16,6 @@ import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
 
-
 /**
  * Created by Michael on 20.11.2015.
  */
