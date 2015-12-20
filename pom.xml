@@ -10,6 +10,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <failOnMissingWebXml>false</failOnMissingWebXml>
+        <docker.resource.targetPath>/</docker.resource.targetPath>
     </properties>
     <dependencies>
         <dependency>
@@ -28,18 +29,6 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>1.10.19</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>1.6.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito</artifactId>
-            <version>1.6.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -78,7 +67,7 @@
         <dependency>
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-embedded</artifactId>
-            <version>9.0.1.Final</version>
+            <version>9.0.2.Final</version>
             <scope>test</scope>
         </dependency>
 
@@ -106,6 +95,22 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <!-- define a profile that is activated in windows environments -->
+    <profiles>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <docker.resource.targetPath></docker.resource.targetPath>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <finalName>mymusic</finalName>
         <plugins>
@@ -125,7 +130,7 @@
                                 <artifactItem>
                                     <groupId>org.wildfly</groupId>
                                     <artifactId>wildfly-dist</artifactId>
-                                    <version>9.0.1.Final</version>
+                                    <version>9.0.2.Final</version>
                                     <type>zip</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>target</outputDirectory>
@@ -145,8 +150,8 @@
                     <systemPropertyVariables>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                         <!-- the maven dependency plugin will have already downloaded the server on /target -->
-                        <jboss.home>${project.basedir}/target/wildfly-9.0.1.Final</jboss.home>
-                        <module.path>${project.basedir}/target/wildfly-9.0.1.Final/modules</module.path>
+                        <jboss.home>${project.basedir}/target/wildfly-9.0.2.Final</jboss.home>
+                        <module.path>${project.basedir}/target/wildfly-9.0.2.Final/modules</module.path>
                     </systemPropertyVariables>
                     <redirectTestOutputToFile>false</redirectTestOutputToFile>
                 </configuration>
@@ -158,6 +163,23 @@
                 <version>1.0.2.Final</version>
                 <configuration>
                     <port>9990</port>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.3.8</version>
+                <configuration>
+                    <imageName>michaelobermueller/mymusic:0.1</imageName>
+                    <dockerDirectory>src/main/docker/wildfly</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath></targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.war</include>
+                        </resource>
+                    </resources>
                 </configuration>
             </plugin>
         </plugins>

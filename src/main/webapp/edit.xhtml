@@ -45,7 +45,7 @@
                             <td> <h:outputLabel for="imageFile" value="#{msg['album.imageFile']}:"/></td>
                             <td> <h:message for="imageFile"/>
                                 <h:inputFile id="imageFile" value="#{selectedAlbum.imageFile}">
-                                    <f:validator validatorId="imageValidator"/>
+                                    <f:validator binding="#{imageValidator}"/>
                                 </h:inputFile>
                             </td>
                         </tr>
@@ -87,13 +87,13 @@
                         </tr>
                     </ui:repeat>
                     <tr>
-                        <td>#{selectedAlbum.newSongNumber}</td>
+                        <td>#{selectedAlbum.currentSongNumber}</td>
                         <td><h:message for="newSongTitle" />
                             <h:inputText id="newSongTitle" required="true" value="#{selectedAlbum.newSongTitle}" pt:placeholder="#{msg['song.title']}"/>
                         </td>
                         <td><h:message for="newSongDuration" />
                             <h:inputText id="newSongDuration" required="true" value="#{selectedAlbum.newSongDuration}" pt:placeholder="mm:ss">
-                                <f:validator validatorId="songDurationValidator"/>
+                                <f:validator binding="#{songDurationValidator}"/>
                             </h:inputText>
                         </td>
                         <td> <h:commandButton actionListener="#{selectedAlbum.doAddSong}" value="#{msg['add.song.button']}">
@@ -104,7 +104,7 @@
             </h:panelGroup>
 
                 <h:commandButton id="save" styleClass="button_add" action="#{selectedAlbum.doSave}" value="#{msg['common.save']}">
-                    <f:ajax execute="titel interpret release_year imageFile" render="form"></f:ajax>
+                    <f:ajax execute="titel interpret release_year imageFile" render="form" ></f:ajax>
                 </h:commandButton>
                 <h:commandButton id="cancel" styleClass="button_add" value="#{msg['common.cancel']}" action="#{selectedAlbum.doCancel}" immediate="true"/>
 

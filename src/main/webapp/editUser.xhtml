@@ -41,7 +41,7 @@
                             <td><h:outputLabel for="password" value="#{msg['user.password']}:"/></td>
                             <td><h:inputSecret id="password" size="30" maxlength="30" required="true"
                                                value="#{userManagement.user.password}" disabled="#{userManagement.userId == 0 ? false : not checkbox.value}">
-                                   <f:validator validatorId="passwordValidator" />
+                                   <f:validator binding="#{passwordValidator}" />
                                    <f:attribute name="confirmPassword" value="#{confirmPassword}" />
                                </h:inputSecret>
                             </td>
