@@ -1,12 +1,16 @@
 package de.thi.mymusic.util;
 
+import javax.annotation.security.PermitAll;
+import javax.ejb.Stateless;
 import javax.servlet.http.Part;
 import java.io.File;
 
-
+@Stateless
+@PermitAll
 public class FileUtils {
 
-    public static final String IMAGE_PATH = "C:\\Java Development Tools\\albumImages";
+    //public static final String IMAGE_PATH = "C:\\Java Development Tools\\albumImages";
+    public static final String IMAGE_PATH = "/tmp/images/mymusic";
 
     public String getFileNameFromPart(Part part) {
         final String partHeader = part.getHeader("content-disposition");

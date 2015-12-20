@@ -2,6 +2,7 @@ package de.thi.mymusic.validation;
 
 import de.thi.mymusic.util.GuiUtils;
 
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -9,13 +10,16 @@ import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.Part;
 
 /**
  * Created by Michael Obermüller on 03.12.2015.
  */
 
-@FacesValidator("imageValidator")
+//@FacesValidator("imageValidator")
+@Named
+@RequestScoped
 public class ImageValidator implements Validator {
 
     private GuiUtils guiUtils;

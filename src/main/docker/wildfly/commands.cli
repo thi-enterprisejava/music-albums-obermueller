@@ -1,0 +1,24 @@
+# Run the commands in an embedded server
+embed-server
+
+# Add postgres module
+module add --name=org.postgres --resources=/tmp/postgresql-${postgres.version}.jdbc4.jar --dependencies=javax.api,javax.transaction.api
+
+# Add Postgres driver
+/subsystem=datasources/jdbc-driver=postgres:add(driver-name="postgres",driver-module-name="org.postgres",driver-class-name=org.postgresql.Driver)
+
+# Add datasouce
+data-source add --jndi-name=java:/MyMusicDS --name=MyMusicDS --connection-url=jdbc:postgresql://192.168.99.100:5432/mymusic --driver-name=postgres --user-name=mymusic --password=mymuisc_Test
+
+# Configure the security domain
+/subsystem=security/security-domain=mymusicSecurityDomain/:add(cache-type=default)
+/subsystem=security/security-domain=mymusicSecurityDomain/authentication=classic:add(login-modules=[{"code"=>"Database", "flag"=>"required" , module-options=>["dsJndiName"=>"java:/MyMusicDS", "principalsQuery"=>"SELECT password from mymusic.public.users where username=?", "rolesQuery" => "select role, 'Roles' from mymusic.public.userroles where user_id IN(SELECT id from mymusic.public.users where username=?)", "hashAlgorithm" => "SHA-256", "hashEncoding" => "base64", "hashCharset" => "UTF-8", "hashUserPassword" => "true", "hashStorePassword" => "false"]}])
+
+#Add image handler
+/subsystem=undertow/configuration=handler/file=images:add(path="/tmp/images/mymusic", directory-listing="true")
+
+#Add image location
+/subsystem=undertow/server=default-server/host=default-host/location="/img":add(handler="images")
+
+stop-embedded-server
+

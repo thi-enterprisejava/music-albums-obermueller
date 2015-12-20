@@ -1,12 +1,15 @@
 package de.thi.mymusic.util;
 
+import javax.annotation.security.PermitAll;
+import javax.ejb.Stateless;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-
+@Stateless
+@PermitAll
 public class GuiUtils {
 
     /**
