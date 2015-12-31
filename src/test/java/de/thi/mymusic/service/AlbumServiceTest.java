@@ -86,7 +86,7 @@ public class AlbumServiceTest {
 
         albumService.createOrUpdate(AlbumFixture.aAlbumWithId());
 
-        verify(mockedFileUtils).deleteFile(FileUtils.IMAGE_PATH + File.separator + AlbumFixture.aAlbumWithIdOld().getImageFilename());
+        verify(mockedFileUtils).deleteFile(AlbumFixture.aAlbumWithIdOld().getImageFilename());
         verify(mockedCrudService).merge(AlbumFixture.aAlbumWithId());
     }
 
@@ -138,7 +138,7 @@ public class AlbumServiceTest {
 
         albumService.delete(AlbumFixture.aAlbumWithId());
 
-        verify(mockedFileUtils).deleteFile(FileUtils.IMAGE_PATH + File.separator + AlbumFixture.aAlbumWithId().getImageFilename());
+        verify(mockedFileUtils).deleteFile(AlbumFixture.aAlbumWithId().getImageFilename());
         verify(mockedCrudService).delete(AlbumFixture.aAlbumWithId());
         verify(mockedCrudService, never()).delete(AlbumFixture.aAlbumWithId().getInterpret());
     }
@@ -149,7 +149,7 @@ public class AlbumServiceTest {
 
         albumService.delete(AlbumFixture.aAlbumWithId());
 
-        verify(mockedFileUtils).deleteFile(FileUtils.IMAGE_PATH + File.separator + AlbumFixture.aAlbumWithId().getImageFilename());
+        verify(mockedFileUtils).deleteFile(AlbumFixture.aAlbumWithId().getImageFilename());
         verify(mockedCrudService).delete(AlbumFixture.aAlbumWithId());
         verify(mockedCrudService).delete(AlbumFixture.aAlbumWithId().getInterpret());
     }

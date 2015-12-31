@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.Part;
 import java.io.*;
-import java.util.UUID;
+
 
 /**
  * Created by Michael on 23.10.2015.
@@ -148,44 +148,14 @@ public class SelectedAlbum implements Serializable
     }
 
     public String doSave() {
-        uploadImage();
+        album.setImageFilename(fileUtils.saveImageOnFilesystem(imageFile));
         album.setInterpret(interpret);
         albumService.createOrUpdate(this.album);
 
         return "detailAlbum.xhtml?faces-redirect=true&album="+album.getId();
     }
 
-    private void uploadImage() {
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
 
-        try {
-            if (imageFile != null && imageFile.getSize() > 0) {
-                String fileTyp = fileUtils.getFileTypFromPart(imageFile);
-                String uuid = UUID.randomUUID().toString();
-                imageName = uuid + fileTyp;
-                File outputFile = new File(FileUtils.IMAGE_PATH + File.separator  + imageName);
-                inputStream = imageFile.getInputStream();
-                outputStream = new FileOutputStream(outputFile);
-                byte[] buffer = new byte[1024];
-                int bytesRead = 0;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
-                }
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-
-                album.setImageFilename(imageName);
-            }
-        }catch(IOException ex) {
-            logger.error("Image couldn´t be loaded!");
-            imageName = null;
-        }
-    }
 
     public String doAddSong() {
         Song song;

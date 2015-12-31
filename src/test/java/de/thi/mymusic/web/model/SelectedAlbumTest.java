@@ -1,26 +1,26 @@
 package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.domain.Interpret;
-import de.thi.mymusic.domain.Song;
 import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.fixture.AlbumFixture;
 import de.thi.mymusic.fixture.InterpretFixture;
 import de.thi.mymusic.fixture.SongFixture;
 import de.thi.mymusic.mocker.ContextMocker;
+import de.thi.mymusic.mocker.PartMocker;
 import de.thi.mymusic.service.AlbumService;
 import de.thi.mymusic.util.FileUtils;
 import de.thi.mymusic.util.GuiUtils;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
+import java.nio.file.Files;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -38,6 +38,9 @@ public class SelectedAlbumTest {
     FacesContext mockedFacesContext;
     GuiUtils mockedGuiUtils;
     FileUtils mockedFileUtils;
+
+    @Rule
+    public TemporaryFolder testFolder = new TemporaryFolder();
 
     @Before
     public void setUp() throws Exception {
@@ -93,25 +96,22 @@ public class SelectedAlbumTest {
      */
 
     @Test
-    //TODO Test doSave with FileUpload
     public void thatDoSaveAddNewAlbumWithImage() throws Exception {
-        Part mockedImageFile = mock(Part.class);
-        InputStream mockedInputStream = mock(InputStream.class);
-        File mockedFile = mock(File.class);
-        when(mockedFileUtils.getFileTypFromPart(mockedImageFile)).thenReturn(".jpg");
-        when(mockedImageFile.getSize()).thenReturn(1000L);
-        when(mockedImageFile.getInputStream()).thenReturn(mockedInputStream);
-        when(mockedInputStream.read(new byte[1024])).thenReturn(1234123);
+        File testFile = testFolder.newFile("test.jpg");
+        Files.write(testFile.toPath(), "Testbild".getBytes());
+        Part mockedImageFile = new PartMocker(testFile, null, "sdf;sdfd;filename=test.jpg;asdf;", 1000L);
         selectedAlbum.setImageFile(mockedImageFile);
         selectedAlbum.setInterpret(InterpretFixture.aInterpret());
         selectedAlbum.setAlbum(AlbumFixture.aAlbumWithoutInterpret());
+        when(mockedFileUtils.saveImageOnFilesystem(mockedImageFile)).thenReturn("test123.jpg");
 
         selectedAlbum.doSave();
 
         assertEquals(InterpretFixture.aInterpret().getName(), selectedAlbum.getInterpret().getName());
         verify(mockedAlbumService).createOrUpdate(AlbumFixture.aAlbum());
-        verify(mockedInputStream).read(new byte[1024]);
+        assertEquals("test123.jpg", selectedAlbum.getAlbum().getImageFilename());
     }
+
 
     /**
      * method under test: doAddSong

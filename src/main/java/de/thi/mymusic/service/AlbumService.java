@@ -77,7 +77,7 @@ public class AlbumService {
 
         // Delete old songs which now aren´t mapped with updated album
         oldAlbum.getSongs().forEach(song-> {
-            if(album.getSongs().contains(song)) {
+            if(!album.getSongs().contains(song)) {
                 crudService.delete(song);
             }
         });
@@ -90,7 +90,7 @@ public class AlbumService {
     private void deleteOldImageFileIfChanged(Album oldAlbum, Album updatedAlbum) {
         if((oldAlbum.getImageFilename() != null && updatedAlbum.getImageFilename() == null)
                 || (updatedAlbum.getImageFilename() != null && !updatedAlbum.getImageFilename().equals(oldAlbum.getImageFilename()))) {
-            fileUtils.deleteFile(FileUtils.IMAGE_PATH + File.separator + oldAlbum.getImageFilename());
+            fileUtils.deleteFile(oldAlbum.getImageFilename());
             logger.info("Delete File: " + updatedAlbum.getImageFilename());
         }
     }
@@ -116,7 +116,7 @@ public class AlbumService {
         Interpret interpret = crudService.findById(Interpret.class, album.getInterpret().getId());
 
         if(album.getImageFilename() != null) {
-            fileUtils.deleteFile(FileUtils.IMAGE_PATH + File.separator + album.getImageFilename());
+            fileUtils.deleteFile(album.getImageFilename());
         }
 
         logger.info("Delete-Album: " + album.getTitle());
