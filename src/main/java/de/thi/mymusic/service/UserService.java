@@ -22,12 +22,17 @@ public class UserService {
     private CrudService crudService;
     private static final Logger logger = Logger.getLogger(UserService.class);
 
+
+    public void setCrudService(CrudService crudService) {
+        this.crudService = crudService;
+    }
+
     @PermitAll
     public User findByUsername(String username) {
         List<User> users =  crudService.findByNamedQuery(User.class, "User.findByName",
                 new String[] {"username"}, new Object[] {username});
 
-        if(users.size() > 0) {
+        if(users != null && users.size() > 0) {
             User user = users.get(0);
             crudService.getEntityManager().detach(user);
             return user;
@@ -103,6 +108,7 @@ public class UserService {
     private User hashPassword(User user) {
         user.setPassword(Util.createPasswordHash("SHA-256", "BASE64", "UTF-8", null, user.getPassword()));
         logger.info("Rehash Password for userId:" + user.getId() + " with username: " + user.getUsername());
+
         return user;
     }
 

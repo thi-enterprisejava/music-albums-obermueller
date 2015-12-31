@@ -39,7 +39,7 @@ public class SelectedAlbum implements Serializable
     private String imageName;
     private FileUtils fileUtils;
 
-    //For Detail View
+    //For detail view or edit a album
     private long albumId;
 
 
@@ -155,12 +155,6 @@ public class SelectedAlbum implements Serializable
         return "detailAlbum.xhtml?faces-redirect=true&album="+album.getId();
     }
 
-    public String doSaveImage() {
-        uploadImage();
-
-        return null;
-    }
-
     private void uploadImage() {
         InputStream inputStream = null;
         OutputStream outputStream = null;
@@ -194,7 +188,7 @@ public class SelectedAlbum implements Serializable
     }
 
     public String doAddSong() {
-        Song song = null;
+        Song song;
         if(editSong != null) {
             song = editSong;
             song.setTitle(currentSongTitle);

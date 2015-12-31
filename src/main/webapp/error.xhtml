@@ -4,11 +4,11 @@
 
 <h:body>
     <ui:composition template="/META-INF/templates/template.xhtml">
-        <ui:param name="title" value="Fehler"/>
+        <ui:param name="title" value="#{msg['error.title']}"/>
         <ui:define name="content">
             <div class="content_container">
                 <div class="content_header">
-                    <h4>Ohh, es ist ein Fehler aufgetreten!</h4>
+                    <h4>#{msg['error.message']}</h4>
                 </div>
                 <div class="col_8">
                     <h:messages globalOnly="true"/>

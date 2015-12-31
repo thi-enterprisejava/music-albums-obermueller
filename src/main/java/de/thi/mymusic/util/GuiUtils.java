@@ -36,6 +36,12 @@ public class GuiUtils {
         return new FacesMessage(severity, msg, null);
     }
 
+    /**
+     * Checks ViewId to style current navigation element
+     * @param navigationElement
+     * @return <code>current</code> if and only if the viewId is in group of navigationElement
+     *         <code></code> otherwise
+     */
     public static String getCurrentNavigationClass(String navigationElement) {
 
         String result = "current";

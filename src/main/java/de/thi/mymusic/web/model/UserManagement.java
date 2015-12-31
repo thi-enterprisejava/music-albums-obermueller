@@ -144,10 +144,6 @@ public class UserManagement implements Serializable {
         String username = value.toString();
         userId = (long) component.getAttributes().get("userId");
 
-        if(username == null) {
-            return;
-        }
-
         // Find user with input username
         user = userService.findByUsername(username);
 

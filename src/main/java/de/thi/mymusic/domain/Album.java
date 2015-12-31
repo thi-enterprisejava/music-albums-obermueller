@@ -105,6 +105,7 @@ public class Album extends BaseEntity {
         this.imageFilename = imageFilename;
     }
 
+
     public void addSong(Song song) {
         song.setAlbum(this);
         if(songs.size() >=  song.getSongNumber()) {

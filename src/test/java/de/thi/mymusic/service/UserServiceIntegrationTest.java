@@ -63,7 +63,7 @@ public class UserServiceIntegrationTest {
      */
 
     @Test
-    public void ThatUserCanBeAddedWithAdminRole() throws Exception {
+    public void thatUserCanBeAddedWithAdminRole() throws Exception {
         authenticatedWithRoleAdmin.run(() -> {
             User userMichael = UserFixture.aUser();
 
@@ -79,7 +79,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void ThatUserCanNotAddedorUpdatedWithUserRole() throws Exception {
+    public void thatUserCanNotAddedOrUpdatedWithUserRole() throws Exception {
         authenticatedWithRoleUser.run(() -> {
             User userMichael = UserFixture.aUser();
 
@@ -93,7 +93,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test(expected = EJBAccessException.class)
-    public void ThatUserCanNotBeAddedOrUpdatedAnonymous() throws Exception {
+    public void thatUserCanNotBeAddedOrUpdatedAnonymous() throws Exception {
         User userMichael = UserFixture.aUser();
 
         userService.createOrUpdate(userMichael);
@@ -101,7 +101,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void ThatUserCanBeUpdated() throws Exception {
+    public void thatUserCanBeUpdated() throws Exception {
         authenticatedWithRoleAdmin.run(() -> {
             User userMichael = UserFixture.aUser();
             userService.createOrUpdate(userMichael);
@@ -129,7 +129,7 @@ public class UserServiceIntegrationTest {
      */
 
     @Test
-    public void ThatDeleteIsPossibleAsRoleAdmin() throws Exception {
+    public void thatDeleteIsPossibleAsRoleAdmin() throws Exception {
         authenticatedWithRoleAdmin.run(() -> {
             User userMichael = UserFixture.aUser();
             userService.createOrUpdate(userMichael);
@@ -143,7 +143,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test(expected = EJBAccessException.class)
-    public void ThatDeleteIsNotPossibleAsRoleUser() throws Exception {
+    public void thatDeleteIsNotPossibleAsRoleUser() throws Exception {
         authenticatedWithRoleUser.run(() ->
 
             userService.delete(UserFixture.aUser())
@@ -151,7 +151,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test(expected = EJBAccessException.class)
-    public void ThatDeleteIsNotPossibleAsAnonymous() throws Exception {
+    public void thatDeleteIsNotPossibleAsAnonymous() throws Exception {
 
         userService.delete(UserFixture.aUser());
 
@@ -162,7 +162,7 @@ public class UserServiceIntegrationTest {
      */
 
     @Test
-    public void ThatFindByUsernameReturnsCorrectUser() throws Exception {
+    public void thatFindByUsernameReturnsCorrectUser() throws Exception {
         authenticatedWithRoleAdmin.run(() ->
             userService.createOrUpdate(UserFixture.aUser())
         );
@@ -179,7 +179,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void ThatFindByUsernameReturnsNullIfNoUserWasFound() throws Exception {
+    public void thatFindByUsernameReturnsNullIfNoUserWasFound() throws Exception {
 
         User foundUser = userService.findByUsername(UserFixture.aUser().getUsername());
 
@@ -191,7 +191,7 @@ public class UserServiceIntegrationTest {
      */
 
     @Test
-    public void ThatFindByIdReturnsCorrectUser() throws Exception {
+    public void thatFindByIdReturnsCorrectUser() throws Exception {
         authenticatedWithRoleAdmin.run(() ->
                 userService.createOrUpdate(UserFixture.aUser())
         );
@@ -208,7 +208,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void ThatFindByIdReturnsNullIfNoUserWasFound() throws Exception {
+    public void thatFindByIdReturnsNullIfNoUserWasFound() throws Exception {
 
         User foundUser = userService.findById(2000000000L);
 
@@ -220,7 +220,7 @@ public class UserServiceIntegrationTest {
      */
 
     @Test
-    public void ThatChangePasswordCanBeAccessedAsRoleAdmin() throws Exception {
+    public void thatChangePasswordCanBeAccessedAsRoleAdmin() throws Exception {
         authenticatedWithRoleAdmin.run(() -> {
             userService.createOrUpdate(UserFixture.aUser());
             User createdUser = userService.findByUsername(UserFixture.aUser().getUsername());
@@ -236,7 +236,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void ThatChangePasswordCanBeAccessedAsRoleUser() throws Exception {
+    public void thatChangePasswordCanBeAccessedAsRoleUser() throws Exception {
         authenticatedWithRoleAdmin.run(() ->
                 userService.createOrUpdate(UserFixture.aUser())
         );
@@ -257,7 +257,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void ThatChangePasswordNotChangesPasswordIfPasswordNotBeUpdated() throws Exception {
+    public void thatChangePasswordNotChangesPasswordIfPasswordNotBeUpdated() throws Exception {
         authenticatedWithRoleAdmin.run(() -> {
             userService.createOrUpdate(UserFixture.aUser());
             User createdUser = userService.findByUsername(UserFixture.aUser().getUsername());
@@ -272,7 +272,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test(expected = EJBAccessException.class)
-    public void ThatChangePasswordCanNotBeAccessedAsAnonymous() throws Exception {
+    public void thatChangePasswordCanNotBeAccessedAsAnonymous() throws Exception {
 
         userService.changePassword(UserFixture.aUser());
 

@@ -14,10 +14,9 @@ import javax.inject.Named;
 import java.util.regex.Pattern;
 
 /**
- * Created by Michael Obermüller on 12.11.2015.
+ * SongDurationValidator is responsible for validate input of song duration
  */
 
-//@FacesValidator("songDurationValidator")
 @Named
 @RequestScoped
 public class SongDurationValidator implements Validator {

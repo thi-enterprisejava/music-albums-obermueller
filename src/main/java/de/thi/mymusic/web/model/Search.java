@@ -2,6 +2,7 @@ package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.domain.Interpret;
+import de.thi.mymusic.domain.SearchResultEntity;
 import de.thi.mymusic.domain.Song;
 import de.thi.mymusic.service.SearchService;
 
@@ -16,7 +17,6 @@ import java.util.List;
  * Created by Michael on 05.11.2015.
  */
 
-//TODO Implement Search Model
 @Named
 @SessionScoped
 public class Search implements Serializable {
@@ -83,32 +83,15 @@ public class Search implements Serializable {
         return "listSearchResult";
     }
 
-    // AJAX Request: Complete Search Input
 
     /**
-     *
-     * @param query
-     * @return
+     * CompleteSearchInput is responsible for ajax auto complete search values
+     * @param query is search string
+     * @return List of five SearchResultEntity
      */
-    public List<String> completeSearchInput(String query) {
-        List<String> results = new ArrayList<String>();
-        List<Album> foundedResults = searchService.findAlbumByName(query);
+    public List<SearchResultEntity> completeSearchInput(String query) {
+        List<SearchResultEntity> foundedResults = searchService.findEntitiesByName(query);
 
-        System.out.println(foundedResults.toString());
-
-        // List of top 5 founded albums
-        if(foundedResults != null) {
-            int result_size = 5;
-            if(foundedResults.size() < 5) {
-                result_size = foundedResults.size();
-            }
-            for(int i = 0; i < result_size; i++) {
-                if(foundedResults.get(i) != null) {
-                    results.add(foundedResults.get(i).getTitle());
-                }
-            }
-        }
-
-        return results;
+        return foundedResults;
     }
 }

@@ -29,6 +29,10 @@ public class CrudService {
 
     private static final Logger logger = Logger.getLogger(CrudService.class);
 
+    public EntityManager getEntityManager() {
+        return em;
+    }
+
     // Create new entity
     public <T extends BaseEntity> void persist(T entity) {
         em.persist(entity);
@@ -62,14 +66,12 @@ public class CrudService {
 
         List<T> result = query.getResultList();
         logger.info("FindByNamedQuery: " + clazz.toString() + " Value:" + values[0] + ", Founded:" + result.size());
-        return (List<T>) result;
+
+        return result;
     }
 
     public <T extends BaseEntity> void delete(T entity) {
         em.remove(em.contains(entity) ? entity : em.merge(entity));
     }
 
-    public EntityManager getEntityManager() {
-        return em;
-    }
 }

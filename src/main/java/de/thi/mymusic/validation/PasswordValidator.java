@@ -14,10 +14,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
- * Created by Michael on 10.12.2015.
+ * PasswordValidator is responsible for validate password input fields
  */
 
-//@FacesValidator("passwordValidator")
 @Named
 @RequestScoped
 public class PasswordValidator implements Validator {

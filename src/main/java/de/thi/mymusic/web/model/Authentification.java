@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
 /**
- * Created by Michael on 06.12.2015.
+ * Authentification is responsible for login and logout of a user
  */
 
 @Named

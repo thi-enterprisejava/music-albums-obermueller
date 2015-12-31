@@ -49,7 +49,7 @@ public class AlbumServiceIntegrationTest {
 
     @Test
     @Ignore
-    public void ThatAlbumCanBeAdded() {
+    public void thatAlbumCanBeAdded() {
         //Album album = new Album();
         //album.addSong(new Song(1, ""));
     }

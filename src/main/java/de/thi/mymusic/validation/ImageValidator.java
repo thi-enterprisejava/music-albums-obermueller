@@ -14,10 +14,10 @@ import javax.inject.Named;
 import javax.servlet.http.Part;
 
 /**
- * Created by Michael Obermüller on 03.12.2015.
+ * ImageValidator is responsible for validate uploaded image files
+ *
  */
 
-//@FacesValidator("imageValidator")
 @Named
 @RequestScoped
 public class ImageValidator implements Validator {

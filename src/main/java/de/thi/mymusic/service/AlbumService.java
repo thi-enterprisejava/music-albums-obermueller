@@ -29,6 +29,14 @@ public class AlbumService {
 
     private static final Logger logger = Logger.getLogger(AlbumService.class);
 
+    public void setCrudService(CrudService crudService) {
+        this.crudService = crudService;
+    }
+
+    public void setFileUtils(FileUtils fileUtils) {
+        this.fileUtils = fileUtils;
+    }
+
     @RolesAllowed("User")
     public Album createOrUpdate(Album album) {
         /**
@@ -68,11 +76,11 @@ public class AlbumService {
         }
 
         // Delete old songs which now aren´t mapped with updated album
-        for(Song song : oldAlbum.getSongs()) {
-            if(!album.getSongs().contains(song)) {
+        oldAlbum.getSongs().forEach(song-> {
+            if(album.getSongs().contains(song)) {
                 crudService.delete(song);
             }
-        }
+        });
 
         crudService.merge(album);
         logger.info("Update-Album: " + album.getTitle());
@@ -108,7 +116,7 @@ public class AlbumService {
         Interpret interpret = crudService.findById(Interpret.class, album.getInterpret().getId());
 
         if(album.getImageFilename() != null) {
-            fileUtils.deleteFile(FileUtils.IMAGE_PATH + album.getImageFilename());
+            fileUtils.deleteFile(FileUtils.IMAGE_PATH + File.separator + album.getImageFilename());
         }
 
         logger.info("Delete-Album: " + album.getTitle());

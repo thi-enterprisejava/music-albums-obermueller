@@ -41,7 +41,7 @@ public class AlbumWebService {
 
     private void clearAlbum(Album album) {
         album.getSongs().forEach(song -> song.setAlbum(null));
-        album.getInterpret().setAlbums(new ArrayList<Album>(0));
+        album.getInterpret().setAlbums(new ArrayList(0));
 
     }
 
