@@ -2,9 +2,15 @@ package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.domain.Interpret;
+import de.thi.mymusic.domain.SearchResultEntity;
 import de.thi.mymusic.domain.Song;
+import de.thi.mymusic.fixture.AlbumFixture;
+import de.thi.mymusic.fixture.InterpretFixture;
+import de.thi.mymusic.fixture.SearchResultEntityFixture;
+import de.thi.mymusic.fixture.SongFixture;
 import de.thi.mymusic.service.SearchService;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -24,7 +30,6 @@ public class SearchTest {
 
     /**
      * class under test
-     * Search
      */
     Search search;
 
@@ -36,88 +41,65 @@ public class SearchTest {
         search = new Search(mockedSearchService);
     }
 
+    /**
+     * method under test doSearch
+     */
 
     @Test
-    public void thatSearchFindOneEntryCorrect() throws Exception {
+    public void thatDoSearchFindOneEntryCorrect() throws Exception {
         when(mockedSearchService.findAlbumByName("Limbo messiah")).
-                thenReturn(Arrays.asList(new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
-                        new Song(2, "Meantime", "02:14")), 2007)));
+                thenReturn(Arrays.asList(AlbumFixture.aAlbumWithId()));
         search.setSearchString("Limbo messiah");
 
         String resultString = search.doSearch();
 
         assertEquals(1, search.getAlbumResult().size());
-        assertEquals(new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
-                new Song(2, "Meantime", "02:14")), 2007), search.getAlbumResult().get(0));
+        assertEquals(Arrays.asList(AlbumFixture.aAlbumWithId()), search.getAlbumResult());
+        assertEquals(1, search.getCountAlbumResult());
+        assertEquals(0,search.getInterpretResult().size());
+        assertEquals(0, search.getCountInterpretResult());
+        assertEquals(0, search.getSongResult().size());
+        assertEquals(0, search.getCountSongResult());
+        assertEquals(AlbumFixture.aAlbumWithId(), search.getAlbumResult().get(0));
         assertEquals("listSearchResult", resultString);
     }
 
     @Test
-    public void thatSearchFindMoreEntriesCorrect() throws Exception {
-        when(mockedSearchService.findAlbumByName("messiah")).
-                thenReturn(Arrays.asList(new Album("Black Messiah", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
-                        new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
-                                new Song(2, "Meantime", "02:14")), 2007)));
-        search.setSearchString("messiah");
+    public void thatDoSearchFindMoreEntriesCorrect() throws Exception {
+        when(mockedSearchService.findAlbumByName("mess")).
+                thenReturn(AlbumFixture.aListOfFiveAlbums());
+        when(mockedSearchService.findInterpretByName("mess")).thenReturn(InterpretFixture.aListOfTwoInterprets());
+        when(mockedSearchService.findSongByName("mess")).thenReturn(SongFixture.aListOfTwoSongs());
+        search.setSearchString("mess");
 
         String resultString = search.doSearch();
 
-        assertEquals(2, search.getAlbumResult().size());
-        assertEquals(search.getAlbumResult(), Arrays.asList(new Album("Black Messiah", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
-                        new Song(2, "1000 Deaths", "05:50")), 2014),
-                new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
-                        new Song(2, "Meantime", "02:14")), 2007)));
+        assertEquals(5, search.getAlbumResult().size());
+        assertEquals(AlbumFixture.aListOfFiveAlbums(), search.getAlbumResult());
+        assertEquals(5, search.getCountAlbumResult());
+        assertEquals(2,search.getInterpretResult().size());
+        assertEquals(InterpretFixture.aListOfTwoInterprets(),search.getInterpretResult());
+        assertEquals(2, search.getCountInterpretResult());
+        assertEquals(2, search.getSongResult().size());
+        assertEquals(SongFixture.aListOfTwoSongs(), search.getSongResult());
+        assertEquals(2, search.getCountSongResult());
         assertEquals("listSearchResult", resultString);
     }
 
-    //TODO Test if no entry was found
 
-
-    @Test
-    public void thatAutoCompleteFindCorrectEntries() throws Exception{
-        when(mockedSearchService.findAlbumByName("messiah")).
-                thenReturn(Arrays.asList(new Album("Black Messiah", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
-                        new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
-                                new Song(2, "Meantime", "02:14")), 2007)));
-
-        List<String> searchResult = search.completeSearchInput("messiah");
-
-        assertEquals(2, searchResult.size());
-        assertEquals(searchResult, Arrays.asList("Black Messiah", "Limbo messiah"));
-    }
+    /**
+     * method under test completeSearchInput
+     */
 
     @Test
-    public void thatAutoCompleteReturnsMaxFiveElements() throws Exception {
-        when(mockedSearchService.findAlbumByName("messiah")).
-                thenReturn(Arrays.asList(new Album("Black Messiah", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
-                        new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Black Messiah2", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
-                                new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Black Messiah3", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
-                                new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Black Messiah4", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
-                                new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Black Messiah5", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
-                                new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Black Messiah6", new Interpret("D'Angelo"), Arrays.asList(new Song(1, "Ain´t That Easy", "04:49"),
-                                new Song(2, "1000 Deaths", "05:50")), 2014),
-                        new Album("Limbo messiah", new Interpret("Beatsteaks"), Arrays.asList(new Song(1, "As I please", "03:12"),
-                                new Song(2, "Meantime", "02:14")), 2007)));
+    public void thatCompleteSearchInputFindCorrectEntries() throws Exception{
+        when(mockedSearchService.findEntitiesByName("mess")).thenReturn(SearchResultEntityFixture.aListOfAlbumSearchResultEntities());
 
-        List<String> searchResult = search.completeSearchInput("messiah");
+        List<SearchResultEntity> searchResult = search.completeSearchInput("mess");
 
-        assertEquals(5, searchResult.size());
+        assertNotNull(searchResult);
+        assertEquals(SearchResultEntityFixture.aListOfAlbumSearchResultEntities().size(), searchResult.size());
+        assertEquals(SearchResultEntityFixture.aListOfAlbumSearchResultEntities(), searchResult);
     }
 
-    @Test
-    public void thatAutoCompleteReturnEmptyListIfNothingFound() throws Exception{
-        when(mockedSearchService.findAlbumByName("Beat")).
-                thenReturn(Arrays.asList());
-
-        List<String> searchResult = search.completeSearchInput("Beat");
-
-        assertEquals(0, searchResult.size());
-    }
 }

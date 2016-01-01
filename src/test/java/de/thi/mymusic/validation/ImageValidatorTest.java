@@ -4,6 +4,10 @@ import de.thi.mymusic.mocker.ContextMocker;
 import de.thi.mymusic.util.GuiUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -19,6 +23,7 @@ import static org.mockito.Mockito.when;
  * Created by Michael on 17.12.2015.
  */
 
+@RunWith(Theories.class)
 public class ImageValidatorTest {
     /**
      * Class under test
@@ -30,12 +35,11 @@ public class ImageValidatorTest {
     Part mockedPartValue;
     GuiUtils mockedGuiUtils;
 
-    //@DataPoints
-    //public static String[] dataPoints = new String[] { "image/jpeg", "image/png", "image/gif"};
+    @DataPoints
+    public static String[] dataPoints = new String[] { "image/jpeg", "image/png", "image/gif"};
 
     @Before
     public void setUp() throws Exception {
-        mockedFacesContext = mock(FacesContext.class);
         mockedUIComponent = mock(UIComponent.class);
         mockedFacesContext = ContextMocker.mockFacesContext();
         mockedGuiUtils = mock(GuiUtils.class);
@@ -47,10 +51,9 @@ public class ImageValidatorTest {
      * method under test: validate
      */
 
-    //TODO Datapoints for other ImageFileTypes
-    @Test
-    public void ThatValidateThrowNoErrorMessageIfFileIsCorrectImage() throws Exception {
-        when(mockedPartValue.getContentType()).thenReturn("image/jpeg");
+    @Theory
+    public void thatValidateThrowNoErrorMessageIfFileIsCorrectImage(String imageFileType) throws Exception {
+        when(mockedPartValue.getContentType()).thenReturn(imageFileType);
         when(mockedPartValue.getSize()).thenReturn(2024L * 1024L);
 
         try {
@@ -63,7 +66,7 @@ public class ImageValidatorTest {
     }
 
     @Test (expected = ValidatorException.class)
-    public void ThatValidateThrowErrorMessageIfFileSizeToHigh() throws Exception {
+    public void thatValidateThrowErrorMessageIfFileSizeToHigh() throws Exception {
         when(mockedPartValue.getContentType()).thenReturn("image/jpeg");
         when(mockedPartValue.getSize()).thenReturn(2024L * 1024L + 1L);
         when(mockedGuiUtils.getFacesMessage(mockedFacesContext, FacesMessage.SEVERITY_ERROR,
@@ -75,7 +78,7 @@ public class ImageValidatorTest {
     }
 
     @Test (expected = ValidatorException.class)
-    public void ThatValidateThrowErrorMessageIfFileIsNotAImage() throws Exception {
+    public void thatValidateThrowErrorMessageIfFileIsNotAImage() throws Exception {
         when(mockedPartValue.getContentType()).thenReturn("application/pdf");
         when(mockedPartValue.getSize()).thenReturn(2024L * 1024L);
         when(mockedGuiUtils.getFacesMessage(mockedFacesContext, FacesMessage.SEVERITY_ERROR,

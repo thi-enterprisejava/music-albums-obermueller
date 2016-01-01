@@ -97,7 +97,12 @@ public class Song extends BaseEntity {
         this.album = album;
     }
 
-    // Convert and set song duration in seconds from a mm:ss formatted string
+
+    /**
+     * SetFormattedDuration convert and set song duration in seconds from a mm:ss formatted string
+     *
+     * @param formattedDuration as format mm:ss
+     */
     public void setFormattedDuration(String formattedDuration) {
         if(formattedDuration != null && formattedDuration.length() == 5) {
             String[] splittedDuration = formattedDuration.split(":");
@@ -107,8 +112,10 @@ public class Song extends BaseEntity {
         }
     }
 
-
-    // Returns the duration time in seconds as String in format: mm:ss
+    /**
+     *
+     * @return formatted duration in format: mm:ss
+     */
     public String getFormattedDuration() {
         return String.format("%02d:%02d", duration / 60, duration % 60);
     }

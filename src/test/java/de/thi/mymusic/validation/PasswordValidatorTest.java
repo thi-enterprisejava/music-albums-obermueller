@@ -37,7 +37,6 @@ public class PasswordValidatorTest {
 
     @Before
     public void setUp() throws Exception {
-        mockedFacesContext = mock(FacesContext.class);
         mockedUIComponent = mock(UIComponent.class);
         mockedFacesContext = ContextMocker.mockFacesContext();
         mockedGuiUtils = mock(GuiUtils.class);

@@ -105,6 +105,7 @@ public class Album extends BaseEntity {
         this.imageFilename = imageFilename;
     }
 
+
     public void addSong(Song song) {
         song.setAlbum(this);
         if(songs.size() >=  song.getSongNumber()) {
@@ -118,7 +119,7 @@ public class Album extends BaseEntity {
         this.songs.remove(song);
     }
 
-    public String formatedTotalDuration() {
+    public String formattedTotalDuration() {
         long totalDuration = songs
                      .stream()
                      .mapToLong(s -> s.getDuration())

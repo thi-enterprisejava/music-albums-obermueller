@@ -1,21 +1,26 @@
 package de.thi.mymusic.web.model;
 
 import de.thi.mymusic.domain.Interpret;
-import de.thi.mymusic.domain.Song;
 import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.fixture.AlbumFixture;
 import de.thi.mymusic.fixture.InterpretFixture;
 import de.thi.mymusic.fixture.SongFixture;
 import de.thi.mymusic.mocker.ContextMocker;
+import de.thi.mymusic.mocker.PartMocker;
 import de.thi.mymusic.service.AlbumService;
 import de.thi.mymusic.util.FileUtils;
 import de.thi.mymusic.util.GuiUtils;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import java.util.List;
-import java.util.UUID;
+import javax.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Files;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -33,7 +38,9 @@ public class SelectedAlbumTest {
     FacesContext mockedFacesContext;
     GuiUtils mockedGuiUtils;
     FileUtils mockedFileUtils;
-    UUID mockedUUID;
+
+    @Rule
+    public TemporaryFolder testFolder = new TemporaryFolder();
 
     @Before
     public void setUp() throws Exception {
@@ -89,37 +96,29 @@ public class SelectedAlbumTest {
      */
 
     @Test
-    @Ignore
-    //TODO Test doSave with FileUpload
     public void thatDoSaveAddNewAlbumWithImage() throws Exception {
-        //Part imageFile = new Part();
-        //when(FileUtils.getFileNameFromPart()).thenReturn()
+        File testFile = testFolder.newFile("test.jpg");
+        Files.write(testFile.toPath(), "Testbild".getBytes());
+        Part mockedImageFile = new PartMocker(testFile, null, "sdf;sdfd;filename=test.jpg;asdf;", 1000L);
+        selectedAlbum.setImageFile(mockedImageFile);
         selectedAlbum.setInterpret(InterpretFixture.aInterpret());
         selectedAlbum.setAlbum(AlbumFixture.aAlbumWithoutInterpret());
+        when(mockedFileUtils.saveImageOnFilesystem(mockedImageFile)).thenReturn("test123.jpg");
 
         selectedAlbum.doSave();
 
         assertEquals(InterpretFixture.aInterpret().getName(), selectedAlbum.getInterpret().getName());
         verify(mockedAlbumService).createOrUpdate(AlbumFixture.aAlbum());
-
+        assertEquals("test123.jpg", selectedAlbum.getAlbum().getImageFilename());
     }
 
-    @Test
-    @Ignore
-    public void thatAddSongCreateNewSongInAlbum() throws Exception {
-
-        selectedAlbum.doAddSong();
-
-        List<Song> songs = selectedAlbum.getAlbum().getSongs();
-        assertNotNull(songs);
-    }
 
     /**
      * method under test: doAddSong
      */
 
     @Test
-    public void ThatDoAddSongAddNewSongCorrect() throws Exception {
+    public void thatDoAddSongAddNewSongCorrect() throws Exception {
         selectedAlbum.setCurrentSongNumber(1);
         selectedAlbum.setNewSongTitle(SongFixture.aSong().getTitle());
         selectedAlbum.setNewSongDuration(SongFixture.aSong().getFormattedDuration());
@@ -136,7 +135,7 @@ public class SelectedAlbumTest {
     }
 
     @Test
-    public void ThatDoAddSongEditSongCorrect() throws Exception {
+    public void thatDoAddSongEditSongCorrect() throws Exception {
         selectedAlbum.setCurrentSongNumber(1);
         selectedAlbum.setNewSongTitle(SongFixture.aSong().getTitle());
         selectedAlbum.setNewSongDuration(SongFixture.aSong().getFormattedDuration());
@@ -180,7 +179,7 @@ public class SelectedAlbumTest {
      */
 
     @Test
-    public void ThatDoDeleteSongRemoveSongFromAlbum() throws Exception {
+    public void thatDoDeleteSongRemoveSongFromAlbum() throws Exception {
         selectedAlbum.setCurrentSongNumber(1);
         selectedAlbum.setNewSongTitle(SongFixture.aSong().getTitle());
         selectedAlbum.setNewSongDuration(SongFixture.aSong().getFormattedDuration());
@@ -224,7 +223,23 @@ public class SelectedAlbumTest {
         assertEquals("edit.xhtml?album=1&faces-redirect=true", viewResult);
     }
 
-    //TODO Test for method doDelete
+
+    /**
+     * method under test: doDelete
+     */
+
+    @Test
+    public void thatDoDeleteCreateMessageAndDeleteCorrectAlbum() {
+        FacesMessage message = new FacesMessage("test");
+        when(mockedGuiUtils.getFacesMessage(mockedFacesContext,
+                FacesMessage.SEVERITY_ERROR, "album.delete.info")).thenReturn(message);
+        selectedAlbum.setAlbum(AlbumFixture.aAlbum());
+
+        String result = selectedAlbum.doDelete();
+
+        verify(mockedAlbumService).delete(AlbumFixture.aAlbum());
+        assertEquals("search.xhtml?faces-redirect=true", result);
+    }
 
     /**
      * method under test: doDeleteImage

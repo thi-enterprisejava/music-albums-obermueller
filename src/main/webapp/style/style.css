@@ -88,8 +88,13 @@ body{
 }
 
 /* Login Div */
-div.login {
+div.loginFormNavbar {
     padding: 8px;
+    border-left: 1px solid #ccc;
+}
+
+div.logoutFormNavbar {
+    padding: 11px;
     border-left: 1px solid #ccc;
 }
 

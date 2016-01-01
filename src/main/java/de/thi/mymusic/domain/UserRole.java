@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * Created by Michael on 08.12.2015.
+ * Functional data model of a user role
  */
 
 @Entity

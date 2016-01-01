@@ -59,7 +59,7 @@ public class AuthentificationTest {
      */
 
     @Test
-    public void ThatDoLoginReturnNullIfWasCorrect() throws Exception {
+    public void thatDoLoginReturnNullIfWasCorrect() throws Exception {
         User testUser = UserFixture.aUser();
         authentification.setUsername(testUser.getUsername());
         authentification.setPassword(testUser.getPassword());
@@ -72,7 +72,7 @@ public class AuthentificationTest {
     }
 
     @Test
-    public void ThatDoLoginReturnSearchPageIfWasCorrectAndViewIdWasLogin() throws Exception {
+    public void thatDoLoginReturnSearchPageIfWasCorrectAndViewIdWasLogin() throws Exception {
         when(mockedUIViewRoot.getViewId()).thenReturn("/login.xhtml");
 
         String viewResult = authentification.doLogin();
@@ -81,7 +81,7 @@ public class AuthentificationTest {
     }
 
     @Test
-    public void ThatDoLoginReturnSearchPageIfWasCorrectAndViewIdWasLoginErrorPage() throws Exception {
+    public void thatDoLoginReturnSearchPageIfWasCorrectAndViewIdWasLoginErrorPage() throws Exception {
         when(mockedUIViewRoot.getViewId()).thenReturn("/loginerror.xhtml");
 
         String viewResult = authentification.doLogin();
@@ -90,7 +90,7 @@ public class AuthentificationTest {
     }
 
     @Test
-    public void ThatDoLoginReturnErrorPageIfWasIncorrect() throws Exception {
+    public void thatDoLoginReturnErrorPageIfWasIncorrect() throws Exception {
         User testUser = UserFixture.aUser();
         authentification.setUsername(testUser.getUsername());
         authentification.setPassword(testUser.getPassword());
@@ -109,7 +109,7 @@ public class AuthentificationTest {
      */
 
     @Test
-    public void ThatDoLogoutWriteResponseCorrect() throws Exception {
+    public void thatDoLogoutWriteResponseCorrect() throws Exception {
         mockedWriter = mock(Writer.class);
         when(mockedExternalContext.getResponseOutputWriter()).thenReturn(mockedWriter);
 
@@ -129,7 +129,7 @@ public class AuthentificationTest {
      */
 
     @Test
-    public void ThatCheckNavigationLoginDisableIsTrueAtLoginPage() throws Exception {
+    public void thatCheckNavigationLoginDisableIsTrueAtLoginPage() throws Exception {
         when(mockedUIViewRoot.getViewId()).thenReturn("/login.xhtml");
 
         boolean result = authentification.checkNavigationLoginDisable();
@@ -138,7 +138,7 @@ public class AuthentificationTest {
     }
 
     @Test
-    public void ThatCheckNavigationLoginDisableIsFalseAtAnyPageThenLoginPage() throws Exception {
+    public void thatCheckNavigationLoginDisableIsFalseAtAnyPageThenLoginPage() throws Exception {
         when(mockedUIViewRoot.getViewId()).thenReturn("/search.xhtml");
 
         boolean result = authentification.checkNavigationLoginDisable();

@@ -44,7 +44,7 @@
                         <tr>
                             <td> <h:outputLabel for="imageFile" value="#{msg['album.imageFile']}:"/></td>
                             <td> <h:message for="imageFile"/>
-                                <h:inputFile id="imageFile" value="#{selectedAlbum.imageFile}">
+                                <h:inputFile id="imageFile" value="#{selectedAlbum.imageFile}" required="false">
                                     <f:validator binding="#{imageValidator}"/>
                                 </h:inputFile>
                             </td>

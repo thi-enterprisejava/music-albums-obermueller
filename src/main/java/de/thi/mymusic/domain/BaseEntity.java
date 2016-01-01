@@ -7,8 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by Michael on 16.11.2015.
- *
+  *
  * Abstract BaseEntity with Entity Id, creationTimestamp and updateTimestamp
  *
  */
@@ -36,6 +35,10 @@ public abstract class BaseEntity implements Serializable{
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Date getCreationTimestamp() {

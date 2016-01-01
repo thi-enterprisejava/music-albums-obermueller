@@ -37,8 +37,8 @@
                     <li class="#{my:getCurrentNavigationClass('userManagement')}"><a href="editUser.xhtml"><i class="icon-user"></i> #{msg['navigation.userManagement']}</a></li>
                 </h:panelGroup>
                 <li class="right">
-                    <div class="login">
-                        <h:panelGroup rendered="#{request.remoteUser == null}">
+                    <h:panelGroup rendered="#{request.remoteUser == null}">
+                        <div class="loginFormNavbar">
                             <h:form id="loginFormNavbar" action="#{authentification.doLogin}" method="post">
                                 <label>#{msg['user.login']}: </label>
                                 <h:inputText styleClass="navigationbar_username"  value="#{authentification.username}" required="true"
@@ -49,14 +49,16 @@
                                 <h:commandButton action="#{authentification.doLogin}" styleClass="blue logout_button"
                                                  disabled="#{authentification.checkNavigationLoginDisable()}" value="#{msg['user.login']}"/>
                             </h:form>
-                        </h:panelGroup>
-                        <h:panelGroup rendered="#{request.remoteUser != null}">
+                        </div>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{request.remoteUser != null}">
+                        <div class="logoutFormNavbar">
                             <h:form>
-                                <label>Hallo #{request.remoteUser}! </label>
+                                #{msg['common.hello']} #{request.remoteUser}!
                                 <h:commandButton action="#{authentification.doLogout}" styleClass="blue logout_button" value="#{msg['user.logout']}"/>
                             </h:form>
-                        </h:panelGroup>
-                    </div>
+                        </div>
+                    </h:panelGroup>
                 </li>
             </ul>
         </div>
@@ -71,7 +73,7 @@
     <!-- Footer -->
     <div class="clear"></div>
     <div id="footer" class="col_12 column">
-        Student project at TH Ingolstadt | Michael Obermueller | MyMusic | 2015 | <a href="impressum.xhtml">Impressum</a>
+       #{msg['footer']}
     </div>
 
 </div>

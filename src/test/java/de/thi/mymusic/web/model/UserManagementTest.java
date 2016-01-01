@@ -25,7 +25,9 @@ import org.mockito.ArgumentCaptor;
 import sun.security.acl.PrincipalImpl;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,9 +42,7 @@ public class UserManagementTest {
     UserManagement userManagement;
 
     UserService mockedUserService;
-
     FacesContext mockedFacesContext;
-
     ExternalContext mockedExternalContext;
     HttpServletRequest mockedHttpServletRequest;
     UIComponent mockedUIComponent;
@@ -62,7 +62,7 @@ public class UserManagementTest {
      */
 
     @Test
-    public void ThatInitSetFoundUserCorrect() throws Exception {
+    public void thatInitSetFoundUserCorrect() throws Exception {
         userManagement.setUserId(1L);
         User testUser = UserFixture.aUser();
         when(mockedUserService.findById(1L)).thenReturn(testUser);
@@ -77,7 +77,7 @@ public class UserManagementTest {
     }
 
     @Test
-    public void ThatInitIncorrectUserIdReturnErrorPageAndAddErrorMessage() throws Exception {
+    public void thatInitIncorrectUserIdReturnErrorPageAndAddErrorMessage() throws Exception {
         userManagement.setUserId(2L);
         when(mockedUserService.findById(2L)).thenReturn(null);
         ArgumentCaptor<FacesMessage> facesMessageCaptor = ArgumentCaptor
@@ -97,7 +97,7 @@ public class UserManagementTest {
     }
 
     @Test
-    public void ThatInitNothingIsDoingIfUserIdIs0() throws Exception {
+    public void thatInitNothingIsDoingIfUserIdIs0() throws Exception {
         userManagement.setUserId(0L);
         when(mockedUserService.findById(0L)).thenReturn(UserFixture.aUser());
 
@@ -114,7 +114,7 @@ public class UserManagementTest {
      */
 
     @Test
-    public void ThatInitForPasswordSetCorrectUser() throws Exception {
+    public void thatInitForPasswordSetCorrectUser() throws Exception {
         User testUser = UserFixture.aUser();
         mockedExternalContext = mock(ExternalContext.class);
         mockedHttpServletRequest = mock(HttpServletRequest.class);
@@ -134,7 +134,7 @@ public class UserManagementTest {
     }
 
     @Test
-    public void ThatInitForPasswordIncorrectUserReturnErrorPage() throws Exception {
+    public void thatInitForPasswordIncorrectUserReturnErrorPage() throws Exception {
         mockedExternalContext = mock(ExternalContext.class);
         mockedHttpServletRequest = mock(HttpServletRequest.class);
         when(mockedFacesContext.getExternalContext()).thenReturn(mockedExternalContext);
@@ -151,7 +151,7 @@ public class UserManagementTest {
     }
 
     @Test
-    public void ThatInitForPasswordReturnErrorPageIfNotLoggedIn() throws Exception {
+    public void thatInitForPasswordReturnErrorPageIfNotLoggedIn() throws Exception {
         mockedExternalContext = mock(ExternalContext.class);
         mockedHttpServletRequest = mock(HttpServletRequest.class);
         when(mockedFacesContext.getExternalContext()).thenReturn(mockedExternalContext);
@@ -172,7 +172,7 @@ public class UserManagementTest {
      */
 
     @Test
-    public void ThatValidateUniqueUsernameThrowsExceptionIfUsernameIsNotUniqueAndOtherUserId() throws Exception {
+    public void thatValidateUniqueUsernameThrowsExceptionIfUsernameIsNotUniqueAndOtherUserId() throws Exception {
         User testUser = UserFixture.aUser();
         mockedValue = mock(Object.class);
         mockedUIComponent = mock(UIComponent.class);
@@ -194,7 +194,7 @@ public class UserManagementTest {
     }
 
     @Test
-    public void ThatValidateUniqueUsernameIsOkIfUsernameIsNotUniqueButSameUserId() throws Exception {
+    public void thatValidateUniqueUsernameIsOkIfUsernameIsNotUniqueButSameUserId() throws Exception {
         User testUser = UserFixture.aUser();
         mockedValue = mock(Object.class);
         mockedUIComponent = mock(UIComponent.class);
@@ -215,7 +215,7 @@ public class UserManagementTest {
     }
 
     @Test
-    public void ThatValidateUniqueUsernameIsOkIfNoUserWithSameNameWasFound() throws Exception {
+    public void thatValidateUniqueUsernameIsOkIfNoUserWithSameNameWasFound() throws Exception {
         mockedValue = mock(Object.class);
         mockedUIComponent = mock(UIComponent.class);
         when(mockedValue.toString()).thenReturn("Michael");
@@ -239,7 +239,7 @@ public class UserManagementTest {
      */
 
     @Test
-    public void ThatDoCancelReloadCorrectAtEditUser() {
+    public void thatDoCancelReloadCorrectAtEditUser() {
         User testUser = UserFixture.aUser();
         String updatedUsername = "Michael2";
         userManagement.setUserId(2L);
@@ -253,7 +253,7 @@ public class UserManagementTest {
     }
 
     @Test
-    public void ThatDoCancelReloadCorrectAtCreateUser() {
+    public void thatDoCancelReloadCorrectAtCreateUser() {
         String insertedUsername = "Michael2";
         String insertedPassword = "huhu";
         userManagement.getUser().setUsername(insertedUsername);
@@ -265,5 +265,82 @@ public class UserManagementTest {
         assertNull(userManagement.getUser().getPassword());
         assertEquals(0L, userManagement.getUser().getId());
         assertEquals("editUser.xhtml", viewResult);
+    }
+
+    /**
+     * method under test: doSave
+     */
+
+    @Test
+    public void thatDoSaveCreateOrUpdateUser() {
+        userManagement.setUser(UserFixture.aUser());
+
+        String result = userManagement.doSave();
+
+        verify(mockedUserService).createOrUpdate(UserFixture.aUser());
+        assertEquals("editUser.xhtml?faces-redirect=true", result);
+    }
+
+    /**
+     *  method under test: doChangePassword
+     */
+
+    @Test
+    public void thatDoChangePasswordIsCorrect() {
+        userManagement.setUser(UserFixture.aUser());
+
+        String result = userManagement.doChangePassword();
+
+        assertNull(result);
+        verify(mockedUserService).changePassword(UserFixture.aUser());
+    }
+
+    /**
+     * method under test: doCancelChangePassword
+     */
+
+    @Test
+    public void thatDoCancelChangePasswordInitForPasswordChange() {
+        User testUser = UserFixture.aUser();
+        mockedExternalContext = mock(ExternalContext.class);
+        mockedHttpServletRequest = mock(HttpServletRequest.class);
+        when(mockedFacesContext.getExternalContext()).thenReturn(mockedExternalContext);
+        when(mockedExternalContext.getRequest()).thenReturn(mockedHttpServletRequest);
+        Principal principalMichael = new PrincipalImpl("Michael");
+        when(mockedHttpServletRequest.getUserPrincipal()).thenReturn(principalMichael);
+        when(mockedUserService.findByUsername("Michael")).thenReturn(testUser);
+
+        String result = userManagement.doCancelChangePassword();
+
+        assertEquals("changePassword.xhtml", result);
+    }
+
+    /**
+     * method under test: doDelete
+     */
+
+    @Test
+    public void thatDoDeleteIsCorrect() {
+
+        String result = userManagement.doDelete(UserFixture.aUser());
+
+        verify(mockedUserService).delete(UserFixture.aUser());
+        assertNull(result);
+    }
+
+    /**
+     * method under test: allUsers
+     */
+
+    @Test
+    public void thatAllUsersReturnListOfUsers() {
+        when(mockedUserService.findAll()).thenReturn(Arrays.asList(UserFixture.aUser(),
+                UserFixture.aUserWithRoleUser()));
+
+        List<User> allUsers = userManagement.allUsers();
+
+        assertEquals(2, allUsers.size());
+        assertEquals(UserFixture.aUser(), allUsers.get(0));
+        assertEquals(UserFixture.aUserWithRoleUser(), allUsers.get(1));
     }
 }
