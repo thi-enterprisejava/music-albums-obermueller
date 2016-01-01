@@ -119,7 +119,7 @@ public class Album extends BaseEntity {
         this.songs.remove(song);
     }
 
-    public String formatedTotalDuration() {
+    public String formattedTotalDuration() {
         long totalDuration = songs
                      .stream()
                      .mapToLong(s -> s.getDuration())

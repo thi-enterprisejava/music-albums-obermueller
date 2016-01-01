@@ -110,7 +110,6 @@ public class SelectedAlbum implements Serializable
     }
 
     public void setImageFile(Part imageFile) {
-        logger.info("Set Image File: " + imageFile.getName());
         this.imageFile = imageFile;
     }
 
@@ -154,8 +153,6 @@ public class SelectedAlbum implements Serializable
 
         return "detailAlbum.xhtml?faces-redirect=true&album="+album.getId();
     }
-
-
 
     public String doAddSong() {
         Song song;

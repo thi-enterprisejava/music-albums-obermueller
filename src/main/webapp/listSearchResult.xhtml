@@ -42,13 +42,14 @@
                                     </tr>
                                 </table>
                             </div>
-                        <div class="clear"></div>
+                            <div class="clear"></div>
                         </div>
                     </ui:repeat>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{search.countAlbumResult == 0}">
-                    <div class="search_noResult">#{msg['search.noAlbumResult']}</div>
+                    <div class="col_12 search_noResult">#{msg['search.noAlbumResult']}</div>
                 </h:panelGroup>
+                <div class="clear"></div>
             </div>
 
             <div id="interprets" class="tab-content">
