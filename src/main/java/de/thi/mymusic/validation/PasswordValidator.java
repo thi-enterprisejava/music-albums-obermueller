@@ -7,7 +7,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
@@ -16,7 +15,6 @@ import javax.inject.Named;
 /**
  * PasswordValidator is responsible for validate password input fields
  */
-
 @Named
 @RequestScoped
 public class PasswordValidator implements Validator {
@@ -28,9 +26,12 @@ public class PasswordValidator implements Validator {
         this.guiUtils = guiUtils;
     }
 
+    /**
+     * Validate if password and confirm password field is equals
+     */
     @Override
     public void validate(FacesContext context, UIComponent component,
-                         Object value) throws ValidatorException {
+                         Object value) {
 
         String password = value.toString();
 

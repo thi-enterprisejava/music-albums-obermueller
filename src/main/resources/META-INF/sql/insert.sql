@@ -1,0 +1,3 @@
+INSERT INTO public.users (id, creationtimestamp, updatetimestamp, password, username) VALUES (1, '2015-12-08 18:00:11.133000', '2015-12-19 17:00:53.621000', 'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=', 'Admin');
+INSERT INTO public.userroles (id, creationtimestamp, updatetimestamp, role, user_id) VALUES (1, '2015-12-08 18:00:11.135000', '2015-12-08 18:00:11.135000', 'User', 1);
+INSERT INTO public.userroles (id, creationtimestamp, updatetimestamp, role, user_id) VALUES (2, '2015-12-10 09:18:34.795000', '2015-12-10 09:18:34.795000', 'Admin', 1);

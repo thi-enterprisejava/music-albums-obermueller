@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 /**
  * Created by Michael on 11.12.2015.
  */
-
 public class PasswordValidatorTest {
 
     /**

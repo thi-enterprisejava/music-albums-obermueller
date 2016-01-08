@@ -9,7 +9,6 @@ import java.util.Objects;
 /**
  * Functional data model of a user
  */
-
 @Entity
 @NamedQueries({
         @NamedQuery(name = "User.findByName",
@@ -36,7 +35,7 @@ public class User extends BaseEntity {
 
     public User() {
         // Add every user the needed basic role
-        if(userRoles.size() == 0) {
+        if(userRoles.isEmpty()) {
             UserRole role = new UserRole("User");
             role.setUser(this);
             userRoles.add(role);

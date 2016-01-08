@@ -6,7 +6,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
@@ -17,11 +16,10 @@ import javax.servlet.http.Part;
  * ImageValidator is responsible for validate uploaded image files
  *
  */
-
 @Named
 @RequestScoped
 public class ImageValidator implements Validator {
-
+    private static long MAX_FILE_SIZE = 2_024L * 1_024L;
     private GuiUtils guiUtils;
 
     @Inject
@@ -29,11 +27,11 @@ public class ImageValidator implements Validator {
         this.guiUtils = guiUtils;
     }
 
-    private static long MAX_FILE_SIZE = 2024 * 1024;
-
+    /**
+     * Validate if uploaded image file is below max file size and is file typ jpeg, png or gif
+     */
     @Override
-    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-
+    public void validate(FacesContext context, UIComponent component, Object value) {
         Part file = (Part) value;
         if(file != null) {
             if (!"image/jpeg".equals(file.getContentType())

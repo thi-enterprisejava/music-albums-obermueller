@@ -11,7 +11,6 @@ import java.util.Objects;
 /**
  * Functional data model of a song
  */
-
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Song.findByName",

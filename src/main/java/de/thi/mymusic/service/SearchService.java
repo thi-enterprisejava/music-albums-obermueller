@@ -17,7 +17,6 @@ import java.util.List;
 /**
  * Created by Michael on 16.11.2015.
  */
-
 @Stateless
 public class SearchService {
 

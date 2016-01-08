@@ -38,7 +38,6 @@ public class UserServiceTest {
     /**
      * method under test: findByUsername
      */
-
     @Test
     public void thatFindByUsernameReturnsCorrectUser() throws Exception {
        when(mockedCrudService.findByNamedQuery(User.class, "User.findByName",
@@ -67,7 +66,6 @@ public class UserServiceTest {
     /**
      * method under test: findById
      */
-
     @Test
     public void ThatFindByIdReturnCorrectUser() throws Exception {
         when(mockedCrudService.findById(User.class, 2L)).thenReturn(UserFixture.aUserWithId());
@@ -93,7 +91,6 @@ public class UserServiceTest {
     /**
      * method under test: findAll
      */
-
     @Test
     public void thatFindAllReturnListOfUsers() throws Exception {
         List<User> users = Arrays.asList(UserFixture.aUserWithRoleUser(),
@@ -124,7 +121,6 @@ public class UserServiceTest {
     /**
      * method under test: createOrUpdate
      */
-
     @Test
     public void thatCreateOrUpdateAddNewUserCorrect() throws Exception {
         User expectedUser = UserFixture.aUser();
@@ -166,7 +162,6 @@ public class UserServiceTest {
     /**
      * method under test: changePassword
      */
-
     @Test
     public void thatChangePasswordUpdateHashValueIfChanged() throws Exception {
         User expectedUser = UserFixture.aStoredUserWithId();
@@ -195,7 +190,6 @@ public class UserServiceTest {
     /**
      * method under test: delete
      */
-
     @Test
     public void thatDeleteDoDeleteCorrectAlbum() throws Exception {
 

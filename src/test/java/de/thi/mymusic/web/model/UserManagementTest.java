@@ -60,7 +60,6 @@ public class UserManagementTest {
     /**
      * method under test: init
      */
-
     @Test
     public void thatInitSetFoundUserCorrect() throws Exception {
         userManagement.setUserId(1L);
@@ -80,6 +79,8 @@ public class UserManagementTest {
     public void thatInitIncorrectUserIdReturnErrorPageAndAddErrorMessage() throws Exception {
         userManagement.setUserId(2L);
         when(mockedUserService.findById(2L)).thenReturn(null);
+        when(mockedGuiUtils.getFacesMessage(mockedFacesContext, FacesMessage.SEVERITY_ERROR,
+                "user.usernameNotFound")).thenReturn(new FacesMessage(FacesMessage.SEVERITY_ERROR, null, "user.usernameNotFound"));
         ArgumentCaptor<FacesMessage> facesMessageCaptor = ArgumentCaptor
                 .forClass(FacesMessage.class);
 
@@ -112,7 +113,6 @@ public class UserManagementTest {
     /**
      * method under test: initForPasswordChange
      */
-
     @Test
     public void thatInitForPasswordSetCorrectUser() throws Exception {
         User testUser = UserFixture.aUser();
@@ -170,7 +170,6 @@ public class UserManagementTest {
      * method under test: validateUniqueUsername
      *
      */
-
     @Test
     public void thatValidateUniqueUsernameThrowsExceptionIfUsernameIsNotUniqueAndOtherUserId() throws Exception {
         User testUser = UserFixture.aUser();
@@ -237,7 +236,6 @@ public class UserManagementTest {
     /**
      * method under test: doCancel
      */
-
     @Test
     public void thatDoCancelReloadCorrectAtEditUser() {
         User testUser = UserFixture.aUser();
@@ -270,7 +268,6 @@ public class UserManagementTest {
     /**
      * method under test: doSave
      */
-
     @Test
     public void thatDoSaveCreateOrUpdateUser() {
         userManagement.setUser(UserFixture.aUser());
@@ -284,7 +281,6 @@ public class UserManagementTest {
     /**
      *  method under test: doChangePassword
      */
-
     @Test
     public void thatDoChangePasswordIsCorrect() {
         userManagement.setUser(UserFixture.aUser());
@@ -298,7 +294,6 @@ public class UserManagementTest {
     /**
      * method under test: doCancelChangePassword
      */
-
     @Test
     public void thatDoCancelChangePasswordInitForPasswordChange() {
         User testUser = UserFixture.aUser();
@@ -318,7 +313,6 @@ public class UserManagementTest {
     /**
      * method under test: doDelete
      */
-
     @Test
     public void thatDoDeleteIsCorrect() {
 
@@ -331,7 +325,6 @@ public class UserManagementTest {
     /**
      * method under test: allUsers
      */
-
     @Test
     public void thatAllUsersReturnListOfUsers() {
         when(mockedUserService.findAll()).thenReturn(Arrays.asList(UserFixture.aUser(),

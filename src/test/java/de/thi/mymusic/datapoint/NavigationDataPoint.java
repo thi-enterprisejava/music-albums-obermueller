@@ -1,7 +1,7 @@
 package de.thi.mymusic.datapoint;
 
 /**
- * Created by Michael on 31.12.2015.
+ * Help Entity for DataPoints to test navigation css styling
  */
 public class NavigationDataPoint {
 

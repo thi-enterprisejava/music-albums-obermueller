@@ -48,7 +48,6 @@ public class SearchServiceTest {
     /**
      * method under test: findAlbumByName
      */
-
     @Test
     public void thatFindAlbumByNameReturnSearchedAlbums() throws Exception {
         when(mockedCrudService.findByNamedQuery(Album.class,"Album.findByName",
@@ -73,7 +72,6 @@ public class SearchServiceTest {
     /**
      * method under test: findInterpretByName
      */
-
     @Test
     public void thatFindInterpretByNameReturnSearchedInterprets() throws Exception {
         when(mockedCrudService.findByNamedQuery(Interpret.class,"Interpret.findByName",
@@ -98,7 +96,6 @@ public class SearchServiceTest {
     /**
      * method under test: findSongByName
      */
-
     @Test
     public void thatFindSongByNameReturnSearchedSongs() throws Exception {
         when(mockedCrudService.findByNamedQuery(Song.class,"Song.findByName",
@@ -123,7 +120,6 @@ public class SearchServiceTest {
     /**
      * method under test: findEntitiesByName
      */
-
     @Test
     public void thatFindEntitiesByNameReturnMaxFiveSearchResultEntities() throws Exception {
         mockedEntityManager = mock(EntityManager.class);

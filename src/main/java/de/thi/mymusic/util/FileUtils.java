@@ -16,11 +16,8 @@ import java.util.Random;
 @PermitAll
 public class FileUtils {
 
-    //private String imageDirectoryPath = "C:\\Java Development Tools\\albumImages";
     private String imageDirectoryPath = "/tmp/images/mymusic";
-
-    private static final Logger logger = Logger.getLogger(FileUtils.class);
-
+    private static final Logger LOGGER = Logger.getLogger(FileUtils.class);
 
     public void setImageDirectoryPath(String path) {
         this.imageDirectoryPath = path;
@@ -29,10 +26,9 @@ public class FileUtils {
     public String getFileNameFromPart(Part part) {
         final String partHeader = part.getHeader("content-disposition");
         for (String content : partHeader.split(";")) {
-            if (content.trim().startsWith("filename")) {
-                String fileName = content.substring(content.indexOf('=') + 1)
+            if (content.trim().startsWith("filename") && content.trim().indexOf('=') != -1) {
+                return content.substring(content.indexOf('=') + 1)
                         .trim().replace("\"", "");
-                return fileName;
             }
         }
         return null;
@@ -66,10 +62,10 @@ public class FileUtils {
                 Path filePath = Paths.get(imageDirectoryPath + File.separator  + imageName);
                 Files.copy(imageFile.getInputStream(), filePath);
 
-                logger.info("Image: " + imageName + " was uploaded and saved!");
+                LOGGER.info("Image: " + imageName + " was uploaded and saved!");
             }
         } catch(IOException ex) {
-            logger.error("Image couldn´t be loaded and saved!");
+            LOGGER.error("Image couldn´t be loaded and saved! " + ex);
             return null;
         }
 
@@ -89,7 +85,7 @@ public class FileUtils {
         try {
             return Files.deleteIfExists(pathToFile);
         } catch(IOException ex) {
-            logger.error("Image could not be deleted: " + filename);
+            LOGGER.error("Image could not be deleted: " + filename + ", " + ex);
         }
 
         return false;

@@ -8,7 +8,6 @@ import java.util.concurrent.Callable;
 /**
  * Created by Michael on 13.12.2015.
  */
-
 @Stateless
 @RunAs("Admin")
 @PermitAll

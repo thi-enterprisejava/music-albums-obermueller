@@ -6,7 +6,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
@@ -16,7 +15,6 @@ import java.util.regex.Pattern;
 /**
  * SongDurationValidator is responsible for validate input of song duration
  */
-
 @Named
 @RequestScoped
 public class SongDurationValidator implements Validator {
@@ -28,8 +26,11 @@ public class SongDurationValidator implements Validator {
         this.guiUtils = guiUtils;
     }
 
+    /**
+     * Validate if input of song duration as String is correct formatted like mm:ss
+     */
     @Override
-    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+    public void validate(FacesContext context, UIComponent component, Object value) {
 
         String duration = (String) value;
 

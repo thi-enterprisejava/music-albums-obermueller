@@ -32,19 +32,15 @@ public class AuthentificationTest {
      */
     Authentification authentification;
 
-    UserService mockedUserService;
     FacesContext mockedFacesContext;
     UIViewRoot mockedUIViewRoot;
     ExternalContext mockedExternalContext;
     Writer mockedWriter;
     HttpServletRequest mockedHttpServletRequest;
-    GuiUtils mockedGuiUtils;
 
     @Before
     public void setUp() throws Exception {
-        mockedUserService = mock(UserService.class);
-        mockedGuiUtils = mock(GuiUtils.class);
-        authentification = new Authentification(mockedUserService, mockedGuiUtils);
+        authentification = new Authentification();
         mockedFacesContext = ContextMocker.mockFacesContext();
         mockedUIViewRoot = mock(UIViewRoot.class);
         mockedExternalContext = mock(ExternalContext.class);

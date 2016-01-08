@@ -4,30 +4,25 @@ import de.thi.mymusic.domain.BaseEntity;
 import org.apache.log4j.Logger;
 
 import javax.ejb.Stateless;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.transaction.Transactional;
 import java.util.List;
 
 /**
- * Created by Michael on 16.11.2015.
  *
  * Generic CRUD Service class (Data Access Object)
  *
  */
-
 @Stateless
 public class CrudService {
 
     @PersistenceContext
     private EntityManager em;
 
-    private static final Logger logger = Logger.getLogger(CrudService.class);
+    private static final Logger LOGGER = Logger.getLogger(CrudService.class);
 
     public EntityManager getEntityManager() {
         return em;
@@ -65,7 +60,7 @@ public class CrudService {
         }
 
         List<T> result = query.getResultList();
-        logger.info("FindByNamedQuery: " + clazz.toString() + " Value:" + values[0] + ", Founded:" + result.size());
+        LOGGER.info("FindByNamedQuery: " + clazz.toString() + " Value:" + values[0] + ", Founded:" + result.size());
 
         return result;
     }

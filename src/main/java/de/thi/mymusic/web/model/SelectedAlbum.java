@@ -25,7 +25,7 @@ import java.io.*;
 public class SelectedAlbum implements Serializable
 {
 
-    private static final Logger logger = Logger.getLogger(SelectedAlbum.class);
+    private static final Logger LOGGER = Logger.getLogger(SelectedAlbum.class);
 
     private Album album;
     private Song editSong;
@@ -130,7 +130,7 @@ public class SelectedAlbum implements Serializable
             album = albumService.findById(albumId);
 
             if(album != null) {
-                currentSongNumber = album.getSongs().size() + 1;
+                currentSongNumber = album.getSongs().size() + 1L;
                 interpret = album.getInterpret() ;
                 imageName = album.getImageFilename();
             } else {
@@ -180,7 +180,7 @@ public class SelectedAlbum implements Serializable
     }
 
     public String doDeleteSong(Song song) {
-        logger.info("Delete Song: " + song.getTitle());
+        LOGGER.info("Delete Song: " + song.getTitle());
         album.removeSong(song);
 
         return null;
@@ -215,7 +215,7 @@ public class SelectedAlbum implements Serializable
     }
 
     private void initSong() {
-        currentSongNumber = album.getSongs().size() + 1;
+        currentSongNumber = album.getSongs().size() + 1L;
         currentSongDuration = null;
         currentSongTitle = null;
         editSong = null;

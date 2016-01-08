@@ -24,7 +24,6 @@ import static org.junit.Assert.*;
 /**
  * Created by Michael on 14.12.2015.
  */
-
 @RunWith(Arquillian.class)
 public class UserServiceIntegrationTest {
     /**
@@ -61,7 +60,6 @@ public class UserServiceIntegrationTest {
     /**
      * method under test: createOrUpdate
      */
-
     @Test
     public void thatUserCanBeAddedWithAdminRole() throws Exception {
         authenticatedWithRoleAdmin.run(() -> {
@@ -127,7 +125,6 @@ public class UserServiceIntegrationTest {
     /**
      * method under test: delete
      */
-
     @Test
     public void thatDeleteIsPossibleAsRoleAdmin() throws Exception {
         authenticatedWithRoleAdmin.run(() -> {

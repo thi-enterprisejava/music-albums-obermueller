@@ -34,7 +34,6 @@ public class GuiUtilsTest {
 
     FacesContext mockedFacesContext;
     UIViewRoot mockedUIViewRoot;
-    Locale mockedLocale;
     Application mockedApplication;
 
 

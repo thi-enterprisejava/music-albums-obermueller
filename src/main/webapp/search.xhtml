@@ -14,7 +14,7 @@
             <h4 style="margin-bottom:40px;" class="center">#{msg['search.info']}:</h4>
             <div>
                 <h:form action="">
-                    <p:autoComplete id="search" required="true" var="searchEntity" itemLabel="#{searchEntity}" itemValue="#{searchEntity.name}"
+                    <p:autoComplete id="searchText" required="true" var="searchEntity" itemLabel="#{searchEntity}" itemValue="#{searchEntity.name}"
                                     styleClass="search_input" size="30" maxResults="5" minQueryLength="4"
                                     pt:placeholder="#{msg['search.placeholder']}" value="#{search.searchString}"
                                     completeMethod="#{search.completeSearchInput}">
@@ -27,7 +27,7 @@
                         </p:column>
                     </p:autoComplete>
 
-                    <h:commandButton id="save" styleClass="blue large button_search" action="#{search.doSearch}" value="#{msg['search.search']}"/>
+                    <h:commandButton id="searchButton" styleClass="blue large button_search" action="#{search.doSearch}" value="#{msg['search.search']}"/>
                 </h:form>
             </div>
         </div>

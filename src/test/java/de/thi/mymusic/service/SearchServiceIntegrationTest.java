@@ -66,7 +66,6 @@ public class SearchServiceIntegrationTest {
     /**
      * method under test: findAlbumByName
      */
-
     @Test
     public void thatFindAlbumByNameReturnCorrectEntries() throws Exception {
         List<Album> fiveAlbums = AlbumFixture.aListOfFiveAlbums();
@@ -89,7 +88,6 @@ public class SearchServiceIntegrationTest {
     /**
      * method under test: findEntitiesByName
      */
-
     @Test
     public void thatFindEntitiesByNameReturnCorrectElements() throws Exception {
         List<Album> fiveAlbums = AlbumFixture.aListOfFiveAlbums();

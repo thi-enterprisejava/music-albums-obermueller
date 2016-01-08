@@ -14,13 +14,12 @@ import java.util.List;
 /**
  * Created by Michael on 06.12.2015.
  */
-
 @Stateless
 public class UserService {
 
     @EJB
     private CrudService crudService;
-    private static final Logger logger = Logger.getLogger(UserService.class);
+    private static final Logger LOGGER = Logger.getLogger(UserService.class);
 
 
     public void setCrudService(CrudService crudService) {
@@ -32,7 +31,7 @@ public class UserService {
         List<User> users =  crudService.findByNamedQuery(User.class, "User.findByName",
                 new String[] {"username"}, new Object[] {username});
 
-        if(users != null && users.size() > 0) {
+        if(users != null && !users.isEmpty()) {
             User user = users.get(0);
             crudService.getEntityManager().detach(user);
             return user;
@@ -73,24 +72,24 @@ public class UserService {
     @RolesAllowed("Admin")
     private void update(User user){
         User oldUser = findById(user.getId());
-        logger.info("Old password: " + oldUser.getPassword() + " new password: " + user.getPassword());
+        LOGGER.info("Old password: " + oldUser.getPassword() + " new password: " + user.getPassword());
         if(!user.getPassword().equals(oldUser.getPassword())) {
-            user = hashPassword(user);
+            hashPassword(user);
         }
         crudService.merge(user);
-        logger.info("Update user: " + user.getUsername() +" with id: " + user.getId());
+        LOGGER.info("Update user: " + user.getUsername() +" with id: " + user.getId());
     }
 
     @RolesAllowed("Admin")
     private void create(User user){
-        user = hashPassword(user);
+        hashPassword(user);
         crudService.persist(user);
-        logger.info("Create new user: "+ user.getUsername() + " with id: " + user.getId());
+        LOGGER.info("Create new user: "+ user.getUsername() + " with id: " + user.getId());
     }
 
     @RolesAllowed("Admin")
     public void delete(User user) {
-        logger.info("Delete-User: " + user.getUsername());
+        LOGGER.info("Delete-User: " + user.getUsername());
         crudService.delete(user);
     }
 
@@ -98,18 +97,16 @@ public class UserService {
     public void changePassword(User user) {
         User oldUser = findById(user.getId());
         if(!user.getPassword().equals(oldUser.getPassword())) {
-            user = hashPassword(user);
+            hashPassword(user);
         }
         crudService.merge(user);
-        logger.info("Change-Password from user: " + user.getUsername());
+        LOGGER.info("Change-Password from user: " + user.getUsername());
     }
 
     @RolesAllowed({"User", "Admin"})
-    private User hashPassword(User user) {
+    private void hashPassword(User user) {
         user.setPassword(Util.createPasswordHash("SHA-256", "BASE64", "UTF-8", null, user.getPassword()));
-        logger.info("Rehash Password for userId:" + user.getId() + " with username: " + user.getUsername());
-
-        return user;
+        LOGGER.info("Rehash Password for userId:" + user.getId() + " with username: " + user.getUsername());
     }
 
 }

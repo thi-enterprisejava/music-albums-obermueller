@@ -12,7 +12,6 @@ import java.util.Objects;
 /**
  * Functional data model of an album
  */
-
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Album.findAll",

@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * Created by Michael on 03.12.2015.
  */
-
 @Path("/albums")
 public class AlbumRestService {
 
