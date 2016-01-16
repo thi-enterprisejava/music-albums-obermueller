@@ -25,10 +25,7 @@ public class AlbumRestService {
     @Produces("application/json")
     @Path("/{albumId}")
     public Album findById(@PathParam("albumId") Long id) {
-        Album album =  albumService.findById(id);
-        album.setInterpret(null);
-
-        return album;
+        return  albumService.findById(id);
     }
 
 }
