@@ -8,7 +8,6 @@
             <property name="hibernate.hbm2ddl.auto" value="update" />
             <property name="defaultAutoCommit" value="true"/>
             <property name="hibernate.enable_lazy_load_no_trans" value="true" />
-            <property name="javax.persistence.sql-load-script-source" value="META-INF/sql/insert.sql"/>
         </properties>
     </persistence-unit>
 </persistence>

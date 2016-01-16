@@ -71,7 +71,9 @@ public class Album extends BaseEntity {
     }
 
     public void setInterpret(Interpret interpret) {
-        interpret.addAlbum(this);
+        if(interpret != null) {
+            interpret.addAlbum(this);
+        }
         this.interpret = interpret;
     }
 
@@ -106,7 +108,9 @@ public class Album extends BaseEntity {
 
 
     public void addSong(Song song) {
-        song.setAlbum(this);
+        if(song != null) {
+            song.setAlbum(this);
+        }
         if(songs.size() >=  song.getSongNumber()) {
             songs.set((int) song.getSongNumber() - 1, song);
         } else {
