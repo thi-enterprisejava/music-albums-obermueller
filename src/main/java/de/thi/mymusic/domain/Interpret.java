@@ -16,7 +16,6 @@ import java.util.Objects;
 /**
  * Functional data model of a interpret
  */
-
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Interpret.findByName",

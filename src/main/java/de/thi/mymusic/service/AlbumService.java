@@ -3,7 +3,6 @@ package de.thi.mymusic.service;
 import de.thi.mymusic.dao.CrudService;
 import de.thi.mymusic.domain.Album;
 import de.thi.mymusic.domain.Interpret;
-import de.thi.mymusic.domain.Song;
 import de.thi.mymusic.util.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -11,13 +10,11 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import java.io.File;
 import java.util.List;
 
 /**
  * Created by Michael Obermüller on 14.11.2015.
  */
-
 @Stateless
 public class AlbumService {
 
@@ -27,7 +24,7 @@ public class AlbumService {
     @EJB
     private FileUtils fileUtils;
 
-    private static final Logger logger = Logger.getLogger(AlbumService.class);
+    private static final Logger LOGGER = Logger.getLogger(AlbumService.class);
 
     public void setCrudService(CrudService crudService) {
         this.crudService = crudService;
@@ -39,11 +36,9 @@ public class AlbumService {
 
     @RolesAllowed("User")
     public Album createOrUpdate(Album album) {
-        /**
-         * Check if interpret with same name already exists
-         */
+         // Check if interpret with same name already exists
         List<Interpret> interprets = this.findInterpretByExactName(album.getInterpret().getName());
-        if(interprets != null && interprets.size() > 0 ) {
+        if(interprets != null && !interprets.isEmpty()) {
             album.setInterpret(interprets.get(0));
         }
 
@@ -59,7 +54,7 @@ public class AlbumService {
     @RolesAllowed("User")
     private void save(Album album) {
         crudService.persist(album);
-        logger.info("Save-Album: " + album.getTitle());
+        LOGGER.info("Save-Album: " + album.getTitle());
     }
 
     @RolesAllowed("User")
@@ -83,7 +78,7 @@ public class AlbumService {
         });
 
         crudService.merge(album);
-        logger.info("Update-Album: " + album.getTitle());
+        LOGGER.info("Update-Album: " + album.getTitle());
     }
 
     @RolesAllowed("User")
@@ -91,7 +86,7 @@ public class AlbumService {
         if((oldAlbum.getImageFilename() != null && updatedAlbum.getImageFilename() == null)
                 || (updatedAlbum.getImageFilename() != null && !updatedAlbum.getImageFilename().equals(oldAlbum.getImageFilename()))) {
             fileUtils.deleteFile(oldAlbum.getImageFilename());
-            logger.info("Delete File: " + updatedAlbum.getImageFilename());
+            LOGGER.info("Delete File: " + updatedAlbum.getImageFilename());
         }
     }
 
@@ -119,7 +114,7 @@ public class AlbumService {
             fileUtils.deleteFile(album.getImageFilename());
         }
 
-        logger.info("Delete-Album: " + album.getTitle());
+        LOGGER.info("Delete-Album: " + album.getTitle());
 
         crudService.delete(album);
         if(interpret.getAlbums().size() == 1) {

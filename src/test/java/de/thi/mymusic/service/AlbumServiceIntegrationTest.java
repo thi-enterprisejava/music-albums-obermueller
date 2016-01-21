@@ -26,7 +26,6 @@ import static org.junit.Assert.*;
 /**
  * Created by Michael on 20.11.2015.
  */
-
 @RunWith(Arquillian.class)
 public class AlbumServiceIntegrationTest {
 
@@ -63,7 +62,6 @@ public class AlbumServiceIntegrationTest {
     /**
      * method under test: createOrUpdate with save
      */
-
     @Test
     public void thatAlbumCanBeAddedWithUserRole() throws Exception {
         authenticatedWithRoleUser.run(() -> {

@@ -6,6 +6,10 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+/**
+ * Mock FacesContext for JUnit tests
+ * see: http://stackoverflow.com/questions/4252353/mocking-facescontext
+ */
 public abstract class ContextMocker extends FacesContext {
     private ContextMocker() {
     }

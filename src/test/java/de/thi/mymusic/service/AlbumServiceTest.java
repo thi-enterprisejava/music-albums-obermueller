@@ -48,7 +48,6 @@ public class AlbumServiceTest {
     /**
      * method under test: createOrUpdate with save
      */
-
     @Test
     public void thatCreateOrUpdatePersistNewAlbum() throws Exception {
         when(mockedCrudService.findByNamedQuery(Interpret.class,"Interpret.findByExactName",
@@ -131,7 +130,6 @@ public class AlbumServiceTest {
     /**
      * method under test: delete
      */
-
     @Test
     public void thatDeleteIsDeletingCorrectAlbumAndNotDeleteInterpretIfAddedToOtherAlbum() throws Exception {
         when(mockedCrudService.findById(Interpret.class, 3L)).thenReturn(InterpretFixture.aInterpretWithTwoAlbums());
@@ -157,7 +155,6 @@ public class AlbumServiceTest {
     /**
      * method under test: findById
      */
-
     @Test
     public void thatFindByIdReturnCorrectAlbum() throws Exception {
         when(mockedCrudService.findById(Album.class, 3L)).thenReturn(AlbumFixture.aAlbumWithId());
@@ -181,7 +178,6 @@ public class AlbumServiceTest {
     /**
      * method under test: findAll
      */
-
     @Test
     public void thatFindAllReturnAlbumList() throws Exception {
         when(mockedCrudService.findAll(Album.class)).thenReturn(Arrays.asList(

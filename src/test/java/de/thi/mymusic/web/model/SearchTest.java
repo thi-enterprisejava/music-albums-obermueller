@@ -44,7 +44,6 @@ public class SearchTest {
     /**
      * method under test doSearch
      */
-
     @Test
     public void thatDoSearchFindOneEntryCorrect() throws Exception {
         when(mockedSearchService.findAlbumByName("Limbo messiah")).
@@ -90,7 +89,6 @@ public class SearchTest {
     /**
      * method under test completeSearchInput
      */
-
     @Test
     public void thatCompleteSearchInputFindCorrectEntries() throws Exception{
         when(mockedSearchService.findEntitiesByName("mess")).thenReturn(SearchResultEntityFixture.aListOfAlbumSearchResultEntities());

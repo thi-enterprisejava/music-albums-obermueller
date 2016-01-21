@@ -1,0 +1,11 @@
+de.thi.mymusic.dao
+de.thi.mymusic.datapoint
+de.thi.mymusic.domain
+de.thi.mymusic.fixture
+de.thi.mymusic.mocker
+de.thi.mymusic.rest
+de.thi.mymusic.security
+de.thi.mymusic.service
+de.thi.mymusic.util
+de.thi.mymusic.validation
+de.thi.mymusic.web.model

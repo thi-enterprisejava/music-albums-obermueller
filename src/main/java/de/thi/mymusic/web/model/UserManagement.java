@@ -18,7 +18,6 @@ import java.util.List;
 /**
  * Created by Michael on 05.12.2015.
  */
-
 @Named
 @ViewScoped
 public class UserManagement implements Serializable {
@@ -40,10 +39,9 @@ public class UserManagement implements Serializable {
             user = userService.findById(userId);
 
             if(user == null) {
-                //TODO Translate Message String
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        "User konnte nicht gefunden werden!", null);
-                FacesContext.getCurrentInstance().addMessage(null, message);
+                FacesMessage msg = guiUtils.getFacesMessage(FacesContext.getCurrentInstance(), FacesMessage.SEVERITY_ERROR,
+                        "user.usernameNotFound");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
 
                 return "error";
             }
@@ -137,17 +135,17 @@ public class UserManagement implements Serializable {
     //*******************************************************
 
     public void validateUniqueUsername(FacesContext context, UIComponent component,
-                         Object value) throws ValidatorException {
-        long userId;
-        User user;
+                         Object value) {
+        long attributeUserId;
+        User foundedUser;
 
         String username = value.toString();
-        userId = (long) component.getAttributes().get("userId");
+        attributeUserId = (long) component.getAttributes().get("userId");
 
         // Find user with input username
-        user = userService.findByUsername(username);
+        foundedUser = userService.findByUsername(username);
 
-        if (user != null && user.getId() != userId) {
+        if (foundedUser != null && foundedUser.getId() != attributeUserId) {
             FacesMessage msg = guiUtils.getFacesMessage(context, FacesMessage.SEVERITY_ERROR,
                     "edit.user.usernameNotUnique");
             throw new ValidatorException(msg);

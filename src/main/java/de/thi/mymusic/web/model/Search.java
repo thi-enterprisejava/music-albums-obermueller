@@ -10,13 +10,11 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Michael on 05.11.2015.
  */
-
 @Named
 @SessionScoped
 public class Search implements Serializable {
@@ -90,8 +88,6 @@ public class Search implements Serializable {
      * @return List of five SearchResultEntity
      */
     public List<SearchResultEntity> completeSearchInput(String query) {
-        List<SearchResultEntity> foundedResults = searchService.findEntitiesByName(query);
-
-        return foundedResults;
+        return searchService.findEntitiesByName(query);
     }
 }

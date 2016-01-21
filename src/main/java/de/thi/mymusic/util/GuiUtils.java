@@ -23,7 +23,7 @@ public class GuiUtils {
      * @return: Translated FacesMessage
      */
     public FacesMessage getFacesMessage(FacesContext context, FacesMessage.Severity severity,
-            String msgKey, Object... args) {
+                                        String msgKey, Object... args) {
         Locale loc = context.getViewRoot().getLocale();
         ResourceBundle bundle = ResourceBundle.getBundle(context.getApplication().getMessageBundle(), loc);
         String msg = bundle.getString(msgKey);
@@ -43,26 +43,18 @@ public class GuiUtils {
      *         <code></code> otherwise
      */
     public static String getCurrentNavigationClass(String navigationElement) {
-
         String result = "current";
         String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
 
-        if("search".equals(navigationElement)) {
-            if("/search.xhtml".equals(viewId) || "/listSearchResult.xhtml".equals(viewId) || "/detailAlbum.xhtml".equals(viewId)) {
-                return result;
-            }
-        } else if("edit".equals(navigationElement)) {
-            if("/edit.xhtml".equals(viewId)) {
-                return result;
-            }
-        } else if("userManagement".equals(navigationElement)) {
-            if("/editUser.xhtml".equals(viewId)) {
-                return result;
-            }
-        } else if("changePassword".equals(navigationElement)) {
-            if("/changePassword.xhtml".equals(viewId)) {
-                return result;
-            }
+        if("search".equals(navigationElement) && ("/search.xhtml".equals(viewId)
+                || "/listSearchResult.xhtml".equals(viewId) || "/detailAlbum.xhtml".equals(viewId))) {
+            return result;
+        } else if("edit".equals(navigationElement) && "/edit.xhtml".equals(viewId)) {
+            return result;
+        } else if("userManagement".equals(navigationElement) && "/editUser.xhtml".equals(viewId)) {
+            return result;
+        } else if("changePassword".equals(navigationElement) && "/changePassword.xhtml".equals(viewId)) {
+            return result;
         }
 
         return "";

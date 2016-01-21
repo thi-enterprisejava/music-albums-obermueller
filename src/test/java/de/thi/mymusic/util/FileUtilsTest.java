@@ -23,7 +23,6 @@ public class FileUtilsTest {
     /**
      * class under test
      */
-
     FileUtils fileUtils;
 
     Part mockedPart;
@@ -39,7 +38,6 @@ public class FileUtilsTest {
     /**
      * method under test: getFileNameFromPart
      */
-
     @Test
     public void thatGetFileNameFromPartReturnCorrectFileName() {
         mockedPart = mock(Part.class);
@@ -64,7 +62,6 @@ public class FileUtilsTest {
     /**
      * method under test: getFileTypFromPart
      */
-
     @Test
     public void thatGetFileTypFromPartReturnFileTypCorrect() throws Exception {
         mockedPart = mock(Part.class);
@@ -112,7 +109,6 @@ public class FileUtilsTest {
     /**
      * method under test saveImageOnFilesystem
      */
-
     @Test
     public void thatSaveImageOnFilesystemSaveImage() throws Exception {
         fileUtils.setImageDirectoryPath(testFolder.getRoot().getAbsolutePath());

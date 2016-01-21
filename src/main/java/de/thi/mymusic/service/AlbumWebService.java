@@ -13,7 +13,6 @@ import java.util.List;
 /**
  * Created by Michael on 03.12.2015.
  */
-
 @WebService
 @Stateless
 public class AlbumWebService {

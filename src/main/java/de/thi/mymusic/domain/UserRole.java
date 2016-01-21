@@ -9,7 +9,6 @@ import java.util.Objects;
 /**
  * Functional data model of a user role
  */
-
 @Entity
 @Table(name = "UserRoles")
 public class UserRole extends BaseEntity{

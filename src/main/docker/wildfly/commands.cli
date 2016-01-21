@@ -8,7 +8,7 @@ module add --name=org.postgres --resources=/tmp/postgresql-${postgres.version}.j
 /subsystem=datasources/jdbc-driver=postgres:add(driver-name="postgres",driver-module-name="org.postgres",driver-class-name=org.postgresql.Driver)
 
 # Add datasouce
-data-source add --jndi-name=java:/MyMusicDS --name=MyMusicDS --connection-url=jdbc:postgresql://192.168.99.100:5432/mymusic --driver-name=postgres --user-name=mymusic --password=mymuisc_Test
+data-source add --jndi-name=java:/MyMusicDS --name=MyMusicDS --connection-url=jdbc:postgresql://46.101.120.33:5432/mymusic --driver-name=postgres --user-name=mymusic --password=mymuisc_Test
 
 # Configure the security domain
 /subsystem=security/security-domain=mymusicSecurityDomain/:add(cache-type=default)

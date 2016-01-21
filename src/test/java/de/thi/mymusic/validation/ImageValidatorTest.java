@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 /**
  * Created by Michael on 17.12.2015.
  */
-
 @RunWith(Theories.class)
 public class ImageValidatorTest {
     /**
@@ -50,7 +49,6 @@ public class ImageValidatorTest {
     /**
      * method under test: validate
      */
-
     @Theory
     public void thatValidateThrowNoErrorMessageIfFileIsCorrectImage(String imageFileType) throws Exception {
         when(mockedPartValue.getContentType()).thenReturn(imageFileType);
@@ -76,6 +74,7 @@ public class ImageValidatorTest {
         imageValidator.validate(mockedFacesContext, mockedUIComponent, mockedPartValue);
 
     }
+
 
     @Test (expected = ValidatorException.class)
     public void thatValidateThrowErrorMessageIfFileIsNotAImage() throws Exception {

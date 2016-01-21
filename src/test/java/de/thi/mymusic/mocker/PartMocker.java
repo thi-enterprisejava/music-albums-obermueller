@@ -9,7 +9,9 @@ import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashMap;
 
-
+/**
+ * PartMocker mocks a Part, which is used for file/image upload
+ */
 public class PartMocker implements Part {
 
     private File file;

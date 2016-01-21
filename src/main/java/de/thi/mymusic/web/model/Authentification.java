@@ -1,39 +1,25 @@
 package de.thi.mymusic.web.model;
 
-import de.thi.mymusic.service.UserService;
-import de.thi.mymusic.util.GuiUtils;
-
-
+import org.apache.log4j.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
  * Authentification is responsible for login and logout of a user
  */
-
 @Named
 @RequestScoped
 public class Authentification implements Serializable {
-
-
+    private static final Logger LOGGER = Logger.getLogger(Authentification.class);
     private String username;
     private String password;
-    private UserService userService;
-    private GuiUtils guiUtils;
-
-
-    @Inject
-    public Authentification(UserService userService, GuiUtils guiUtils) {
-        this.userService = userService;
-        this.guiUtils = guiUtils;
-    }
 
     //*******************************************************
     // Getter and Setter
@@ -68,6 +54,7 @@ public class Authentification implements Serializable {
             request.login(this.username, this.password);
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Login failed."));
+            LOGGER.error("Login failed: " + e);
             return "/loginerror.xhtml";
         }
 
@@ -78,7 +65,7 @@ public class Authentification implements Serializable {
         return null;
     }
 
-    public void doLogout() throws Exception {
+    public void doLogout() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         externalContext.invalidateSession();
@@ -90,10 +77,6 @@ public class Authentification implements Serializable {
     public boolean checkNavigationLoginDisable() {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if("/login.xhtml".equals(context.getViewRoot().getViewId())) {
-            return true;
-        } else {
-            return false;
-        }
+        return "/login.xhtml".equals(context.getViewRoot().getViewId());
     }
 }

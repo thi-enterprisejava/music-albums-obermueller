@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * Created by Michael on 03.12.2015.
  */
-
 @Path("/albums")
 public class AlbumRestService {
 
@@ -26,10 +25,7 @@ public class AlbumRestService {
     @Produces("application/json")
     @Path("/{albumId}")
     public Album findById(@PathParam("albumId") Long id) {
-        Album album =  albumService.findById(id);
-        album.setInterpret(null);
-
-        return album;
+        return  albumService.findById(id);
     }
 
 }

@@ -54,7 +54,6 @@ public class SelectedAlbumTest {
     /**
      * method under test: init
      */
-
     @Test
     public void thatInitLoadCorrectAlbum() throws Exception {
         selectedAlbum.setAlbumId(1);
@@ -116,7 +115,6 @@ public class SelectedAlbumTest {
     /**
      * method under test: doAddSong
      */
-
     @Test
     public void thatDoAddSongAddNewSongCorrect() throws Exception {
         selectedAlbum.setCurrentSongNumber(1);
